@@ -10,6 +10,7 @@ import { useCartStore } from '../store/useCartStore';
 import { useAuthStore } from '../store/useAuthStore';
 import { useWishlistStore } from '../store/useWishlistStore';
 import { useStoreData } from '../store/useStoreData';
+import { useLocationStore } from '../store/useLocationStore';
 import logo from '../assets/logo.png';
 
 const BACKEND_URL = import.meta.env.VITE_BACKEND_URL || "http://localhost:5000/api";
@@ -316,40 +317,7 @@ export function Header({ variant = 'default', title, showShare = false }) {
   const closeMobileSearch = () => { setMobileSearchOpen(false); setMobileSearchQ(''); };
   const [announcement, setAnnouncement] = useState(null);
 
-  const [locationName, setLocationName] = useState('Select Location');
-  const [isLoadingLocation, setIsLoadingLocation] = useState(false);
-
-  const fetchLocation = () => {
-    if (!navigator.geolocation) {
-      alert('Geolocation is not supported by your browser');
-      return;
-    }
-    
-    setIsLoadingLocation(true);
-    navigator.geolocation.getCurrentPosition(
-      async (position) => {
-        try {
-          const { latitude, longitude } = position.coords;
-          const res = await fetch(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${latitude}&lon=${longitude}`);
-          const data = await res.json();
-          const name = data.address?.suburb || data.address?.neighbourhood || data.address?.city_district || data.address?.town || data.address?.village || 'Current Location';
-          const city = data.address?.city || data.address?.state_district || '';
-          
-          setLocationName(city && name !== city ? `${name}, ${city}` : name);
-        } catch (error) {
-          console.error('Error fetching location:', error);
-          setLocationName('Location found');
-        } finally {
-          setIsLoadingLocation(false);
-        }
-      },
-      (error) => {
-        console.error('Error getting location:', error);
-        alert('Unable to retrieve your location. Please check your browser permissions.');
-        setIsLoadingLocation(false);
-      }
-    );
-  };
+  const { locationName, isLoadingLocation, fetchLocation } = useLocationStore();
 
   useEffect(() => {
     if (token && !user) fetchProfile();

@@ -21,12 +21,12 @@ function ForgotPassword({ onBack, dark = false }) {
   const otpRefs = useRef([]);
 
   const inputCls = dark
-    ? 'w-full bg-transparent border border-white/10 rounded-xl px-4 py-3.5 pl-11 text-sm text-white placeholder:text-white/30 focus:outline-none focus:border-[#D4AF37]/50 focus:ring-1 focus:ring-[#D4AF37]/50 transition-all'
-    : 'w-full bg-white border border-brand-red/10 rounded-xl px-4 py-3.5 pl-11 text-sm text-gray-900 placeholder:text-gray-900/30 focus:outline-none focus:ring-2 focus:ring-brand-gold/40 transition-shadow';
-  const labelCls = dark ? 'text-xs font-medium text-white block mb-1.5' : 'text-sm font-semibold text-gray-900 block mb-1.5';
+    ? 'w-full bg-transparent border border-white/10 rounded-xl px-4 py-2.5 pl-11 text-sm text-white placeholder:text-white/30 focus:outline-none focus:border-[#D4AF37]/50 focus:ring-4 focus:ring-[#D4AF37]/10 transition-all'
+    : 'w-full bg-white border border-gray-200 shadow-inner rounded-xl px-4 pl-11 py-2.5 text-sm text-gray-900 placeholder:text-gray-400 focus:outline-none focus:border-[#D61A3C] focus:ring-4 focus:ring-[#D61A3C]/10 focus:bg-white hover:border-gray-300 transition-all duration-300 shadow-sm';
+  const labelCls = dark ? 'text-xs font-medium text-white block mb-0.5' : 'text-sm font-semibold text-gray-900 block mb-0.5';
   const btnCls = dark
-    ? 'w-full bg-gradient-to-r from-[#e3c162] to-[#b38827] text-black font-bold py-3.5 rounded-xl text-sm transition-all disabled:opacity-60 shadow-[0_0_15px_rgba(212,175,55,0.2)]'
-    : 'w-full bg-white text-brand-red font-bold py-4 rounded-xl text-sm hover:bg-white transition-all disabled:opacity-60 shadow-lg';
+    ? 'w-full bg-gradient-to-r from-[#e3c162] to-[#b38827] text-black font-bold py-2 rounded-xl text-sm transition-all disabled:opacity-60 shadow-[0_0_15px_rgba(212,175,55,0.2)]'
+    : 'w-full bg-gradient-to-r from-[#D81B24] to-[#ff474f] text-white font-bold py-3.5 rounded-xl text-sm hover:shadow-xl hover:-translate-y-0.5 transition-all duration-300 disabled:opacity-60 disabled:hover:translate-y-0 shadow-md';
   const errCls = dark
     ? 'bg-red-500/10 border border-red-500/20 rounded-xl px-4 py-3 text-xs text-red-400 text-center'
     : 'bg-red-50 border border-red-200 rounded-xl px-4 py-3 text-xs text-red-600 text-center';
@@ -96,7 +96,7 @@ function ForgotPassword({ onBack, dark = false }) {
 
       <div>
         <h4 className={`font-bold tracking-widest uppercase text-xs mb-1 ${dark ? 'text-brand-orange' : 'text-brand-red'}`}>Reset Password</h4>
-        <h2 className={`text-2xl font-serif font-bold mb-1 ${dark ? 'text-white' : 'text-gray-900'}`}>
+        <h2 className={`text-2xl font-sans font-extrabold tracking-tight mb-1 ${dark ? 'text-white' : 'text-gray-900'}`}>
           {step === 'email' ? 'Forgot Password' : step === 'otp' ? 'Verify OTP' : 'New Password'}
         </h2>
         <p className={`text-xs ${dark ? 'text-white/50' : 'text-gray-900/60'}`}>
@@ -108,7 +108,7 @@ function ForgotPassword({ onBack, dark = false }) {
         <form onSubmit={handleSendOtp} className="space-y-4">
           <div>
             <label className={labelCls}>Email Address</label>
-            <div className="relative">
+            <div className="relative group">
               <Mail className={`w-4 h-4 absolute left-4 top-1/2 -translate-y-1/2 ${dark ? 'text-brand-orange' : 'text-gray-900/40'}`} />
               <input type="email" required value={email} onChange={e => setEmail(e.target.value)} placeholder="you@example.com" className={inputCls} />
             </div>
@@ -145,7 +145,7 @@ function ForgotPassword({ onBack, dark = false }) {
         <form onSubmit={handleResetPassword} className="space-y-4">
           <div>
             <label className={labelCls}>New Password</label>
-            <div className="relative">
+            <div className="relative group">
               <Lock className={`w-4 h-4 absolute left-4 top-1/2 -translate-y-1/2 ${dark ? 'text-brand-orange' : 'text-gray-900/40'}`} />
               <input type={showPass ? 'text' : 'password'} required minLength={6} value={newPassword}
                 onChange={e => setNewPassword(e.target.value)} placeholder="Min 6 characters" className={`${inputCls} pr-12`} />
@@ -215,67 +215,28 @@ export function LoginPage() {
 
   return (
     <>
-      {/* DESKTOP VIEW (Unchanged, hidden on mobile) */}
-      <div className="hidden lg:flex min-h-screen font-sans">
-        {/* Left Panel — Brand Visual */}
-        <div className="w-1/2 relative flex flex-col items-center justify-center px-16 overflow-hidden">
-          <div className="absolute inset-0 z-0">
-            <img src="https://images.unsplash.com/photo-1542838132-92c53300491e?w=1000&auto=format&fit=crop" alt="Supermarket background" className="w-full h-full object-cover" />
-            <div className="absolute inset-0 bg-black/60"></div>
-          </div>
-
+      {/* DESKTOP VIEW */}
+      <div className="hidden lg:flex h-screen w-full font-sans bg-gray-100 items-center justify-center overflow-hidden py-2">
+        <div className="w-full max-w-md bg-white/80 backdrop-blur-xl rounded-[2rem] shadow-[0_8px_40px_-12px_rgba(0,0,0,0.1)] border border-white flex flex-col items-center justify-center px-8 py-10">
           <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, ease: 'easeOut' }}
-            className="relative z-10 text-center w-full max-w-md"
+            initial={{ opacity: 0, scale: 0.95 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 0.5, ease: 'easeOut' }}
+            className="w-full"
           >
-            <Link to="/" className="inline-flex bg-white p-5 rounded-3xl shadow-2xl mb-8 transform hover:scale-105 transition-transform items-center justify-center">
-              <img src={logoImg} alt="Manikanta Super Market" className="h-20 w-auto object-contain" />
-            </Link>
-
-            <h1 className="text-4xl lg:text-5xl font-serif font-bold text-white mb-5 leading-tight drop-shadow-md">
-              Freshness<br />
-              <span className="text-[#FFC107]">Delivered Daily</span>
-            </h1>
+            <div className="flex flex-col items-center mb-6">
+              <Link to="/">
+                <img src={logoImg} alt="Manikanta Super Market" className="h-14 w-auto drop-shadow-md hover:scale-105 transition-transform" />
+              </Link>
+              <h1 className="font-sans font-extrabold tracking-tight text-gray-900 text-sm">Manikanta Super Market</h1>
+            </div>
             
-            <p className="text-white/90 text-base leading-relaxed mb-10 drop-shadow-sm font-medium px-4">
-              Your one-stop destination for farm-fresh groceries, everyday essentials, and premium quality products.
-            </p>
-
-            {/* Trust badges */}
-            <div className="grid grid-cols-3 gap-6 pt-8 border-t border-white/20">
-              {[
-                { icon: <ShieldCheck className="w-6 h-6 text-[#FFC107]" strokeWidth={2} />, label: '100% Quality' },
-                { icon: <Droplet className="w-6 h-6 text-[#FFC107]" strokeWidth={2} />, label: 'Farm Fresh' },
-                { icon: <Feather className="w-6 h-6 text-[#FFC107]" strokeWidth={2} />, label: 'Fast Delivery' },
-              ].map(({ icon, label }, i) => (
-                <div key={i} className="flex flex-col items-center gap-3">
-                  <div className="w-12 h-12 rounded-full bg-white/10 backdrop-blur-md flex items-center justify-center border border-white/20 shadow-lg">
-                    {icon}
-                  </div>
-                  <span className="text-white font-semibold text-xs tracking-wide">{label}</span>
-                </div>
-              ))}
-            </div>
-          </motion.div>
-        </div>
-
-        {/* Right Panel — Login Form */}
-        <div className="w-1/2 bg-brand-cream flex items-center justify-center px-6 py-12">
-          <motion.div
-            initial={{ opacity: 0, x: 30 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.7, ease: 'easeOut' }}
-            className="w-full max-w-md"
-          >
-            {/* Heading */}
-            <div className="mb-8">
-              <h4 className="text-brand-red font-bold tracking-widest uppercase text-xs mb-2">Welcome Back</h4>
-              <h2 className="text-3xl md:text-4xl font-serif font-bold text-gray-900 mb-2">Sign In</h2>
-              <div className="w-14 h-1 bg-brand-red text-white rounded-full"></div>
-              <p className="text-gray-900/60 text-sm mt-4">Enter your credentials to access your account.</p>
-            </div>
+            {!showForgot && (
+              <div className="text-center mb-6">
+                <h2 className="text-2xl font-sans font-extrabold tracking-tight text-gray-900 mb-1">Sign In</h2>
+                <div className="hidden"></div>
+              </div>
+            )}
 
             {showForgot ? (
             <ForgotPassword onBack={() => setShowForgot(false)} dark={false} />
@@ -283,27 +244,27 @@ export function LoginPage() {
           <form onSubmit={handleSubmit} className="space-y-5">
               {/* Email */}
               <div>
-                <label className="text-sm font-semibold text-gray-900 block mb-1.5">Email Address</label>
-                <div className="relative">
-                  <Mail className="w-4 h-4 text-gray-900/40 absolute left-4 top-1/2 -translate-y-1/2" />
+                <label className="text-sm font-semibold text-gray-900 block mb-0.5">Email Address</label>
+                <div className="relative group">
+                  <Mail className="w-4 h-4 text-gray-400 absolute left-4 group-focus-within:text-gray-900 transition-colors top-1/2 -translate-y-1/2" />
                   <input
                     name="email" type="email" value={form.email} onChange={handleChange} required
                     placeholder="you@example.com"
-                    className="w-full bg-white border border-brand-red/10 rounded-xl px-4 py-3.5 pl-11 text-sm text-gray-900 placeholder:text-gray-900/30 focus:outline-none focus:ring-2 focus:ring-brand-gold/40 transition-shadow"
+                    className="w-full bg-white border border-gray-200 shadow-inner rounded-xl px-4 pl-11 py-2.5 text-sm text-gray-900 placeholder:text-gray-400 focus:outline-none focus:border-[#D61A3C] focus:ring-4 focus:ring-[#D61A3C]/10 focus:bg-white hover:border-gray-300 transition-all duration-300 shadow-sm"
                   />
                 </div>
               </div>
 
               {/* Password */}
               <div>
-                <label className="text-sm font-semibold text-gray-900 block mb-1.5">Password</label>
-                <div className="relative">
-                  <Lock className="w-4 h-4 text-gray-900/40 absolute left-4 top-1/2 -translate-y-1/2" />
+                <label className="text-sm font-semibold text-gray-900 block mb-0.5">Password</label>
+                <div className="relative group">
+                  <Lock className="w-4 h-4 text-gray-400 absolute left-4 group-focus-within:text-gray-900 transition-colors top-1/2 -translate-y-1/2" />
                   <input
                     name="password" type={showPass ? 'text' : 'password'} value={form.password}
                     onChange={handleChange} required
                     placeholder="Your password"
-                    className="w-full bg-white border border-brand-red/10 rounded-xl px-4 py-3.5 pl-11 pr-12 text-sm text-gray-900 placeholder:text-gray-900/30 focus:outline-none focus:ring-2 focus:ring-brand-gold/40 transition-shadow"
+                    className="w-full bg-white border border-gray-200 shadow-inner rounded-xl px-4 pl-11 py-2.5 text-sm text-gray-900 placeholder:text-gray-400 focus:outline-none focus:border-[#D61A3C] focus:ring-4 focus:ring-[#D61A3C]/10 focus:bg-white hover:border-gray-300 transition-all duration-300 shadow-sm"
                   />
                   <button type="button" onClick={() => setShowPass(!showPass)}
                     className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-900/40 hover:text-gray-900 transition-colors">
@@ -322,7 +283,7 @@ export function LoginPage() {
                   whileHover={{ scale: 1.01 }}
                   whileTap={{ scale: 0.98 }}
                   type="submit" disabled={loading}
-                  className="w-full bg-white text-brand-red font-bold py-4 rounded-xl text-sm hover:bg-white transition-all disabled:opacity-60 mt-2 shadow-lg"
+                  className="w-full bg-gradient-to-r from-[#D81B24] to-[#ff474f] text-white font-bold py-3.5 rounded-xl text-sm hover:shadow-xl hover:-translate-y-0.5 transition-all duration-300 disabled:opacity-60 disabled:hover:translate-y-0 mt-4 shadow-md"
                 >
                   {loading ? 'Signing in...' : 'Sign In →'}
                 </motion.button>
@@ -333,55 +294,52 @@ export function LoginPage() {
               </form>
           )}
 
-              {/* OR Google */}
-              <div className="flex items-center gap-3 w-full my-6">
+              {!showForgot && (
+              <>
+                {/* OR Google */}
+              <div className="flex items-center gap-3 w-full my-3">
                 <div className="h-px bg-white flex-1"></div>
                 <span className="text-gray-900/40 text-[10px] tracking-wider uppercase">OR</span>
                 <div className="h-px bg-white flex-1"></div>
               </div>
               
-              <button type="button" onClick={() => loginWithGoogle()} className="w-full bg-white border border-brand-dark-blue/10 text-gray-900 font-semibold py-3.5 rounded-xl flex items-center justify-center gap-3 text-sm hover:bg-white transition-colors">
+              <button type="button" onClick={() => loginWithGoogle()} className="w-full bg-white border border-gray-200 text-gray-900 font-semibold py-3.5 rounded-xl flex items-center justify-center gap-3 text-sm hover:bg-gray-50 hover:border-gray-300 transition-all duration-300 shadow-sm hover:shadow-md">
                 <svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><g transform="matrix(1, 0, 0, 1, 27.009001, -39.238998)"><path fill="#4285F4" d="M -3.264 51.509 C -3.264 50.719 -3.334 49.969 -3.454 49.239 L -14.754 49.239 L -14.754 53.749 L -8.284 53.749 C -8.574 55.229 -9.424 56.479 -10.684 57.329 L -10.684 60.329 L -6.824 60.329 C -4.564 58.239 -3.264 55.159 -3.264 51.509 Z"/><path fill="#34A853" d="M -14.754 63.239 C -11.514 63.239 -8.804 62.159 -6.824 60.329 L -10.684 57.329 C -11.764 58.049 -13.134 58.489 -14.754 58.489 C -17.884 58.489 -20.534 56.379 -21.484 53.529 L -25.464 53.529 L -25.464 56.619 C -23.494 60.539 -19.444 63.239 -14.754 63.239 Z"/><path fill="#FBBC05" d="M -21.484 53.529 C -21.734 52.809 -21.864 52.039 -21.864 51.239 C -21.864 50.439 -21.724 49.669 -21.484 48.949 L -21.484 45.859 L -25.464 45.859 C -26.284 47.479 -26.754 49.299 -26.754 51.239 C -26.754 53.179 -26.284 54.999 -25.464 56.619 L -21.484 53.529 Z"/><path fill="#EA4335" d="M -14.754 43.989 C -12.984 43.989 -11.404 44.599 -10.154 45.789 L -6.734 42.369 C -8.804 40.429 -11.514 39.239 -14.754 39.239 C -19.444 39.239 -23.494 41.939 -25.464 45.859 L -21.484 48.949 C -20.534 46.099 -17.884 43.989 -14.754 43.989 Z"/></g></svg>
                 Continue with Google
               </button>
 
-            <p className="text-center text-sm text-gray-900/60 mt-8">
+            <p className="text-center text-sm text-gray-900/60 mt-4">
               Don't have an account?{' '}
               <Link to="/signup" className="font-bold text-gray-900 hover:text-brand-red transition-colors">
                 Create Account
               </Link>
             </p>
+              </>
+            )}
           </motion.div>
         </div>
       </div>
-      <div className="lg:hidden min-h-screen bg-brand-cream font-sans flex flex-col relative overflow-y-auto pb-10">
-                {/* Top Image Background */}
-        <div className="absolute top-0 left-0 w-full h-[320px] z-0">
-          <img src="https://images.unsplash.com/photo-1542838132-92c53300491e?w=800&auto=format&fit=crop" alt="Supermarket background" className="w-full h-full object-cover" />
-          <div className="absolute inset-0 bg-gradient-to-b from-black/70 via-black/40 to-[#FFF8E1]"></div>
-        </div>
-
-        <div className="relative z-10 flex flex-col items-center justify-start px-6 pt-10 w-full flex-grow">
-          <div className="flex flex-col items-center mb-8">
-            <Link to="/" className="inline-flex bg-white p-4 rounded-3xl shadow-xl mb-5 items-center justify-center">
-              <img src={brandLogo} alt="Manikanta Super Market Logo" className="w-16 h-16 object-contain" />
+      {/* MOBILE VIEW */}
+      <div className="lg:hidden h-screen w-full bg-gray-100 font-sans flex flex-col items-center justify-center overflow-hidden px-4 py-2">
+        <motion.div
+          initial={{ opacity: 0, scale: 0.95 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ duration: 0.5, ease: 'easeOut' }}
+          className="w-full max-w-sm flex flex-col justify-center h-full"
+        >
+          <div className="flex flex-col items-center mb-6 mt-2">
+            <Link to="/">
+              <img src={brandLogo} alt="Manikanta Super Market" className="h-14 w-auto drop-shadow-md hover:scale-105 transition-transform" />
             </Link>
-            <h1 className="font-serif font-bold text-3xl text-white text-center leading-tight drop-shadow-md">
-              Freshness<br />
-              <span className="text-[#FFC107]">Delivered Daily</span>
-            </h1>
-            <p className="text-white/90 text-xs text-center leading-relaxed max-w-[280px] mt-3 font-medium">
-              Your one-stop destination for farm-fresh groceries and everyday essentials.
-            </p>
+            <h1 className="font-sans font-extrabold tracking-tight text-gray-900 text-sm">Manikanta Super Market</h1>
           </div>
-
-        <div className="text-center mb-8">
-          <h2 className="text-4xl font-serif font-bold text-gray-900 mb-2">
-            Sign In
-          </h2>
-          <div className="w-12 h-1 bg-brand-red text-white mx-auto rounded-full mb-3"></div>
-          <p className="text-gray-900/60 text-xs">Enter your credentials to access your account.</p>
-        </div>
+          
+          {!showForgot && (
+              <div className="text-center mb-6">
+                <h2 className="text-2xl font-sans font-extrabold tracking-tight text-gray-900 mb-1">Sign In</h2>
+                <div className="hidden"></div>
+              </div>
+            )}
 
         {showForgot ? (
           <div className="w-full max-w-sm">
@@ -390,26 +348,26 @@ export function LoginPage() {
         ) : (
         <form onSubmit={handleSubmit} className="w-full max-w-sm space-y-4">
           <div>
-            <label className="text-xs font-semibold text-gray-900 block mb-1.5 pl-1">Email Address</label>
-            <div className="relative">
-              <Mail className="w-4 h-4 text-gray-400 absolute left-4 top-1/2 -translate-y-1/2" />
+            <label className="text-xs font-semibold text-gray-900 block mb-0.5 pl-1">Email Address</label>
+            <div className="relative group">
+              <Mail className="w-4 h-4 text-gray-400 absolute left-4 group-focus-within:text-gray-900 transition-colors top-1/2 -translate-y-1/2" />
               <input
                 name="email" type="email" value={form.email} onChange={handleChange} required
                 placeholder="you@example.com"
-                className="w-full bg-white border border-gray-200 rounded-xl px-4 py-3.5 pl-11 text-sm text-gray-900 placeholder:text-gray-400 focus:outline-none focus:border-brand-red/20 focus:ring-1 focus:ring-brand-gold/40 transition-all"
+                className="w-full bg-white border border-gray-200 shadow-inner rounded-xl px-4 pl-11 py-2.5 text-sm text-gray-900 placeholder:text-gray-400 focus:outline-none focus:border-[#D61A3C] focus:ring-4 focus:ring-[#D61A3C]/10 focus:bg-white hover:border-gray-300 transition-all duration-300 shadow-sm"
               />
             </div>
           </div>
 
           <div>
-            <label className="text-xs font-semibold text-gray-900 block mb-1.5 pl-1">Password</label>
-            <div className="relative">
-              <Lock className="w-4 h-4 text-gray-400 absolute left-4 top-1/2 -translate-y-1/2" />
+            <label className="text-xs font-semibold text-gray-900 block mb-0.5 pl-1">Password</label>
+            <div className="relative group">
+              <Lock className="w-4 h-4 text-gray-400 absolute left-4 group-focus-within:text-gray-900 transition-colors top-1/2 -translate-y-1/2" />
               <input
                 name="password" type={showPass ? 'text' : 'password'} value={form.password}
                 onChange={handleChange} required
                 placeholder="Your password"
-                className="w-full bg-white border border-gray-200 rounded-xl px-4 py-3.5 pl-11 pr-12 text-sm text-gray-900 placeholder:text-gray-400 focus:outline-none focus:border-brand-red/20 focus:ring-1 focus:ring-brand-gold/40 transition-all"
+                className="w-full bg-white border border-gray-200 shadow-inner rounded-xl px-4 pl-11 py-2.5 text-sm text-gray-900 placeholder:text-gray-400 focus:outline-none focus:border-[#D61A3C] focus:ring-4 focus:ring-[#D61A3C]/10 focus:bg-white hover:border-gray-300 transition-all duration-300 shadow-sm"
               />
               <button type="button" onClick={() => setShowPass(!showPass)}
                 className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 transition-colors">
@@ -426,7 +384,7 @@ export function LoginPage() {
 
           <button
             type="submit" disabled={loading}
-            className="w-full bg-brand-red text-white font-bold py-3.5 rounded-xl text-sm transition-all disabled:opacity-60 mt-4 shadow-lg hover:shadow-xl hover:-translate-y-0.5"
+            className="w-full bg-gray-900 hover:bg-black text-white font-semibold py-3.5 rounded-xl text-sm transition-all duration-300 shadow-md hover:shadow-xl hover:-translate-y-0.5 disabled:opacity-60 disabled:hover:translate-y-0 mt-4"
           >
             {loading ? 'Signing in...' : 'Sign In →'}
           </button>
@@ -437,48 +395,26 @@ export function LoginPage() {
         </form>
         )}
 
-        <div className="flex items-center gap-3 w-full max-w-sm my-6">
+        <div className="flex items-center gap-3 w-full max-w-sm my-3">
           <div className="h-px bg-gray-200 flex-1"></div>
           <span className="text-gray-400 text-[10px] tracking-wider uppercase">OR</span>
           <div className="h-px bg-gray-200 flex-1"></div>
         </div>
 
-        <button type="button" onClick={() => loginWithGoogle()} className="w-full max-w-sm bg-white border border-gray-200 text-gray-900 font-semibold py-3.5 rounded-xl flex items-center justify-center gap-3 text-sm hover:bg-gray-50 transition-colors shadow-sm">
+        <button type="button" onClick={() => loginWithGoogle()} className="w-full max-w-sm bg-white border border-gray-200 text-gray-900 font-semibold py-2 rounded-xl flex items-center justify-center gap-3 text-sm hover:bg-gray-50 transition-colors shadow-sm">
           <svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><g transform="matrix(1, 0, 0, 1, 27.009001, -39.238998)"><path fill="#4285F4" d="M -3.264 51.509 C -3.264 50.719 -3.334 49.969 -3.454 49.239 L -14.754 49.239 L -14.754 53.749 L -8.284 53.749 C -8.574 55.229 -9.424 56.479 -10.684 57.329 L -10.684 60.329 L -6.824 60.329 C -4.564 58.239 -3.264 55.159 -3.264 51.509 Z"/><path fill="#34A853" d="M -14.754 63.239 C -11.514 63.239 -8.804 62.159 -6.824 60.329 L -10.684 57.329 C -11.764 58.049 -13.134 58.489 -14.754 58.489 C -17.884 58.489 -20.534 56.379 -21.484 53.529 L -25.464 53.529 L -25.464 56.619 C -23.494 60.539 -19.444 63.239 -14.754 63.239 Z"/><path fill="#FBBC05" d="M -21.484 53.529 C -21.734 52.809 -21.864 52.039 -21.864 51.239 C -21.864 50.439 -21.724 49.669 -21.484 48.949 L -21.484 45.859 L -25.464 45.859 C -26.284 47.479 -26.754 49.299 -26.754 51.239 C -26.754 53.179 -26.284 54.999 -25.464 56.619 L -21.484 53.529 Z"/><path fill="#EA4335" d="M -14.754 43.989 C -12.984 43.989 -11.404 44.599 -10.154 45.789 L -6.734 42.369 C -8.804 40.429 -11.514 39.239 -14.754 39.239 C -19.444 39.239 -23.494 41.939 -25.464 45.859 L -21.484 48.949 C -20.534 46.099 -17.884 43.989 -14.754 43.989 Z"/></g></svg>
           Continue with Google
         </button>
 
-        <p className="text-center text-xs text-gray-500 mt-8">
+        <p className="text-center text-xs text-gray-500 mt-4">
           Don't have an account?{' '}
           <Link to="/signup" className="text-brand-red font-bold hover:text-brand-red/80 transition-colors">
             Create Account
           </Link>
         </p>
 
-        <div className="flex justify-between w-full max-w-sm mt-12 mb-4 px-2">
-          <div className="flex flex-col items-center gap-2">
-            <div className="w-10 h-10 rounded-full border border-gray-200 bg-white flex items-center justify-center">
-              <ShieldCheck className="w-5 h-5 text-[#FFC107]" strokeWidth={2} />
-            </div>
-            <span className="text-gray-900 text-[10px] font-semibold tracking-wide">100% Quality</span>
-          </div>
-          
-          <div className="flex flex-col items-center gap-2">
-            <div className="w-10 h-10 rounded-full border border-gray-200 bg-white flex items-center justify-center">
-              <Droplet className="w-5 h-5 text-[#FFC107]" strokeWidth={2} />
-            </div>
-            <span className="text-gray-900 text-[10px] font-semibold tracking-wide">Farm Fresh</span>
-          </div>
-
-          <div className="flex flex-col items-center gap-2">
-            <div className="w-10 h-10 rounded-full border border-gray-200 bg-white flex items-center justify-center">
-              <Feather className="w-5 h-5 text-[#FFC107]" strokeWidth={2} />
-            </div>
-            <span className="text-gray-900 text-[10px] font-semibold tracking-wide">Fast Delivery</span>
-          </div>
-        </div>
+        </motion.div>
       </div>
-    </div>
     </>
   );
 }

@@ -485,7 +485,7 @@ export function HomePage() {
         )}
 
         {/* Customer Reviews — auto-scroll */}
-        {reviews.filter(r => r.image_url).length > 0 && (
+        {reviews.length > 0 && (
           <section className="mb-4 overflow-hidden">
             <div className="px-4 md:px-24 mb-6">
               <h3 className="font-serif font-bold text-2xl text-gray-900">What Our Clients Say</h3>
@@ -498,9 +498,25 @@ export function HomePage() {
                 style={{ width: 'max-content' }}
               >
                 {/* Duplicate for seamless loop */}
-                {[...reviews.filter(r => r.image_url), ...reviews.filter(r => r.image_url)].map((rev, idx) => (
-                  <div key={idx} className="w-[260px] md:w-[300px] aspect-[4/3] shrink-0 bg-white border border-brand-red/10 rounded-[20px] overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 relative group">
-                    <img src={rev.image_url} alt="Client review showcase" className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
+                {[...reviews, ...reviews].map((rev, idx) => (
+                  <div key={idx} className="w-[260px] md:w-[300px] p-6 shrink-0 bg-white border border-brand-red/10 rounded-[20px] shadow-sm hover:shadow-xl transition-all duration-300 flex flex-col justify-between h-[200px]">
+                    <div>
+                      <div className="flex text-[#FFC107] mb-3">
+                        {[...Array(5)].map((_, i) => (
+                          <Star key={i} className={`w-4 h-4 ${i < (rev.rating || 5) ? 'fill-current' : 'text-gray-300'}`} />
+                        ))}
+                      </div>
+                      <p className="text-gray-700 italic text-sm line-clamp-3">"{rev.comment || 'Great experience with the products and fast delivery!'}"</p>
+                    </div>
+                    <div className="mt-4 flex items-center gap-3">
+                      <div className="w-9 h-9 rounded-full bg-gray-100 flex items-center justify-center font-bold text-gray-500">
+                        {(rev.name || 'G').charAt(0).toUpperCase()}
+                      </div>
+                      <div>
+                        <p className="font-bold text-gray-900 text-sm">{rev.name || 'Guest User'}</p>
+                        <p className="text-[10px] text-gray-400 uppercase tracking-wider">Verified Buyer</p>
+                      </div>
+                    </div>
                   </div>
                 ))}
               </div>

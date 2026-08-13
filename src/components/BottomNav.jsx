@@ -11,7 +11,7 @@ export function BottomNav() {
   const tabs = [
     { name: 'Home', icon: Home, path: '/' },
     { name: 'Categories', icon: Grid, path: '/category/all' },
-    { name: 'Search', icon: Search, path: '/search' },
+    { name: 'Shop', icon: Search, path: '/search' },
     { name: 'About Us', icon: Info, path: '/about' },
     { name: 'Profile', icon: User, path: token ? '/dashboard' : '/login' },
   ];

@@ -46,7 +46,7 @@ export function SearchPage() {
         const catMatch = p.category?.toLowerCase().includes(trimmed);
         return nameMatch || codeMatch || catMatch;
       })
-    : [];
+    : products;
 
   // Category suggestions when query matches a category name
   const catSuggestions = trimmed
@@ -135,52 +135,49 @@ export function SearchPage() {
           </div>
         )}
 
-        {/* Has query: show results */}
-        {trimmed && (
-          <div>
-            {/* Category matches */}
-            {catSuggestions.length > 0 && (
-              <div className="mb-5">
-                <h3 className="text-[10px] font-bold text-brand-red uppercase tracking-[0.22em] mb-3">Categories</h3>
-                <div className="flex flex-wrap gap-2">
-                  {catSuggestions.map(cat => (
-                    <button key={cat.id} onClick={() => { saveSearch(query); navigate(`/category/${cat.id}`); }}
-                      className="flex items-center gap-1.5 bg-white text-brand-dark-blue text-xs font-semibold px-3 py-1.5 rounded-full border border-brand-gold/35 hover:bg-brand-cream hover:border-brand-gold transition-colors shadow-sm">
-                      <Tag className="w-3 h-3 text-brand-maroon/45" /> {cat.name}
-                    </button>
-                  ))}
-                </div>
-              </div>
-            )}
-
-            {/* Product results */}
-            <div className="flex items-center justify-between mb-3">
-              <h3 className="text-[10px] font-bold text-brand-red uppercase tracking-[0.22em]">
-                {results.length > 0 ? `${results.length} Product${results.length !== 1 ? 's' : ''} Found` : 'No Products Found'}
-              </h3>
+        {/* Category matches */}
+        {trimmed && catSuggestions.length > 0 && (
+          <div className="mb-5">
+            <h3 className="text-[10px] font-bold text-brand-red uppercase tracking-[0.22em] mb-3">Categories</h3>
+            <div className="flex flex-wrap gap-2">
+              {catSuggestions.map(cat => (
+                <button key={cat.id} onClick={() => { saveSearch(query); navigate(`/category/${cat.id}`); }}
+                  className="flex items-center gap-1.5 bg-white text-brand-dark-blue text-xs font-semibold px-3 py-1.5 rounded-full border border-brand-gold/35 hover:bg-brand-cream hover:border-brand-gold transition-colors shadow-sm">
+                  <Tag className="w-3 h-3 text-brand-maroon/45" /> {cat.name}
+                </button>
+              ))}
             </div>
-
-            {results.length > 0 ? (
-              <div className="grid grid-cols-2 sm:grid-cols-3 gap-3 sm:gap-4">
-                {results.map(product => (
-                  <div key={product.id} onClick={handleProductClick}>
-                    <ProductCard product={product} searchQuery={trimmed} />
-                  </div>
-                ))}
-              </div>
-            ) : (
-              !loading && (
-                <div className="flex flex-col items-center justify-center py-16 text-center">
-                  <div className="w-16 h-16 bg-brand-cream text-brand-gold rounded-full flex items-center justify-center mb-4 border border-brand-gold/35 shadow-sm">
-                    <Search className="w-7 h-7 text-brand-gold" />
-                  </div>
-                  <h3 className="font-serif text-2xl font-bold text-brand-dark-blue mb-2">No results for "{query}"</h3>
-                  <p className="text-sm text-brand-maroon/70">Try a different name, category, or product code.</p>
-                </div>
-              )
-            )}
           </div>
         )}
+
+        {/* Product results (ALWAYS SHOWN) */}
+        <div>
+          <div className="flex items-center justify-between mb-3 mt-6">
+            <h3 className="text-[10px] font-bold text-brand-red uppercase tracking-[0.22em]">
+              {!trimmed ? 'All Products' : (results.length > 0 ? `${results.length} Product${results.length !== 1 ? 's' : ''} Found` : 'No Products Found')}
+            </h3>
+          </div>
+
+          {results.length > 0 ? (
+            <div className="grid grid-cols-2 sm:grid-cols-3 gap-3 sm:gap-4">
+              {results.map(product => (
+                <div key={product.id} onClick={handleProductClick}>
+                  <ProductCard product={product} searchQuery={trimmed} />
+                </div>
+              ))}
+            </div>
+          ) : (
+            !loading && (
+              <div className="flex flex-col items-center justify-center py-16 text-center">
+                <div className="w-16 h-16 bg-brand-cream text-brand-gold rounded-full flex items-center justify-center mb-4 border border-brand-gold/35 shadow-sm">
+                  <Search className="w-7 h-7 text-brand-gold" />
+                </div>
+                <h3 className="font-serif text-2xl font-bold text-brand-dark-blue mb-2">No results for "{query}"</h3>
+                <p className="text-sm text-brand-maroon/70">Try a different name, category, or product code.</p>
+              </div>
+            )
+          )}
+        </div>
       </div>
 
       <BottomNav />

@@ -268,9 +268,10 @@ export function ProductCard({ product, layout = 'grid', searchQuery = '' }) {
             aria-label={`Add ${productName} to cart`}
             title="Add to cart"
             onClick={handleAddToCart}
-            className="absolute bottom-3 right-3 flex h-9 w-9 items-center justify-center rounded-full bg-[#D81B24] text-white shadow-sm transition-transform hover:scale-105 focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-brand-gold focus-visible:ring-offset-2 focus-visible:ring-offset-white active:scale-95 motion-reduce:transition-none"
+            className="absolute bottom-3 right-3 flex h-9 px-4 items-center justify-center gap-1.5 rounded-full bg-gradient-to-r from-[#D81B24] to-[#ff474f] text-[13px] font-semibold text-white shadow-md transition-all hover:scale-105 hover:shadow-lg focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-brand-gold focus-visible:ring-offset-2 focus-visible:ring-offset-white active:scale-95 motion-reduce:transition-none"
           >
-            <Plus className="h-5 w-5" strokeWidth={2.5} />
+            <ShoppingCart className="h-4 w-4" />
+            <span>Add</span>
           </button>
         )}
         <QuantityModal isOpen={qtyModalOpen} onClose={() => setQtyModalOpen(false)} onConfirm={confirmAddToCart} productName={productName} />
@@ -345,25 +346,27 @@ export function ProductCard({ product, layout = 'grid', searchQuery = '' }) {
           {variants.length > 1 ? <span>· {variants.length} options</span> : firstVariant.color ? <span className="truncate">· {firstVariant.color}</span> : null}
         </div>
 
-        <div className="mt-auto flex items-end justify-between gap-2 pt-3">
+        <div className="mt-auto flex flex-col gap-3 pt-3">
           <div className="min-w-0 flex flex-col gap-0.5">
-            <span className="text-[11px] text-gray-500 mb-1">
-              {defaultSize.size}
-            </span>
-            <div className="flex items-baseline gap-1">
-              <span className="text-lg font-bold leading-none text-brand-dark-blue">₹{displayPrice}</span>
+            <div className="flex items-center mb-1">
+              <span className="inline-flex items-center justify-center rounded-md bg-gray-100/80 px-2 py-0.5 text-[10px] font-bold uppercase tracking-wider text-gray-700 border border-gray-200/60 shadow-sm">
+                {defaultSize.size}
+              </span>
             </div>
-            {(activeOffer || originalPrice > displayPrice) && (
-              <div className="flex items-center gap-1.5 mt-0.5">
-                <span className="text-[10px] text-gray-400 line-through">₹{originalPrice}</span>
-                {activeOffer && (
-                  <span className="text-[9px] font-bold text-[#D81B24]">{parseFloat(activeOffer.discount_percentage)}% OFF</span>
-                )}
-              </div>
-            )}
+            <div className="flex flex-wrap items-baseline gap-1.5 mt-0.5">
+              <span className="text-lg font-bold leading-none text-brand-dark-blue">₹{displayPrice}</span>
+              {(activeOffer || originalPrice > displayPrice) && (
+                <>
+                  <span className="text-[11px] text-gray-400 line-through">₹{originalPrice}</span>
+                  {activeOffer && (
+                    <span className="text-[9px] font-bold text-[#D81B24]">{parseFloat(activeOffer.discount_percentage)}% OFF</span>
+                  )}
+                </>
+              )}
+            </div>
           </div>
           {isOutOfStock ? (
-            <span className="rounded-full border border-brand-red/20 bg-red-50 px-2 py-1 text-[10px] font-semibold text-brand-red">
+            <span className="w-full text-center rounded-xl border border-brand-red/20 bg-red-50 px-3 py-2 text-[12px] font-semibold text-brand-red">
               Out of stock
             </span>
           ) : (
@@ -372,9 +375,10 @@ export function ProductCard({ product, layout = 'grid', searchQuery = '' }) {
               aria-label={`Add ${productName} to cart`}
               title="Add to cart"
               onClick={handleAddToCart}
-              className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-[#D81B24] text-white shadow-sm transition-transform hover:scale-105 active:scale-95"
+              className="flex w-full items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-[#D81B24] to-[#ff474f] py-2 text-sm font-semibold text-white shadow-md transition-all hover:scale-[1.02] hover:shadow-lg active:scale-95"
             >
-              <Plus className="h-4 w-4" strokeWidth={3} />
+              <ShoppingCart className="h-4 w-4" />
+              <span>Add to Cart</span>
             </button>
           )}
         </div>
