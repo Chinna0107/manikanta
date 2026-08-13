@@ -438,26 +438,29 @@ export function SignupPage() {
       </div>
 
       {/* MOBILE VIEW */}
-      <div className="lg:hidden min-h-screen bg-[#060B19] font-sans flex flex-col relative overflow-y-auto pb-10">
+      <div className="lg:hidden min-h-screen bg-brand-cream font-sans flex flex-col relative overflow-y-auto pb-10">
         {/* Top Image Background */}
+        
+
+                {/* Top Image Background */}
         <div className="absolute top-0 left-0 w-full h-[320px] z-0">
-          <img src="https://images.unsplash.com/photo-1578916171728-46686eac8d58?w=800&auto=format&fit=crop" alt="Supermarket background" className="w-full h-full object-cover" />
-          <div className="absolute inset-0 bg-gradient-to-b from-black/60 via-[#060B19]/80 to-[#060B19]"></div>
+          <img src="https://images.unsplash.com/photo-1542838132-92c53300491e?w=800&auto=format&fit=crop" alt="Supermarket background" className="w-full h-full object-cover" />
+          <div className="absolute inset-0 bg-gradient-to-b from-black/70 via-black/40 to-[#FFF8E1]"></div>
         </div>
 
-        <div className="relative z-10 flex flex-col items-center justify-start px-6 pt-10 w-full flex-grow bg-gradient-to-b from-transparent to-[#060B19] to-40%">
+        <div className="relative z-10 flex flex-col items-center justify-start px-6 pt-10 w-full flex-grow">
           {/* Header / Logo */}
           <div className="flex flex-col items-center mb-6">
             <Link to="/" className="inline-flex bg-white p-4 rounded-3xl shadow-2xl mb-4 items-center justify-center">
               <img src={brandLogo} alt="Manikanta Super Market Logo" className="w-16 h-16 object-contain" />
             </Link>
-            <h1 className="font-serif font-bold text-2xl text-white text-center leading-tight drop-shadow-md">
+            <h1 className="font-serif font-bold text-2xl text-gray-900 text-center leading-tight drop-shadow-md">
               Join the <span className="text-[#FFC107]">Manikanta</span> Family
             </h1>
-            <span className="text-[#FFC107] text-[10px] font-bold tracking-widest uppercase mt-4 bg-white/10 px-3 py-1 rounded-full border border-white/20">
+            <span className="text-[#FFC107] text-[10px] font-bold tracking-widest uppercase mt-4 bg-white/10 px-3 py-1 rounded-full border border-gray-200">
               {step === 'form' ? 'Get Started' : step === 'phone_otp' ? 'Step 1 of 2' : step === 'email_otp' ? 'Step 2 of 2' : 'Welcome!'}
             </span>
-            <p className="text-white/90 text-xs text-center leading-relaxed max-w-[280px] mt-3 font-medium">
+            <p className="text-gray-900/70 text-xs text-center leading-relaxed max-w-[280px] mt-3 font-medium">
               {step === 'form'
                 ? 'Create your account to unlock faster checkouts and track your grocery orders.'
                 : step === 'phone_otp' ? `OTP sent to ${form.phone}`
@@ -476,64 +479,64 @@ export function SignupPage() {
         {step === 'form' ? (
           <>
             <div className="text-center mb-8">
-              <h2 className="text-4xl font-serif font-bold text-white mb-2">
-                Create <span className="text-brand-orange">Account</span>
+              <h2 className="text-4xl font-serif font-bold text-gray-900 mb-2">
+                Create <span className="text-brand-red">Account</span>
               </h2>
-              <div className="w-8 h-1 bg-brand-orange text-white mx-auto rounded-full mb-3"></div>
-              <p className="text-white/50 text-xs">Fill in your details to join.</p>
+              <div className="w-8 h-1 bg-brand-red text-gray-900 mx-auto rounded-full mb-3"></div>
+              <p className="text-gray-900/60 text-xs">Fill in your details to join.</p>
             </div>
 
             <form onSubmit={handleSignup} className="w-full max-w-sm space-y-4">
               <div>
-                <label className="text-xs font-medium text-white block mb-1.5 pl-1">Full Name</label>
+                <label className="text-xs font-medium text-gray-900 block mb-1.5 pl-1">Full Name</label>
                 <div className="relative">
-                  <User className="w-4 h-4 text-brand-orange absolute left-4 top-1/2 -translate-y-1/2" />
+                  <User className="w-4 h-4 text-brand-red absolute left-4 top-1/2 -translate-y-1/2" />
                   <input
                     name="name" value={form.name} onChange={handleChange} required
                     placeholder="Your full name"
-                    className="w-full bg-transparent border border-white/10 rounded-xl px-4 py-3.5 pl-11 text-sm text-white placeholder:text-white/30 focus:outline-none focus:border-[#D4AF37]/50 focus:ring-1 focus:ring-[#D4AF37]/50 transition-all"
+                    className="w-full bg-white border border-gray-200 rounded-xl px-4 py-3.5 pl-11 text-sm text-gray-900 placeholder:text-gray-400 focus:outline-none focus:border-[#D4AF37]/50 focus:ring-1 focus:ring-[#D4AF37]/50 transition-all"
                   />
                 </div>
               </div>
 
               <div>
-                <label className="text-xs font-medium text-white block mb-1.5 pl-1">Email Address</label>
+                <label className="text-xs font-medium text-gray-900 block mb-1.5 pl-1">Email Address</label>
                 <div className="relative">
-                  <Mail className="w-4 h-4 text-brand-orange absolute left-4 top-1/2 -translate-y-1/2" />
+                  <Mail className="w-4 h-4 text-brand-red absolute left-4 top-1/2 -translate-y-1/2" />
                   <input
                     name="email" type="email" value={form.email} onChange={handleChange} required
                     placeholder="you@example.com"
-                    className="w-full bg-transparent border border-white/10 rounded-xl px-4 py-3.5 pl-11 text-sm text-white placeholder:text-white/30 focus:outline-none focus:border-[#D4AF37]/50 focus:ring-1 focus:ring-[#D4AF37]/50 transition-all"
+                    className="w-full bg-white border border-gray-200 rounded-xl px-4 py-3.5 pl-11 text-sm text-gray-900 placeholder:text-gray-400 focus:outline-none focus:border-[#D4AF37]/50 focus:ring-1 focus:ring-[#D4AF37]/50 transition-all"
                   />
                 </div>
               </div>
 
               {/* Country - Mobile */}
               <div>
-                <label className="text-xs font-medium text-white block mb-1.5 pl-1">Country</label>
-                <CountryPicker dark={true} />
+                <label className="text-xs font-medium text-gray-900 block mb-1.5 pl-1">Country</label>
+                <CountryPicker dark={false} />
               </div>
 
               {/* Phone - Mobile */}
               <div>
-                <label className="text-xs font-medium text-white block mb-1.5 pl-1">Phone Number</label>
-                <PhoneInput allowedCountries={allowedCountries} value={form.phone} onChange={v => setForm(f => ({ ...f, phone: v }))} placeholder="Phone number" dark />
+                <label className="text-xs font-medium text-gray-900 block mb-1.5 pl-1">Phone Number</label>
+                <PhoneInput allowedCountries={allowedCountries} value={form.phone} onChange={v => setForm(f => ({ ...f, phone: v }))} placeholder="Phone number" />
               </div>
 
               <div>
-                <label className="text-xs font-medium text-white block mb-1.5 pl-1">Password</label>
+                <label className="text-xs font-medium text-gray-900 block mb-1.5 pl-1">Password</label>
                 <div className="relative">
-                  <Lock className="w-4 h-4 text-brand-orange absolute left-4 top-1/2 -translate-y-1/2" />
+                  <Lock className="w-4 h-4 text-brand-red absolute left-4 top-1/2 -translate-y-1/2" />
                   <input
                     name="password" type={showPass ? 'text' : 'password'} value={form.password}
                     onChange={handleChange} onBlur={() => setPasswordTouched(true)} required
                     placeholder="Min 8 chars, 1 number, 1 special"
-                    className={`w-full bg-transparent border rounded-xl px-4 py-3.5 pl-11 pr-12 text-sm text-white placeholder:text-white/30 focus:outline-none focus:ring-1 transition-all ${
-                      passwordTouched && !passwordValid ? 'border-red-500/60 focus:border-red-500 focus:ring-red-500/30' : 'border-white/10 focus:border-[#D4AF37]/50 focus:ring-[#D4AF37]/50'
+                    className={`w-full bg-white border rounded-xl px-4 py-3.5 pl-11 pr-12 text-sm text-gray-900 placeholder:text-gray-400 focus:outline-none focus:ring-1 transition-all ${
+                      passwordTouched && !passwordValid ? 'border-red-500/60 focus:border-red-500 focus:ring-red-500/30' : 'border-gray-200 focus:border-[#D4AF37]/50 focus:ring-[#D4AF37]/50'
                     }`}
                   />
                   <button type="button" onClick={() => setShowPass(!showPass)}
-                    className="absolute right-4 top-1/2 -translate-y-1/2 text-brand-orange hover:text-brand-orange/80 transition-colors">
+                    className="absolute right-4 top-1/2 -translate-y-1/2 text-brand-red hover:text-brand-red/80 transition-colors">
                     {showPass ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
                   </button>
                 </div>
@@ -550,18 +553,18 @@ export function SignupPage() {
 
               {/* Role Selection - Mobile */}
               <div>
-                <label className="text-xs font-medium text-white block mb-1.5 pl-1">I am a</label>
+                <label className="text-xs font-medium text-gray-900 block mb-1.5 pl-1">I am a</label>
                 <div className="flex gap-3">
                   <label className="flex-1 cursor-pointer">
-                    <div className={`border rounded-xl px-4 py-3 flex items-center justify-center transition-all ${form.role === 'customer' ? 'bg-[#D4AF37]/10 border-[#D4AF37] ring-1 ring-[#D4AF37]/50' : 'bg-transparent border-white/10 hover:border-white/30'}`}>
+                    <div className={`border rounded-xl px-4 py-3 flex items-center justify-center transition-all ${form.role === 'customer' ? 'bg-[#D4AF37]/10 border-[#D4AF37] ring-1 ring-[#D4AF37]/50' : 'bg-white border-gray-200 hover:border-white/30'}`}>
                       <input type="radio" name="role" value="customer" checked={form.role === 'customer'} onChange={handleChange} className="hidden" />
-                      <span className={`text-sm font-semibold ${form.role === 'customer' ? 'text-[#D4AF37]' : 'text-white/60'}`}>Customer</span>
+                      <span className={`text-sm font-semibold ${form.role === 'customer' ? 'text-[#D4AF37]' : 'text-gray-900/60'}`}>Customer</span>
                     </div>
                   </label>
                   <label className="flex-1 cursor-pointer">
-                    <div className={`border rounded-xl px-4 py-3 flex items-center justify-center transition-all ${form.role === 'shopkeeper' ? 'bg-[#D4AF37]/10 border-[#D4AF37] ring-1 ring-[#D4AF37]/50' : 'bg-transparent border-white/10 hover:border-white/30'}`}>
+                    <div className={`border rounded-xl px-4 py-3 flex items-center justify-center transition-all ${form.role === 'shopkeeper' ? 'bg-[#D4AF37]/10 border-[#D4AF37] ring-1 ring-[#D4AF37]/50' : 'bg-white border-gray-200 hover:border-white/30'}`}>
                       <input type="radio" name="role" value="shopkeeper" checked={form.role === 'shopkeeper'} onChange={handleChange} className="hidden" />
-                      <span className={`text-sm font-semibold ${form.role === 'shopkeeper' ? 'text-[#D4AF37]' : 'text-white/60'}`}>Shopkeeper</span>
+                      <span className={`text-sm font-semibold ${form.role === 'shopkeeper' ? 'text-[#D4AF37]' : 'text-gray-900/60'}`}>Shopkeeper</span>
                     </div>
                   </label>
                 </div>
@@ -571,11 +574,11 @@ export function SignupPage() {
               <label className="flex items-start gap-2.5 cursor-pointer">
                 <input type="checkbox" checked={consentAccepted} onChange={e => setConsentAccepted(e.target.checked)}
                   className="mt-0.5 w-4 h-4 accent-[#D4AF37] rounded shrink-0" />
-                <span className="text-[11px] text-white/60 leading-relaxed">
+                <span className="text-[11px] text-gray-900/60 leading-relaxed">
                   I confirm that I am at least 13 years old, agree to the Manikanta Super Market{' '}
-                  <Link to="/terms-of-service" target="_blank" className="text-brand-orange font-bold underline">Terms & Conditions</Link>,
+                  <Link to="/terms-of-service" target="_blank" className="text-brand-red font-bold underline">Terms & Conditions</Link>,
                   and acknowledge the Manikanta Super Market{' '}
-                  <Link to="/privacy-policy" target="_blank" className="text-brand-orange font-bold underline">Privacy Policy</Link>.
+                  <Link to="/privacy-policy" target="_blank" className="text-brand-red font-bold underline">Privacy Policy</Link>.
                 </span>
               </label>
 
@@ -587,7 +590,7 @@ export function SignupPage() {
 
               <button
                 type="submit" disabled={loading}
-                className="w-full bg-gradient-to-r from-[#e3c162] to-[#b38827] text-black font-bold py-3.5 rounded-xl text-sm transition-all disabled:opacity-60 mt-4 shadow-[0_0_15px_rgba(212,175,55,0.2)]"
+                className="w-full bg-brand-red text-white font-bold py-3.5 rounded-xl text-sm transition-all disabled:opacity-60 mt-4 shadow-lg hover:shadow-xl hover:-translate-y-0.5"
               >
                 {loading ? 'Sending OTP...' : 'Send OTP & Continue →'}
               </button>
@@ -596,7 +599,7 @@ export function SignupPage() {
             {/* OR Google */}
             <div className="flex items-center gap-3 w-full max-w-sm my-6">
               <div className="h-px bg-white/10 flex-1"></div>
-              <span className="text-white/40 text-[10px] tracking-wider uppercase">OR</span>
+              <span className="text-gray-400 text-[10px] tracking-wider uppercase">OR</span>
               <div className="h-px bg-white/10 flex-1"></div>
             </div>
 
@@ -608,8 +611,8 @@ export function SignupPage() {
         ) : step === 'phone_otp' ? (
           <>
             <div className="text-center mb-8">
-              <h2 className="text-4xl font-serif font-bold text-white mb-2">Verify <span className="text-brand-orange">Mobile</span></h2>
-              <div className="w-8 h-1 bg-brand-orange text-white mx-auto rounded-full mb-3"></div>
+              <h2 className="text-4xl font-serif font-bold text-gray-900 mb-2">Verify <span className="text-brand-red">Mobile</span></h2>
+              <div className="w-8 h-1 bg-brand-red text-gray-900 mx-auto rounded-full mb-3"></div>
             </div>
             <form onSubmit={handleVerifyPhone} className="w-full max-w-sm space-y-6">
               <div className="flex justify-center gap-2">
@@ -618,23 +621,23 @@ export function SignupPage() {
                     type="text" inputMode="numeric" maxLength={1} value={digit}
                     onChange={e => handleOtpChange(e.target.value, idx, setPhoneOtp, phoneOtpRefs)}
                     onKeyDown={e => handleOtpKeyDown(e, idx, phoneOtp, phoneOtpRefs)}
-                    className="w-10 h-12 text-center text-xl font-bold bg-transparent border border-white/20 rounded-xl text-white focus:outline-none focus:border-[#D4AF37] focus:ring-1 focus:ring-[#D4AF37] transition-all"
+                    className="w-10 h-12 text-center text-xl font-bold bg-white border border-gray-200 rounded-xl text-gray-900 focus:outline-none focus:border-[#D4AF37] focus:ring-1 focus:ring-[#D4AF37] transition-all"
                   />
                 ))}
               </div>
               {(localError || error) && <div className="bg-red-500/10 border border-red-500/20 rounded-xl px-4 py-3 text-xs text-red-400 text-center">{localError || error}</div>}
               <button type="submit" disabled={loading}
-                className="w-full bg-gradient-to-r from-[#e3c162] to-[#b38827] text-black font-bold py-3.5 rounded-xl text-sm transition-all disabled:opacity-60 shadow-[0_0_15px_rgba(212,175,55,0.2)]">
+                className="w-full bg-brand-red text-white font-bold py-3.5 rounded-xl text-sm transition-all disabled:opacity-60 shadow-lg hover:shadow-xl hover:-translate-y-0.5">
                 {loading ? 'Verifying...' : 'Verify Mobile →'}
               </button>
-              <button type="button" onClick={() => setStep('form')} className="w-full text-sm text-white/50 hover:text-white transition-colors">← Change details</button>
+              <button type="button" onClick={() => setStep('form')} className="w-full text-sm text-gray-900/60 hover:text-gray-900 transition-colors">← Change details</button>
             </form>
           </>
         ) : step === 'email_otp' ? (
           <>
             <div className="text-center mb-8">
-              <h2 className="text-4xl font-serif font-bold text-white mb-2">Verify <span className="text-brand-orange">Email</span></h2>
-              <div className="w-8 h-1 bg-brand-orange text-white mx-auto rounded-full mb-3"></div>
+              <h2 className="text-4xl font-serif font-bold text-gray-900 mb-2">Verify <span className="text-brand-red">Email</span></h2>
+              <div className="w-8 h-1 bg-brand-red text-gray-900 mx-auto rounded-full mb-3"></div>
             </div>
             <form onSubmit={handleVerifyEmail} className="w-full max-w-sm space-y-6">
               <div className="flex justify-center gap-2">
@@ -643,16 +646,16 @@ export function SignupPage() {
                     type="text" inputMode="numeric" maxLength={1} value={digit}
                     onChange={e => handleOtpChange(e.target.value, idx, setEmailOtp, emailOtpRefs)}
                     onKeyDown={e => handleOtpKeyDown(e, idx, emailOtp, emailOtpRefs)}
-                    className="w-10 h-12 text-center text-xl font-bold bg-transparent border border-white/20 rounded-xl text-white focus:outline-none focus:border-[#D4AF37] focus:ring-1 focus:ring-[#D4AF37] transition-all"
+                    className="w-10 h-12 text-center text-xl font-bold bg-white border border-gray-200 rounded-xl text-gray-900 focus:outline-none focus:border-[#D4AF37] focus:ring-1 focus:ring-[#D4AF37] transition-all"
                   />
                 ))}
               </div>
               {(localError || error) && <div className="bg-red-500/10 border border-red-500/20 rounded-xl px-4 py-3 text-xs text-red-400 text-center">{localError || error}</div>}
               <button type="submit" disabled={loading}
-                className="w-full bg-gradient-to-r from-[#e3c162] to-[#b38827] text-black font-bold py-3.5 rounded-xl text-sm transition-all disabled:opacity-60 shadow-[0_0_15px_rgba(212,175,55,0.2)]">
+                className="w-full bg-brand-red text-white font-bold py-3.5 rounded-xl text-sm transition-all disabled:opacity-60 shadow-lg hover:shadow-xl hover:-translate-y-0.5">
                 {loading ? 'Verifying...' : 'Verify Email & Create Account →'}
               </button>
-              <button type="button" onClick={() => setStep('phone_otp')} className="w-full text-sm text-white/50 hover:text-white transition-colors">← Back</button>
+              <button type="button" onClick={() => setStep('phone_otp')} className="w-full text-sm text-gray-900/60 hover:text-gray-900 transition-colors">← Back</button>
             </form>
           </>
         ) : (
@@ -660,14 +663,14 @@ export function SignupPage() {
             <div className="w-20 h-20 rounded-full bg-green-500/20 flex items-center justify-center">
               <ShieldCheck className="w-10 h-10 text-green-400" />
             </div>
-            <h2 className="text-2xl font-serif font-bold text-white">Account Created!</h2>
-            <p className="text-white/50 text-sm">Redirecting you to the store...</p>
+            <h2 className="text-2xl font-serif font-bold text-gray-900">Account Created!</h2>
+            <p className="text-gray-900/60 text-sm">Redirecting you to the store...</p>
           </div>
         )}
 
-        <p className="text-center text-xs text-white/50 mt-8">
+        <p className="text-center text-xs text-gray-900/60 mt-8">
           Already have an account?{' '}
-          <Link to="/login" className="text-brand-orange hover:text-white transition-colors">
+          <Link to="/login" className="text-brand-red hover:text-gray-900 transition-colors">
             Sign In
           </Link>
         </p>
@@ -675,24 +678,24 @@ export function SignupPage() {
         {/* Bottom Badges */}
         <div className="flex justify-between w-full max-w-sm mt-12 mb-4 px-2">
           <div className="flex flex-col items-center gap-3">
-            <div className="w-12 h-12 rounded-full border border-white/20 bg-white/5 flex items-center justify-center">
+            <div className="w-12 h-12 rounded-full border border-gray-200 bg-white/5 flex items-center justify-center">
               <ShieldCheck className="w-5 h-5 text-[#FFC107]" strokeWidth={2} />
             </div>
-            <span className="text-white text-[10px] font-semibold tracking-wide">Secure</span>
+            <span className="text-gray-900 text-[10px] font-semibold tracking-wide">Secure</span>
           </div>
           
           <div className="flex flex-col items-center gap-3">
-            <div className="w-12 h-12 rounded-full border border-white/20 bg-white/5 flex items-center justify-center">
+            <div className="w-12 h-12 rounded-full border border-gray-200 bg-white/5 flex items-center justify-center">
               <Droplet className="w-5 h-5 text-[#FFC107]" strokeWidth={2} />
             </div>
-            <span className="text-white text-[10px] font-semibold tracking-wide">Fresh</span>
+            <span className="text-gray-900 text-[10px] font-semibold tracking-wide">Fresh</span>
           </div>
 
           <div className="flex flex-col items-center gap-3">
-            <div className="w-12 h-12 rounded-full border border-white/20 bg-white/5 flex items-center justify-center">
+            <div className="w-12 h-12 rounded-full border border-gray-200 bg-white/5 flex items-center justify-center">
               <Feather className="w-5 h-5 text-[#FFC107]" strokeWidth={2} />
             </div>
-            <span className="text-white text-[10px] font-semibold tracking-wide">Fast</span>
+            <span className="text-gray-900 text-[10px] font-semibold tracking-wide">Fast</span>
           </div>
         </div>
         </div>
