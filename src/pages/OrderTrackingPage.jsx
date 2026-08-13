@@ -59,8 +59,8 @@ export function OrderTrackingPage() {
           transition={{ type: "spring", stiffness: 200, damping: 20, delay: 0.1 }}
           className="relative mb-8"
         >
-          <div className="absolute inset-0 bg-green-100 rounded-full blur-2xl opacity-60 scale-150"></div>
-          <CheckCircle2 className="w-28 h-28 text-green-500 relative z-10 drop-shadow-md" strokeWidth={1.5} />
+          <div className="absolute inset-0 bg-red-100 rounded-full blur-2xl opacity-60 scale-150"></div>
+          <CheckCircle2 className="w-28 h-28 text-[#D61A3C] relative z-10 drop-shadow-md" strokeWidth={1.5} />
         </motion.div>
 
         <motion.div 
@@ -70,7 +70,7 @@ export function OrderTrackingPage() {
           className="text-center space-y-3 mb-10"
         >
           <h1 className="text-3xl md:text-4xl font-serif font-bold text-gray-900">Order Placed Successfully!</h1>
-          <p className="text-gray-500 text-sm md:text-base">Thank you for shopping with Houra Jewels. Your Fashion jewellery products are being prepared.</p>
+          <p className="text-gray-500 text-sm md:text-base">Thank you for shopping with Manikanta Super Market. Your order is being prepared and will be with you shortly!</p>
         </motion.div>
 
         <motion.div 
@@ -85,10 +85,10 @@ export function OrderTrackingPage() {
             <div className="flex items-center justify-between border-b border-gray-100 pb-5">
               <div>
                 <p className="text-xs font-bold text-gray-400 uppercase tracking-wider mb-1">Order Number</p>
-                <p className="text-lg font-bold text-[#08183A]">#{orderId}</p>
+                <p className="text-lg font-bold text-gray-900">#{orderId}</p>
               </div>
               <div className={`flex items-center gap-2 px-3 py-1.5 rounded-full text-xs font-bold ${
-                order?.order_type === 'pickup' ? 'bg-blue-100 text-blue-700' : 'bg-green-100 text-green-700'
+                order?.order_type === 'pickup' ? 'bg-[#FFF8E1] text-[#D61A3C] border border-[#FFC107]/30' : 'bg-red-50 text-[#D61A3C] border border-red-100'
               }`}>
                 {order?.order_type === 'pickup' ? <Store className="w-3.5 h-3.5" /> : <Truck className="w-3.5 h-3.5" />}
                 {order?.order_type === 'pickup' ? 'Store Pickup' : 'Home Delivery'}
@@ -115,10 +115,10 @@ export function OrderTrackingPage() {
             </div>
 
             {/* Transaction ID */}
-            {order?.stripe_payment_intent_id && (
+            {order?.razorpay_payment_id && (
               <div className="bg-gray-50 rounded-xl px-4 py-3">
                 <p className="text-xs font-bold text-gray-400 uppercase tracking-wider mb-1">Transaction ID</p>
-                <p className="text-xs font-mono text-brand-dark-blue break-all">{order.stripe_payment_intent_id}</p>
+                <p className="text-xs font-mono text-gray-900 break-all">{order.razorpay_payment_id}</p>
               </div>
             )}
 
@@ -138,13 +138,13 @@ export function OrderTrackingPage() {
                       <div className="flex items-center gap-2 mt-1 flex-wrap">
                         <span className="text-xs text-gray-500">Qty: {item.qty || 1}</span>
                         {(item.variant?.code || item.product?.product_code || item.product_code) && (
-                          <span className="text-xs font-bold text-[#D4AF37] bg-[#D4AF37]/10 px-2 py-0.5 rounded-md border border-[#D4AF37]/20">
+                          <span className="text-xs font-bold bg-[#FFC107] text-white px-2 py-0.5 rounded-md shadow-sm">
                             #{item.variant?.code || item.product?.product_code || item.product_code}
                           </span>
                         )}
                       </div>
                     </div>
-                    <p className="text-sm font-bold text-gray-800 shrink-0">${Number(item.variant?.price || item.product?.price || item.price || 0).toFixed(2)}</p>
+                    <p className="text-sm font-bold text-gray-800 shrink-0">₹{Number(item.variant?.price || item.product?.price || item.price || 0).toFixed(2)}</p>
                   </div>
                 ))}
               </div>
@@ -152,25 +152,25 @@ export function OrderTrackingPage() {
 
             {/* Pickup Info Banner */}
             {order?.order_type === 'pickup' && (
-              <div className="bg-blue-50 border border-blue-200 rounded-2xl p-4 space-y-3">
+              <div className="bg-[#FFF8E1] border border-[#FFC107]/30 rounded-2xl p-4 space-y-3">
                 <div className="flex items-start gap-3">
-                  <MessageCircle className="w-5 h-5 text-blue-600 shrink-0 mt-0.5" />
+                  <MessageCircle className="w-5 h-5 text-[#D61A3C] shrink-0 mt-0.5" />
                   <div>
-                    <p className="text-sm font-bold text-blue-800">Pickup Notification</p>
-                    <p className="text-xs text-blue-700 mt-1 leading-relaxed">
-                      Once your order is ready, our team will message you for pickup via <strong>WhatsApp/Text message</strong> from <strong>+1 940-465-6563</strong>
+                    <p className="text-sm font-bold text-gray-900">Pickup Notification</p>
+                    <p className="text-xs text-gray-700 mt-1 leading-relaxed">
+                      Once your order is ready, our team will message you for pickup via <strong>WhatsApp/Text message</strong> from <strong>+91 98660 48155</strong>
                     </p>
                   </div>
                 </div>
-                <div className="flex items-start gap-3 border-t border-blue-200 pt-3">
-                  <MapPin className="w-5 h-5 text-blue-600 shrink-0 mt-0.5" />
+                <div className="flex items-start gap-3 border-t border-[#FFC107]/20 pt-3">
+                  <MapPin className="w-5 h-5 text-[#D61A3C] shrink-0 mt-0.5" />
                   <div>
-                    <p className="text-sm font-bold text-blue-800">Pickup Location</p>
-                    <p className="text-xs text-blue-700 mt-1">2965 FM1385, Aubrey, TX 76227</p>
+                    <p className="text-sm font-bold text-gray-900">Pickup Location</p>
+                    <p className="text-xs text-gray-700 mt-1">Aspari main road opposite APGB Bank, 518347</p>
                     <a
-                      href="https://maps.google.com/?q=2965+FM1385,+Aubrey,+TX+76227"
+                      href="https://maps.google.com/?q=Aspari+main+road+opposite+APGB+Bank,+518347"
                       target="_blank" rel="noopener noreferrer"
-                      className="text-xs text-blue-600 font-bold underline mt-1 inline-block hover:text-blue-800"
+                      className="text-xs text-[#D61A3C] font-bold underline mt-1 inline-block hover:text-[#b81633]"
                     >
                       View on Google Maps →
                     </a>

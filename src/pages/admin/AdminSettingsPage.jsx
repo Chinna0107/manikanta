@@ -78,26 +78,26 @@ export function AdminSettingsPage() {
 
   if (loading) return (
     <div className="flex items-center justify-center py-20">
-      <div className="w-8 h-8 border-4 border-[#08183A]/20 border-t-[#08183A] rounded-full animate-spin" />
+      <div className="w-8 h-8 border-4 border-brand-red/20 border-t-[#08183A] rounded-full animate-spin" />
     </div>
   );
 
   return (
     <div className="w-full max-w-4xl mx-auto space-y-6">
       <div>
-        <h1 className="font-serif text-2xl sm:text-3xl font-bold text-[#08183A]">Site Settings</h1>
-        <p className="text-[#08183A]/60 font-sans mt-1">Manage global website configuration</p>
+        <h1 className="font-serif text-2xl sm:text-3xl font-bold text-gray-900">Site Settings</h1>
+        <p className="text-gray-900/60 font-sans mt-1">Manage global website configuration</p>
       </div>
 
-      <div className="bg-white rounded-2xl border border-[#08183A]/10 shadow-sm overflow-hidden">
-        <div className="border-b border-[#08183A]/10 px-6 py-4 flex items-center gap-3 bg-[#FDF8F0]">
-          <AlertCircle className="w-5 h-5 text-[#D4AF37]" />
-          <h2 className="font-bold text-[#08183A]">Header Announcement Bar</h2>
+      <div className="bg-white rounded-2xl border border-brand-red/10 shadow-sm overflow-hidden">
+        <div className="border-b border-brand-red/10 px-6 py-4 flex items-center gap-3 bg-[#FDF8F0]">
+          <AlertCircle className="w-5 h-5 text-brand-orange" />
+          <h2 className="font-bold text-gray-900">Header Announcement Bar</h2>
         </div>
 
         <div className="p-6 space-y-5">
           {/* Enable toggle */}
-          <div className="flex items-center gap-3 bg-[#08183A]/5 p-4 rounded-xl">
+          <div className="flex items-center gap-3 bg-brand-red text-white/5 p-4 rounded-xl">
             <input
               type="checkbox"
               id="announcement_active"
@@ -105,7 +105,7 @@ export function AdminSettingsPage() {
               onChange={(e) => setAnnouncement({ ...announcement, is_active: e.target.checked })}
               className="w-5 h-5 accent-[#08183A] cursor-pointer rounded"
             />
-            <label htmlFor="announcement_active" className="font-bold text-[#08183A] cursor-pointer">
+            <label htmlFor="announcement_active" className="font-bold text-gray-900 cursor-pointer">
               Enable Announcement Bar
             </label>
           </div>
@@ -113,10 +113,10 @@ export function AdminSettingsPage() {
           {/* Multiple items */}
           <div className="space-y-3">
             {announcement.items.map((item, idx) => (
-              <div key={idx} className="flex gap-3 items-start bg-[#FDF8F0] border border-[#08183A]/10 rounded-xl p-4">
+              <div key={idx} className="flex gap-3 items-start bg-[#FDF8F0] border border-brand-red/10 rounded-xl p-4">
                 <div className="flex-1 space-y-3">
                   <div>
-                    <label className="text-xs font-bold text-[#08183A]/60 mb-1 flex items-center gap-1.5">
+                    <label className="text-xs font-bold text-gray-900/60 mb-1 flex items-center gap-1.5">
                       <Type className="w-3.5 h-3.5" /> Text
                     </label>
                     <input
@@ -124,11 +124,11 @@ export function AdminSettingsPage() {
                       placeholder="e.g. Free shipping on orders over $500!"
                       value={item.text}
                       onChange={(e) => updateItem(idx, 'text', e.target.value)}
-                      className="w-full px-3 py-2 rounded-lg bg-white border border-[#08183A]/20 focus:outline-none focus:border-[#D4AF37] text-[#08183A] text-sm"
+                      className="w-full px-3 py-2 rounded-lg bg-white border border-brand-red/20 focus:outline-none focus:border-[#D4AF37] text-gray-900 text-sm"
                     />
                   </div>
                   <div>
-                    <label className="text-xs font-bold text-[#08183A]/60 mb-1 flex items-center gap-1.5">
+                    <label className="text-xs font-bold text-gray-900/60 mb-1 flex items-center gap-1.5">
                       <LinkIcon className="w-3.5 h-3.5" /> Link (Optional)
                     </label>
                     <input
@@ -136,7 +136,7 @@ export function AdminSettingsPage() {
                       placeholder="e.g. /offers or https://example.com"
                       value={item.link}
                       onChange={(e) => updateItem(idx, 'link', e.target.value)}
-                      className="w-full px-3 py-2 rounded-lg bg-white border border-[#08183A]/20 focus:outline-none focus:border-[#D4AF37] text-[#08183A] text-sm"
+                      className="w-full px-3 py-2 rounded-lg bg-white border border-brand-red/20 focus:outline-none focus:border-[#D4AF37] text-gray-900 text-sm"
                     />
                   </div>
                 </div>
@@ -154,7 +154,7 @@ export function AdminSettingsPage() {
 
           <button
             onClick={addItem}
-            className="flex items-center gap-2 text-sm font-bold text-[#08183A]/70 hover:text-[#08183A] border border-dashed border-[#08183A]/20 hover:border-[#08183A]/40 px-4 py-2.5 rounded-xl transition-colors w-full justify-center"
+            className="flex items-center gap-2 text-sm font-bold text-gray-900/70 hover:text-gray-900 border border-dashed border-brand-red/20 hover:border-brand-red/40 px-4 py-2.5 rounded-xl transition-colors w-full justify-center"
           >
             <Plus className="w-4 h-4" /> Add Another Text
           </button>
@@ -163,7 +163,7 @@ export function AdminSettingsPage() {
             <button
               onClick={handleSave}
               disabled={saving}
-              className="bg-[#08183A] hover:bg-[#D4AF37] text-white px-6 py-2.5 rounded-xl font-bold transition-colors flex items-center gap-2 disabled:opacity-50"
+              className="bg-brand-red text-white hover:bg-brand-orange text-white text-white px-6 py-2.5 rounded-xl font-bold transition-colors flex items-center gap-2 disabled:opacity-50"
             >
               {saving ? 'Saving...' : <><Save className="w-4 h-4" /> Save Settings</>}
             </button>

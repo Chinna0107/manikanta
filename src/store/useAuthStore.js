@@ -32,10 +32,10 @@ export const useAuthStore = create((set, get) => ({
 
   clearError: () => set({ error: null }),
 
-  signup: async (name, email, phone, password, country) => {
+  signup: async (name, email, phone, password, country, role = 'customer') => {
     set({ loading: true, error: null });
     try {
-      await api.post('/auth/signup', { name, email, phone, password, country });
+      await api.post('/auth/signup', { name, email, phone, password, country, role });
       set({ loading: false });
       return { success: true };
     } catch (err) {

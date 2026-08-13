@@ -27,10 +27,10 @@ export function OfferPage() {
   
   if (!activeOffer) {
     return (
-      <div className="flex flex-col items-center justify-center min-h-screen bg-[#FDF8F0] text-[#08183A]">
+      <div className="flex flex-col items-center justify-center min-h-screen bg-[#FDF8F0] text-gray-900">
         <h2 className="text-2xl font-serif font-bold mb-2">Offer Not Found</h2>
         <p className="mb-6 opacity-70">This offer has expired or does not exist.</p>
-        <button onClick={() => navigate('/')} className="bg-[#08183A] text-white px-8 py-3 rounded-xl font-bold hover:bg-[#D4AF37] transition-colors">
+        <button onClick={() => navigate('/')} className="bg-brand-red text-white px-8 py-3 rounded-xl font-bold hover:bg-brand-orange text-white transition-colors">
           Return to Home
         </button>
       </div>
@@ -45,9 +45,9 @@ export function OfferPage() {
       <Header title={`Offer: ${activeOffer.title}`} showShare={true} />
       
       {/* Offer Banner */}
-      <div className="w-full bg-[#08183A] relative overflow-hidden">
+      <div className="w-full bg-brand-red text-white relative overflow-hidden">
         {/* Decorative elements */}
-        <div className="absolute top-0 right-0 w-64 h-64 bg-[#D4AF37] opacity-10 rounded-full blur-3xl -translate-y-1/2 translate-x-1/4"></div>
+        <div className="absolute top-0 right-0 w-64 h-64 bg-brand-orange text-white opacity-10 rounded-full blur-3xl -translate-y-1/2 translate-x-1/4"></div>
         <div className="absolute bottom-0 left-0 w-48 h-48 bg-white opacity-5 rounded-full blur-2xl translate-y-1/4 -translate-x-1/4"></div>
         
         <div className="max-w-7xl mx-auto flex flex-col items-center text-center p-10 md:px-12 md:py-16 relative z-10">
@@ -59,7 +59,7 @@ export function OfferPage() {
           </h1>
           <div className="bg-white/10 backdrop-blur-md border border-white/20 rounded-2xl p-6 max-w-sm w-full shadow-2xl">
             <p className="text-white/80 font-sans text-sm font-semibold uppercase tracking-widest mb-1">Get up to</p>
-            <p className="text-[#D4AF37] text-6xl md:text-7xl font-bold font-serif leading-none mb-2">
+            <p className="text-brand-orange text-6xl md:text-7xl font-bold font-serif leading-none mb-2">
               {parseFloat(activeOffer.discount_percentage)}% <span className="text-3xl text-white">OFF</span>
             </p>
             <p className="text-white/70 text-xs">On selected exquisite pieces</p>
@@ -69,18 +69,18 @@ export function OfferPage() {
       
       {/* Breadcrumbs */}
       <div className="w-full max-w-7xl mx-auto px-4 md:px-8 pt-6 pb-2">
-        <div className="flex items-center gap-2 text-xs md:text-sm text-[#08183A]/60 font-medium">
-          <button onClick={() => navigate('/')} className="hover:text-[#08183A] transition-colors">Home</button>
+        <div className="flex items-center gap-2 text-xs md:text-sm text-gray-900/60 font-medium">
+          <button onClick={() => navigate('/')} className="hover:text-gray-900 transition-colors">Home</button>
           <ChevronRight className="w-3 h-3" />
-          <span className="text-[#08183A] font-bold">{activeOffer.title}</span>
+          <span className="text-gray-900 font-bold">{activeOffer.title}</span>
         </div>
       </div>
 
       {/* Main Content */}
       <div className="max-w-7xl mx-auto px-4 md:px-8 py-6">
-        <div className="flex items-center justify-between mb-6 border-b border-[#08183A]/10 pb-4">
-          <h2 className="font-serif text-2xl font-bold text-[#08183A]">
-            Eligible Products <span className="text-[#08183A]/50 text-base font-sans ml-2">({offerProducts.length})</span>
+        <div className="flex items-center justify-between mb-6 border-b border-brand-red/10 pb-4">
+          <h2 className="font-serif text-2xl font-bold text-gray-900">
+            Eligible Products <span className="text-gray-900/50 text-base font-sans ml-2">({offerProducts.length})</span>
           </h2>
         </div>
 
@@ -92,11 +92,11 @@ export function OfferPage() {
           </div>
         ) : (
           <div className="flex flex-col items-center justify-center py-20 text-center">
-            <div className="w-20 h-20 bg-white rounded-full flex items-center justify-center shadow-sm border border-[#08183A]/10 mb-4">
+            <div className="w-20 h-20 bg-white rounded-full flex items-center justify-center shadow-sm border border-brand-red/10 mb-4">
               <span className="text-3xl">📿</span>
             </div>
-            <h3 className="text-xl font-bold text-[#08183A] mb-2">No products found</h3>
-            <p className="text-[#08183A]/60 max-w-md">There are currently no products available under this offer.</p>
+            <h3 className="text-xl font-bold text-gray-900 mb-2">No products found</h3>
+            <p className="text-gray-900/60 max-w-md">There are currently no products available under this offer.</p>
           </div>
         )}
       </div>

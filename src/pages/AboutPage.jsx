@@ -1,213 +1,335 @@
 import React, { useState } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import {
+  ArrowUpRight,
+  ChevronDown,
+  HeartHandshake,
+  MapPin,
+  ShoppingCart,
+} from 'lucide-react';
 import { Header } from '../components/Header';
+import logo from '../assets/logo.png';
 
-export function AboutPage() {
-  const slideshowImages = [
-    "https://images.unsplash.com/photo-1611591437281-460bfbe1220a?auto=format&fit=crop&w=1200&q=80",
-    "https://images.unsplash.com/photo-1535632066927-ab7c9ab60908?auto=format&fit=crop&w=1200&q=80",
-    "https://img.magnific.com/free-photo/top-view-gold-chain-jewellery_52683-90080.jpg?semt=ais_hybrid&w=740&q=80"
-  ];
-  const [currentImgIdx, setCurrentImgIdx] = useState(0);
+const HERO_IMAGE =
+  'https://images.pexels.com/photos/18764913/pexels-photo-18764913.jpeg?auto=compress&cs=tinysrgb&w=1200&q=80';
 
-  const handleNextImage = () => {
-    setCurrentImgIdx((prev) => (prev + 1) % slideshowImages.length);
+const ABOUT_STEPS = [
+  {
+    id: 'source',
+    label: '01 / THE START',
+    title: 'Sourced with care',
+    description:
+      'We choose trusted suppliers and everyday staples with your kitchen in mind.',
+  },
+  {
+    id: 'stock',
+    label: '02 / THE RHYTHM',
+    title: 'Stocked fresh daily',
+    description:
+      'Our team keeps produce, dairy, bakery, and pantry shelves ready for the day ahead.',
+  },
+  {
+    id: 'handoff',
+    label: '03 / THE HANDOFF',
+    title: 'Packed for your plans',
+    description:
+      'Walk in, order ahead, or choose pickup — we make the handoff easy.',
+  },
+];
+
+const ABOUT_AISLES = [
+  {
+    id: 'produce',
+    title: 'Fresh produce',
+    subtitle: 'Picked for color and crunch.',
+    description: 'Crisp greens, seasonal fruits, and colorful vegetables.',
+  },
+  {
+    id: 'dairy-bakery',
+    title: 'Dairy & bakery',
+    subtitle: 'The small comforts of breakfast.',
+    description:
+      'Milk, eggs, breads, and the small comforts that make breakfast better.',
+  },
+  {
+    id: 'pantry',
+    title: 'Pantry essentials',
+    subtitle: 'A steady base for the week.',
+    description:
+      'Rice, lentils, spices, snacks, and household basics for the week.',
+  },
+];
+
+function StepList({ steps }) {
+  return (
+    <div className="relative mt-8">
+      <div
+        aria-hidden="true"
+        className="absolute bottom-7 left-[11px] top-3 w-px bg-brand-gold/65"
+      />
+      <div className="space-y-7">
+        {steps.map((step) => (
+          <article key={step.id} className="relative pl-10">
+            <span
+              aria-hidden="true"
+              className="absolute left-0 top-0 flex h-6 w-6 items-center justify-center rounded-full border-4 border-brand-cream bg-brand-red shadow-sm"
+            />
+            <p className="text-[10px] font-bold uppercase tracking-[0.2em] text-brand-gold">
+              {step.label}
+            </p>
+            <h3 className="mt-1 font-serif text-[22px] font-bold text-brand-dark-blue">
+              {step.title}
+            </h3>
+            <p className="mt-1.5 max-w-xl text-[13px] leading-[1.65] text-brand-maroon/75">
+              {step.description}
+            </p>
+          </article>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+function AisleAccordion({ items, defaultOpenId }) {
+  const [openIds, setOpenIds] = useState(() => new Set([defaultOpenId]));
+
+  const toggleAisle = (id) => {
+    setOpenIds((currentIds) => {
+      const nextIds = new Set(currentIds);
+      if (nextIds.has(id)) {
+        nextIds.delete(id);
+      } else {
+        nextIds.add(id);
+      }
+      return nextIds;
+    });
   };
 
   return (
-    <div className="bg-brand-beige min-h-screen pb-20 md:pb-12 font-sans">
+    <div className="mt-7 border-y border-brand-gold/35 bg-white/45">
+      {items.map((item, index) => {
+        const isOpen = openIds.has(item.id);
+        const triggerId = `aisle-trigger-${item.id}`;
+        const panelId = `aisle-panel-${item.id}`;
+
+        return (
+          <div
+            key={item.id}
+            className={`border-brand-gold/25 px-5 py-4 ${index < items.length - 1 ? 'border-b' : ''}`}
+          >
+            <button
+              id={triggerId}
+              type="button"
+              aria-controls={panelId}
+              aria-expanded={isOpen}
+              onClick={() => toggleAisle(item.id)}
+              className="flex min-h-11 w-full items-center gap-3 rounded-xl text-left outline-hidden transition-colors duration-200 hover:bg-white/70 focus-visible:ring-2 focus-visible:ring-brand-gold focus-visible:ring-offset-2 focus-visible:ring-offset-brand-cream motion-reduce:transition-none"
+            >
+              <span
+                className={`flex h-8 w-8 shrink-0 items-center justify-center rounded-full text-[11px] font-bold ${
+                  index === 0
+                    ? 'bg-brand-red text-white'
+                    : 'bg-brand-dark-blue text-brand-gold'
+                }`}
+              >
+                {String(index + 1).padStart(2, '0')}
+              </span>
+              <span className="min-w-0 flex-1">
+                <span
+                  className={`block text-[15px] font-semibold transition-colors duration-200 motion-reduce:transition-none ${
+                    isOpen ? 'text-brand-red' : 'text-brand-dark-blue'
+                  }`}
+                >
+                  {item.title}
+                </span>
+                <span className="mt-0.5 block text-[11px] text-brand-maroon/55">
+                  {item.subtitle}
+                </span>
+              </span>
+              <ChevronDown
+                aria-hidden="true"
+                className={`h-[18px] w-[18px] shrink-0 text-brand-gold transition-transform duration-200 motion-reduce:transition-none ${
+                  isOpen ? 'rotate-180' : ''
+                }`}
+              />
+            </button>
+
+            <div
+              id={panelId}
+              role="region"
+              aria-labelledby={triggerId}
+              aria-hidden={!isOpen}
+              className={`grid motion-safe:transition-[grid-template-rows] motion-safe:duration-300 motion-safe:ease-out motion-reduce:transition-none ${
+                isOpen ? 'grid-rows-[1fr]' : 'grid-rows-[0fr]'
+              }`}
+            >
+              <div className="min-h-0 overflow-hidden">
+                <p className="ml-11 mt-3 border-l-2 border-brand-gold/45 pl-3 text-[13px] leading-[1.6] text-brand-maroon/75">
+                  {item.description}
+                </p>
+              </div>
+            </div>
+          </div>
+        );
+      })}
+    </div>
+  );
+}
+
+export function AboutPage() {
+  return (
+    <div
+      id="top"
+      className="min-h-screen overflow-x-hidden bg-brand-cream pb-[calc(10rem+env(safe-area-inset-bottom))] text-brand-dark-blue antialiased"
+    >
       <Header title="Our Story" />
-      
-      <div className="px-4 md:px-24 py-12 md:py-20">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20 items-center">
-          
-          {/* Image Section */}
-          <motion.div 
-            initial={{ opacity: 0, x: -30 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.8, ease: "easeOut" }}
-            className="relative"
-          >
-            <div className="absolute -inset-4 bg-brand-gold/20 rounded-[32px] transform -rotate-3 z-0"></div>
-            <div 
-              className="relative rounded-[24px] overflow-hidden shadow-2xl border border-brand-gold/30 aspect-[4/5] z-10 cursor-pointer group"
-              onClick={handleNextImage}
-            >
-              <AnimatePresence mode="wait">
-                <motion.img 
-                  key={currentImgIdx}
-                  initial={{ opacity: 0, scale: 1.05 }}
-                  animate={{ opacity: 1, scale: 1 }}
-                  exit={{ opacity: 0 }}
-                  transition={{ duration: 0.4, ease: "easeInOut" }}
-                  src={slideshowImages[currentImgIdx]} 
-                  alt="Premium Gold Jewelry" 
-                  className="absolute inset-0 w-full h-full object-cover group-hover:scale-105"
+
+      <main className="mx-auto w-full max-w-[1080px]">
+        <section aria-labelledby="about-heading" className="relative overflow-hidden">
+          <div className="relative h-[440px] overflow-hidden rounded-b-[36px] md:mx-6 md:rounded-[36px] lg:mx-10">
+            <img
+              src={HERO_IMAGE}
+              alt="Warm, inviting grocery aisle with wooden shelves — Orhan Pergel on Pexels"
+              className="h-full w-full object-cover object-center"
+              decoding="async"
+              fetchPriority="high"
+              loading="eager"
+            />
+            <div
+              aria-hidden="true"
+              className="absolute inset-0 bg-gradient-to-b from-brand-dark-blue/35 via-transparent to-brand-cream"
+            />
+
+            <div className="absolute left-1/2 top-7 -translate-x-1/2 text-center">
+              <div className="mx-auto flex h-[68px] w-[68px] items-center justify-center rounded-[22px] border border-white/70 bg-white/90 p-2 shadow-lg backdrop-blur-xs">
+                <img
+                  src={logo}
+                  alt="Manikanta Super Market logo"
+                  className="h-full w-full object-contain"
+                  decoding="async"
+                  loading="eager"
                 />
-              </AnimatePresence>
-              <div className="absolute inset-0 bg-gradient-to-t from-brand-dark-blue/90 via-brand-dark-blue/20 to-transparent pointer-events-none"></div>
-              <div className="absolute bottom-10 left-10 right-10 pointer-events-none">
-                <h3 className="text-brand-gold font-serif text-3xl mb-2">Elegant & Timeless</h3>
-                <p className="text-white/90 text-sm md:text-base mb-4">Crafted for the modern aesthetic.</p>
-                <div className="flex gap-2">
-                  {slideshowImages.map((_, i) => (
-                    <div 
-                      key={i} 
-                      className={`h-1.5 rounded-full transition-all duration-300 ${i === currentImgIdx ? 'w-6 bg-brand-gold' : 'w-2 bg-white/40'}`}
-                    ></div>
-                  ))}
-                </div>
               </div>
+              <p className="mt-2 text-[9px] font-bold uppercase tracking-[0.22em] text-white drop-shadow-sm">
+                Manikanta Super Market
+              </p>
             </div>
-          </motion.div>
-          
-          {/* Content Section */}
-          <motion.div 
-            initial={{ opacity: 0, x: 30 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.8, delay: 0.2, ease: "easeOut" }}
-            className="flex flex-col justify-center space-y-8"
-          >
-            <div>
-              <h4 className="text-brand-gold font-bold tracking-widest uppercase text-xs md:text-sm mb-3">About Houra Jewels</h4>
-              <h1 className="text-4xl md:text-5xl lg:text-6xl font-serif font-bold text-brand-dark-blue leading-tight mb-6">
-                Redefining Everyday Luxury
+
+            <div className="absolute inset-x-3 bottom-3 rounded-[26px] bg-brand-cream/95 px-4 pb-5 pt-4 shadow-sm backdrop-blur-xs md:inset-x-6 md:px-6 md:pb-6 md:pt-5">
+              <p className="mb-2 text-[10px] font-bold uppercase tracking-[0.28em] text-brand-red">
+                OUR STORY
+              </p>
+              <h1
+                id="about-heading"
+                className="max-w-[660px] font-serif text-[35px] font-bold leading-[1.04] tracking-[-0.03em] text-brand-dark-blue md:text-5xl lg:text-6xl"
+              >
+                A familiar market, made for your everyday.
               </h1>
-              <div className="w-20 h-1.5 bg-brand-gold mb-8 rounded-full"></div>
+              <p className="mt-3 max-w-[690px] text-[13px] leading-[1.65] text-brand-maroon/80 md:text-base">
+                Manikanta Super Market is here for the moments between the big plans: a quick top-up, a fresh dinner, and the ingredients that make home feel like home.
+              </p>
+              <a
+                href="#aisles"
+                className="mt-4 inline-flex min-h-11 items-center gap-2 rounded-full bg-brand-dark-blue px-4 py-2.5 text-[12px] font-semibold text-brand-cream shadow-sm transition-transform duration-200 hover:-translate-y-0.5 focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-brand-gold focus-visible:ring-offset-2 focus-visible:ring-offset-brand-cream active:scale-[0.98] motion-reduce:transition-none"
+              >
+                Explore the aisles
+                <ArrowUpRight aria-hidden="true" className="h-[15px] w-[15px]" />
+              </a>
             </div>
-            
-            <div className="space-y-6 text-brand-dark-blue/80 text-base md:text-lg leading-relaxed">
-              <p className="first-letter:text-6xl first-letter:font-serif first-letter:text-brand-gold first-letter:mr-2 first-letter:float-left">
-                Welcome to <strong className="text-brand-dark-blue font-semibold">Houra Jewels</strong>, your premium destination for exquisite fashion jewelry. Operating as an exclusive home-based retail store, we are passionate about bringing you high-quality accessories that blend seamlessly into your daily life.
-              </p>
-              
-              <p>
-                We specialize in premium <strong className="text-brand-dark-blue font-semibold">Stainless Steel 18K PVD Gold Plated</strong> jewelry. Our carefully curated collections are purposefully designed to be <strong className="text-brand-dark-blue font-semibold">Waterproof, Tarnish-Free, and perfectly suited for Daily Wear</strong>. You no longer have to compromise between elegance and durability.
-              </p>
-              
-              <p>
-                While our collections predominantly cater to women who seek timeless elegance, we also offer an exclusive selection of men's jewelry. Every piece we offer is a testament to our commitment to quality, ensuring that your favorite accessories remain as vibrant and radiant as the day you first wore them.
-              </p>
-            </div>
-            
-            <div className="pt-8 border-t border-brand-gold/20">
-              <p className="font-serif italic text-2xl md:text-3xl text-brand-dark-blue">
-                "Waterproof. Tarnish Free. Made for your Everyday."
-              </p>
-            </div>
-          </motion.div>
-
-        </div>
-      </div>
-
-      {/* Trust & Quality Section */}
-      <div className="bg-white py-16 md:py-24">
-        <div className="px-4 md:px-24">
-          <div className="text-center mb-16">
-            <h2 className="text-3xl md:text-4xl font-serif font-bold text-brand-dark-blue mb-4">The Houra Promise</h2>
-            <p className="text-gray-600 max-w-2xl mx-auto">We are committed to providing you with premium, skin-safe, and durable jewelry that you can trust every single day.</p>
           </div>
-          
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            <motion.div 
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              className="bg-brand-beige p-8 rounded-2xl border border-brand-gold/10 text-center hover:shadow-xl transition-shadow"
-            >
-              <div className="w-16 h-16 mx-auto bg-brand-dark-blue rounded-full flex items-center justify-center mb-6">
-                <svg className="w-8 h-8 text-brand-gold" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
-                </svg>
-              </div>
-              <h3 className="font-bold text-brand-dark-blue text-xl mb-3">100% Hypoallergenic</h3>
-              <p className="text-gray-600 text-sm leading-relaxed">Our stainless steel core is completely skin-safe, lead-free, and nickel-free. Perfect for sensitive skin.</p>
-            </motion.div>
+        </section>
 
-            <motion.div 
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ delay: 0.2 }}
-              className="bg-brand-beige p-8 rounded-2xl border border-brand-gold/10 text-center hover:shadow-xl transition-shadow"
-            >
-              <div className="w-16 h-16 mx-auto bg-brand-dark-blue rounded-full flex items-center justify-center mb-6">
-                <svg className="w-8 h-8 text-brand-gold" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z" />
-                </svg>
-              </div>
-              <h3 className="font-bold text-brand-dark-blue text-xl mb-3">Premium Stainless Steel Plating</h3>
-              <p className="text-gray-600 text-sm leading-relaxed">Advanced PVD (Physical Vapor Deposition) technology ensures our 18K gold finish lasts 10x longer than standard plating.</p>
-            </motion.div>
-
-            <motion.div 
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ delay: 0.4 }}
-              className="bg-brand-beige p-8 rounded-2xl border border-brand-gold/10 text-center hover:shadow-xl transition-shadow"
-            >
-              <div className="w-16 h-16 mx-auto bg-brand-dark-blue rounded-full flex items-center justify-center mb-6">
-                <svg className="w-8 h-8 text-brand-gold" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
-                </svg>
-              </div>
-              <h3 className="font-bold text-brand-dark-blue text-xl mb-3">Certified Quality</h3>
-              <p className="text-gray-600 text-sm leading-relaxed">Shop with absolute confidence. Every piece is rigorously inspected to meet our strict quality and durability standards.</p>
-            </motion.div>
+        <section
+          id="journey"
+          aria-labelledby="journey-heading"
+          className="px-5 pb-10 pt-12 md:mx-auto md:max-w-3xl md:px-8 md:pt-16"
+        >
+          <div className="flex items-end justify-between gap-3">
+            <div>
+              <p className="mb-2 text-[10px] font-bold uppercase tracking-[0.24em] text-brand-red">
+                HOW WE WORK
+              </p>
+              <h2
+                id="journey-heading"
+                className="font-serif text-[30px] font-bold leading-[1.05] tracking-[-0.025em] text-brand-dark-blue md:text-4xl"
+              >
+                From shelf to home
+              </h2>
+            </div>
+            <span className="mb-1 shrink-0 rounded-full bg-brand-dark-blue px-2.5 py-1 text-[10px] font-semibold text-brand-gold">
+              03 steps
+            </span>
           </div>
-        </div>
-      </div>
+          <p className="mt-3 max-w-[520px] text-[13px] leading-[1.65] text-brand-maroon/70 md:text-sm">
+            The everyday details are where our promise lives.
+          </p>
+          <StepList steps={ABOUT_STEPS} />
+        </section>
 
-      {/* Secondary Story Section */}
-      <div className="px-4 md:px-24 py-16 md:py-24">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-          <motion.div 
-            initial={{ opacity: 0, x: -30 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true }}
-            className="order-2 lg:order-1"
-          >
-            <h2 className="text-3xl md:text-4xl font-serif font-bold text-brand-dark-blue mb-6">Crafted for Real Life</h2>
-            <div className="w-16 h-1 bg-brand-gold mb-8 rounded-full"></div>
-            <p className="text-gray-600 text-lg leading-relaxed mb-6">
-              We started Houra Jewels because we were tired of buying beautiful jewelry that turned green after a few washes, or tarnished within a month. 
+        <section
+          id="aisles"
+          aria-labelledby="aisles-heading"
+          className="border-t border-brand-gold/25 pb-8 pt-10"
+        >
+          <div className="mx-auto max-w-3xl px-5 md:px-8">
+            <p className="mb-2 text-[10px] font-bold uppercase tracking-[0.24em] text-brand-red">
+              WHAT WE KEEP READY
             </p>
-            <p className="text-gray-600 text-lg leading-relaxed mb-6">
-              By utilizing medical-grade stainless steel paired with a PVD gold-plating method, we created a lineup of ethical, skin-safe accessories that you can wear in the shower, at the gym, and to sleep without a second thought.
+            <h2
+              id="aisles-heading"
+              className="font-serif text-[30px] font-bold leading-[1.05] tracking-[-0.025em] text-brand-dark-blue md:text-4xl"
+            >
+              Our everyday aisles
+            </h2>
+            <p className="mt-3 text-[13px] leading-[1.65] text-brand-maroon/70 md:text-sm">
+              Tap an aisle to see what makes it part of your weekly rhythm.
             </p>
-            <ul className="space-y-3 mt-8">
-              {['Water, Sweat & Heat Resistant', 'Zero Green Skin Guarantee', 'Sustainable & Ethical Production', 'Secure, Fast Shipping'].map((item, i) => (
-                <li key={i} className="flex items-center gap-3 text-brand-dark-blue font-semibold">
-                  <svg className="w-5 h-5 text-brand-gold" fill="currentColor" viewBox="0 0 20 20">
-                    <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
-                  </svg>
-                  {item}
-                </li>
-              ))}
-            </ul>
-          </motion.div>
-          
-          <motion.div 
-            initial={{ opacity: 0, x: 30 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true }}
-            className="order-1 lg:order-2 relative"
-          >
-            <div className="grid grid-cols-2 gap-4">
-              <div className="space-y-4 pt-12">
-                <img src="https://images.pexels.com/photos/177332/pexels-photo-177332.jpeg?auto=compress&cs=tinysrgb&w=800" alt="Gold Rings" className="w-full rounded-2xl shadow-lg border border-brand-gold/20" />
-              </div>
-              <div className="space-y-4">
-                <img src="https://images.pexels.com/photos/2735970/pexels-photo-2735970.jpeg?auto=compress&cs=tinysrgb&w=800" alt="Wearing Jewelry" className="w-full rounded-2xl shadow-lg border border-brand-gold/20" />
+          </div>
+          <div className="mx-auto max-w-3xl">
+            <AisleAccordion items={ABOUT_AISLES} defaultOpenId="produce" />
+          </div>
+        </section>
+
+        <section aria-label="Closing note" className="px-5 pb-4 pt-3 md:mx-auto md:max-w-3xl md:px-8">
+          <div className="rounded-[26px] bg-brand-dark-blue px-5 py-5 text-brand-cream shadow-sm md:px-7 md:py-7">
+            <div className="flex items-start gap-3">
+              <HeartHandshake
+                aria-hidden="true"
+                className="mt-0.5 h-5 w-5 shrink-0 text-brand-gold"
+              />
+              <div>
+                <p className="font-serif text-xl font-bold leading-tight md:text-2xl">
+                  Good food starts close to home.
+                </p>
+                <p className="mt-2 text-[12px] leading-[1.6] text-brand-cream/70 md:text-sm">
+                  Thank you for letting us be part of your everyday.
+                </p>
               </div>
             </div>
-            <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-24 h-24 bg-white rounded-full flex items-center justify-center shadow-2xl border-4 border-brand-beige">
-              <span className="font-serif font-bold text-brand-dark-blue text-center leading-tight">100%<br/><span className="text-brand-gold text-xs">GUARANTEED</span></span>
-            </div>
-          </motion.div>
+          </div>
+        </section>
+      </main>
+
+      <nav
+        aria-label="Shopping actions"
+        className="fixed inset-x-0 bottom-0 z-40 border-t border-brand-gold/35 bg-brand-cream/95 px-3 pb-[calc(0.75rem+env(safe-area-inset-bottom))] pt-3 backdrop-blur-xs"
+      >
+        <div className="mx-auto flex max-w-[520px] gap-2">
+          <a
+            href="#journey"
+            className="inline-flex min-h-12 flex-1 items-center justify-center gap-2 rounded-2xl border border-brand-dark-blue/25 bg-transparent px-3 text-[12px] font-semibold text-brand-dark-blue transition-colors duration-200 hover:bg-white focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-brand-gold focus-visible:ring-offset-2 focus-visible:ring-offset-brand-cream active:scale-[0.98] motion-reduce:transition-none"
+          >
+            <MapPin aria-hidden="true" className="h-4 w-4" />
+            Find a store
+          </a>
+          <a
+            href="#aisles"
+            className="inline-flex min-h-12 flex-1 items-center justify-center gap-2 rounded-2xl bg-brand-red px-3 text-[12px] font-semibold text-white shadow-sm transition-transform duration-200 hover:-translate-y-0.5 focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-brand-gold focus-visible:ring-offset-2 focus-visible:ring-offset-brand-cream active:scale-[0.98] motion-reduce:transition-none"
+          >
+            <ShoppingCart aria-hidden="true" className="h-4 w-4" />
+            Order groceries
+          </a>
         </div>
-      </div>
+      </nav>
     </div>
   );
 }

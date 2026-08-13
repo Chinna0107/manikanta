@@ -127,7 +127,7 @@ export function AdminCouponsPage() {
 
   if (loading) return (
     <div className="flex items-center justify-center py-20">
-      <div className="w-8 h-8 border-4 border-[#08183A]/20 border-t-[#08183A] rounded-full animate-spin" />
+      <div className="w-8 h-8 border-4 border-brand-red/20 border-t-[#08183A] rounded-full animate-spin" />
     </div>
   );
 
@@ -137,11 +137,11 @@ export function AdminCouponsPage() {
     <div className="w-full max-w-5xl mx-auto">
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-6">
         <div>
-          <h1 className="font-serif text-2xl sm:text-3xl font-bold text-[#08183A]">Coupons</h1>
-          <p className="text-[#08183A]/40 text-xs font-sans mt-0.5">Manage discount codes</p>
+          <h1 className="font-serif text-2xl sm:text-3xl font-bold text-gray-900">Coupons</h1>
+          <p className="text-gray-900/40 text-xs font-sans mt-0.5">Manage discount codes</p>
         </div>
         <button onClick={handleAdd}
-          className="flex items-center gap-2 bg-[#08183A] hover:bg-[#D4AF37] text-white px-4 py-2.5 rounded-xl font-semibold transition-colors">
+          className="flex items-center gap-2 bg-brand-red text-white hover:bg-brand-orange text-white text-white px-4 py-2.5 rounded-xl font-semibold transition-colors">
           <Plus className="w-4 h-4" /> Add Coupon
         </button>
       </div>
@@ -152,14 +152,14 @@ export function AdminCouponsPage() {
           placeholder="Search coupons by code..." 
           value={searchQuery}
           onChange={(e) => setSearchQuery(e.target.value)}
-          className="w-full sm:max-w-md px-4 py-2 rounded-xl bg-white border border-[#08183A]/10 focus:outline-none focus:border-[#D4AF37]"
+          className="w-full sm:max-w-md px-4 py-2 rounded-xl bg-white border border-brand-red/10 focus:outline-none focus:border-[#D4AF37]"
         />
       </div>
 
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
         {filteredCoupons.map((coupon, i) => (
           <motion.div key={coupon.id} initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: i * 0.05 }}
-            className="bg-white rounded-2xl border border-[#08183A]/10 p-5 shadow-sm relative overflow-hidden">
+            className="bg-white rounded-2xl border border-brand-red/10 p-5 shadow-sm relative overflow-hidden">
             {!coupon.is_active && (
               <div className="absolute top-0 right-0 bg-red-100 text-red-600 text-[10px] font-bold px-3 py-1 rounded-bl-xl">INACTIVE</div>
             )}
@@ -169,21 +169,21 @@ export function AdminCouponsPage() {
                 <span className="font-bold tracking-wider">{coupon.code}</span>
               </div>
               <div className="flex gap-2">
-                <button onClick={() => handleEdit(coupon)} className="text-[#08183A] hover:bg-[#08183A]/10 p-1.5 rounded transition-colors"><Edit2 className="w-4 h-4" /></button>
+                <button onClick={() => handleEdit(coupon)} className="text-gray-900 hover:bg-brand-red text-white/10 p-1.5 rounded transition-colors"><Edit2 className="w-4 h-4" /></button>
                 <button onClick={() => handleDelete(coupon.id)} className="text-red-500 hover:bg-red-50 p-1.5 rounded transition-colors"><Trash2 className="w-4 h-4" /></button>
               </div>
             </div>
             
             <div className="space-y-2">
-              <p className="font-serif text-xl font-bold text-[#08183A]">
+              <p className="font-serif text-xl font-bold text-gray-900">
                 {coupon.discount_type === "percentage" ? `${coupon.discount_value}% OFF` : `$${coupon.discount_value} OFF`}
               </p>
-              <div className="text-xs text-[#08183A]/60 font-sans space-y-1">
+              <div className="text-xs text-gray-900/60 font-sans space-y-1">
                 <p>Min: {coupon.min_type === 'qty' ? `${coupon.min_qty} item(s)` : `$${coupon.min_order_value}`}</p>
                 <p>Usage: {coupon.usage_type === 'one_time' ? 'One Time' : 'Multiple'}</p>
                 <p>Customer: {coupon.user_name ? coupon.user_name : 'All Customers'}</p>
                 {coupon.expires_at && (
-                  <p className="flex items-center gap-1 text-[#08183A]">
+                  <p className="flex items-center gap-1 text-gray-900">
                     <Calendar className="w-3.5 h-3.5" /> Expires: {new Date(coupon.expires_at).toLocaleDateString('en-IN')}
                   </p>
                 )}
@@ -196,23 +196,23 @@ export function AdminCouponsPage() {
       {editCoupon && (
         <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
           <div className="bg-white rounded-2xl w-full max-w-lg overflow-hidden">
-            <div className="bg-white border-b border-[#08183A]/10 px-6 py-4 flex items-center justify-between">
-              <h2 className="font-serif text-xl font-bold text-[#08183A]">{isNew ? "Add" : "Edit"} Coupon</h2>
-              <button onClick={() => setEditCoupon(null)} className="text-[#08183A]/50 hover:text-[#08183A]">
+            <div className="bg-white border-b border-brand-red/10 px-6 py-4 flex items-center justify-between">
+              <h2 className="font-serif text-xl font-bold text-gray-900">{isNew ? "Add" : "Edit"} Coupon</h2>
+              <button onClick={() => setEditCoupon(null)} className="text-gray-900/50 hover:text-gray-900">
                 <X className="w-5 h-5" />
               </button>
             </div>
             <div className="p-6 space-y-4">
               <div className="grid grid-cols-2 gap-4">
                 <div>
-                  <label className="text-xs font-sans font-semibold text-[#08183A]/70 mb-1 block">Coupon Code</label>
+                  <label className="text-xs font-sans font-semibold text-gray-900/70 mb-1 block">Coupon Code</label>
                   <input value={formData.code} onChange={(e) => setFormData({ ...formData, code: e.target.value.toUpperCase() })}
-                    className="w-full px-3 py-2 rounded-lg bg-[#FDF8F0] border border-[#08183A]/10 focus:outline-none uppercase" />
+                    className="w-full px-3 py-2 rounded-lg bg-[#FDF8F0] border border-brand-red/10 focus:outline-none uppercase" />
                 </div>
                 <div>
-                  <label className="text-xs font-sans font-semibold text-[#08183A]/70 mb-1 block">Discount Type</label>
+                  <label className="text-xs font-sans font-semibold text-gray-900/70 mb-1 block">Discount Type</label>
                   <select value={formData.discount_type} onChange={(e) => setFormData({ ...formData, discount_type: e.target.value })}
-                    className="w-full px-3 py-2 rounded-lg bg-[#FDF8F0] border border-[#08183A]/10 focus:outline-none">
+                    className="w-full px-3 py-2 rounded-lg bg-[#FDF8F0] border border-brand-red/10 focus:outline-none">
                     <option value="percentage">Percentage (%)</option>
                     <option value="fixed">Fixed Amount ($)</option>
                   </select>
@@ -220,24 +220,24 @@ export function AdminCouponsPage() {
               </div>
               <div className="grid grid-cols-2 gap-4">
                 <div>
-                  <label className="text-xs font-sans font-semibold text-[#08183A]/70 mb-1 block">Discount Value</label>
+                  <label className="text-xs font-sans font-semibold text-gray-900/70 mb-1 block">Discount Value</label>
                   <input type="number" value={formData.discount_value} onChange={(e) => setFormData({ ...formData, discount_value: Number(e.target.value) })}
-                    className="w-full px-3 py-2 rounded-lg bg-[#FDF8F0] border border-[#08183A]/10 focus:outline-none" />
+                    className="w-full px-3 py-2 rounded-lg bg-[#FDF8F0] border border-brand-red/10 focus:outline-none" />
                 </div>
               </div>
               <div className="grid grid-cols-2 gap-4">
                 <div>
-                  <label className="text-xs font-sans font-semibold text-[#08183A]/70 mb-1 block">Usage</label>
+                  <label className="text-xs font-sans font-semibold text-gray-900/70 mb-1 block">Usage</label>
                   <select value={formData.usage_type} onChange={e => setFormData({ ...formData, usage_type: e.target.value })}
-                    className="w-full px-3 py-2 rounded-lg bg-[#FDF8F0] border border-[#08183A]/10 focus:outline-none">
+                    className="w-full px-3 py-2 rounded-lg bg-[#FDF8F0] border border-brand-red/10 focus:outline-none">
                     <option value="multiple">Multiple Times</option>
                     <option value="one_time">One Time Only</option>
                   </select>
                 </div>
                 <div>
-                  <label className="text-xs font-sans font-semibold text-[#08183A]/70 mb-1 block">Min Requirement Based On</label>
+                  <label className="text-xs font-sans font-semibold text-gray-900/70 mb-1 block">Min Requirement Based On</label>
                   <select value={formData.min_type} onChange={e => setFormData({ ...formData, min_type: e.target.value })}
-                    className="w-full px-3 py-2 rounded-lg bg-[#FDF8F0] border border-[#08183A]/10 focus:outline-none">
+                    className="w-full px-3 py-2 rounded-lg bg-[#FDF8F0] border border-brand-red/10 focus:outline-none">
                     <option value="amount">Min Amount ($)</option>
                     <option value="qty">Min Quantity (items)</option>
                   </select>
@@ -245,7 +245,7 @@ export function AdminCouponsPage() {
               </div>
               <div className="grid grid-cols-2 gap-4">
                 <div>
-                  <label className="text-xs font-sans font-semibold text-[#08183A]/70 mb-1 block">
+                  <label className="text-xs font-sans font-semibold text-gray-900/70 mb-1 block">
                     {formData.min_type === 'qty' ? 'Min Quantity' : 'Min Purchase ($)'}
                   </label>
                   <input type="number" min="0"
@@ -254,36 +254,36 @@ export function AdminCouponsPage() {
                       ? { ...formData, min_qty: Number(e.target.value) }
                       : { ...formData, min_order_value: Number(e.target.value) }
                     )}
-                    className="w-full px-3 py-2 rounded-lg bg-[#FDF8F0] border border-[#08183A]/10 focus:outline-none" />
-                  <p className="text-[10px] text-[#08183A]/40 mt-1">
+                    className="w-full px-3 py-2 rounded-lg bg-[#FDF8F0] border border-brand-red/10 focus:outline-none" />
+                  <p className="text-[10px] text-gray-900/40 mt-1">
                     {formData.min_type === 'qty' ? 'Coupon applies when cart has at least this many items' : 'Coupon applies when cart value meets this amount'}
                   </p>
                 </div>
                 <div>
-                  <label className="text-xs font-sans font-semibold text-[#08183A]/70 mb-1 block">Expires At (Optional)</label>
+                  <label className="text-xs font-sans font-semibold text-gray-900/70 mb-1 block">Expires At (Optional)</label>
                   <input type="datetime-local" value={formData.expires_at} onChange={e => setFormData({ ...formData, expires_at: e.target.value })}
-                    className="w-full px-3 py-2 rounded-lg bg-[#FDF8F0] border border-[#08183A]/10 focus:outline-none" />
-                  <p className="text-[10px] text-[#08183A]/40 mt-1">Time will be saved and evaluated as CST.</p>
+                    className="w-full px-3 py-2 rounded-lg bg-[#FDF8F0] border border-brand-red/10 focus:outline-none" />
+                  <p className="text-[10px] text-gray-900/40 mt-1">Time will be saved and evaluated as CST.</p>
                 </div>
               </div>
               <div className="grid grid-cols-2 gap-4">
                 <div className="relative">
-                  <label className="text-xs font-sans font-semibold text-[#08183A]/70 mb-1 block">Assign to Customer</label>
+                  <label className="text-xs font-sans font-semibold text-gray-900/70 mb-1 block">Assign to Customer</label>
                   <button 
                     type="button"
                     onClick={() => setDropdownOpen(!dropdownOpen)}
-                    className="w-full px-3 py-2 rounded-lg bg-[#FDF8F0] border border-[#08183A]/10 focus:outline-none text-left flex justify-between items-center"
+                    className="w-full px-3 py-2 rounded-lg bg-[#FDF8F0] border border-brand-red/10 focus:outline-none text-left flex justify-between items-center"
                   >
                     <span className="truncate">
                       {formData.user_id === "all" ? "All Customers" : users.find(u => u.id.toString() === formData.user_id?.toString())?.email || "Select Customer"}
                     </span>
-                    <ChevronDown className="w-4 h-4 text-[#08183A]/50 shrink-0" />
+                    <ChevronDown className="w-4 h-4 text-gray-900/50 shrink-0" />
                   </button>
                   
                   {dropdownOpen && (
-                    <div className="absolute z-50 w-full mt-1 bg-white border border-[#08183A]/10 rounded-lg shadow-lg overflow-hidden">
-                      <div className="p-2 border-b border-[#08183A]/10 flex items-center gap-2">
-                        <Search className="w-4 h-4 text-[#08183A]/50 shrink-0" />
+                    <div className="absolute z-50 w-full mt-1 bg-white border border-brand-red/10 rounded-lg shadow-lg overflow-hidden">
+                      <div className="p-2 border-b border-brand-red/10 flex items-center gap-2">
+                        <Search className="w-4 h-4 text-gray-900/50 shrink-0" />
                         <input
                           type="text"
                           autoFocus
@@ -326,8 +326,8 @@ export function AdminCouponsPage() {
               </div>
               <div className="grid grid-cols-2 gap-4">
                 <div>
-                  <label className="text-xs font-sans font-semibold text-[#08183A]/70 mb-1 block">Applicable Categories (Optional)</label>
-                  <div className="max-h-32 overflow-y-auto border border-[#08183A]/10 rounded-lg p-2 bg-[#FDF8F0]">
+                  <label className="text-xs font-sans font-semibold text-gray-900/70 mb-1 block">Applicable Categories (Optional)</label>
+                  <div className="max-h-32 overflow-y-auto border border-brand-red/10 rounded-lg p-2 bg-[#FDF8F0]">
                     {categories.map(cat => (
                       <label key={cat.id} className="flex items-start gap-2 mb-2 cursor-pointer">
                         <input type="checkbox" checked={formData.applicable_categories.includes(cat.name)}
@@ -337,27 +337,27 @@ export function AdminCouponsPage() {
                               : formData.applicable_categories.filter(c => c !== cat.name);
                             setFormData({ ...formData, applicable_categories: newCats });
                           }}
-                          className="w-4 h-4 mt-0.5 text-[#08183A]" />
-                        <span className="text-xs text-[#08183A] font-semibold">{cat.name}</span>
+                          className="w-4 h-4 mt-0.5 text-gray-900" />
+                        <span className="text-xs text-gray-900 font-semibold">{cat.name}</span>
                       </label>
                     ))}
-                    {categories.length === 0 && <span className="text-xs text-[#08183A]/50">No categories found</span>}
+                    {categories.length === 0 && <span className="text-xs text-gray-900/50">No categories found</span>}
                   </div>
                 </div>
                 <div>
-                  <label className="text-xs font-sans font-semibold text-[#08183A]/70 mb-1 block">Applicable Product Codes (Optional)</label>
-                  <div className="border border-[#08183A]/10 rounded-lg bg-[#FDF8F0] overflow-hidden">
-                    <div className="flex items-center gap-2 px-2 py-1.5 border-b border-[#08183A]/10 bg-white">
-                      <Search className="w-3 h-3 text-[#08183A]/40 shrink-0" />
+                  <label className="text-xs font-sans font-semibold text-gray-900/70 mb-1 block">Applicable Product Codes (Optional)</label>
+                  <div className="border border-brand-red/10 rounded-lg bg-[#FDF8F0] overflow-hidden">
+                    <div className="flex items-center gap-2 px-2 py-1.5 border-b border-brand-red/10 bg-white">
+                      <Search className="w-3 h-3 text-gray-900/40 shrink-0" />
                       <input
                         type="text"
                         placeholder="Search by code or name..."
                         value={skuSearch}
                         onChange={e => setSkuSearch(e.target.value)}
-                        className="w-full text-xs bg-transparent focus:outline-none text-[#08183A] placeholder-[#08183A]/30"
+                        className="w-full text-xs bg-transparent focus:outline-none text-gray-900 placeholder-[#08183A]/30"
                       />
                       {skuSearch && (
-                        <button onClick={() => setSkuSearch("")} className="text-[#08183A]/40 hover:text-[#08183A] shrink-0">
+                        <button onClick={() => setSkuSearch("")} className="text-gray-900/40 hover:text-gray-900 shrink-0">
                           <X className="w-3 h-3" />
                         </button>
                       )}
@@ -374,13 +374,13 @@ export function AdminCouponsPage() {
                                   : formData.applicable_product_codes.filter(c => c !== sku.code);
                                 setFormData({ ...formData, applicable_product_codes: newCodes });
                               }}
-                              className="w-4 h-4 mt-0.5 text-[#08183A]" />
-                            <span className="text-xs text-[#08183A] font-semibold">{sku.code} <br/><span className="text-[10px] text-[#08183A]/60 font-normal">{sku.name}</span></span>
+                              className="w-4 h-4 mt-0.5 text-gray-900" />
+                            <span className="text-xs text-gray-900 font-semibold">{sku.code} <br/><span className="text-[10px] text-gray-900/60 font-normal">{sku.name}</span></span>
                           </label>
                         ))
                       }
                       {skuList.filter(sku => !skuSearch || sku.code.toLowerCase().includes(skuSearch.toLowerCase()) || sku.name.toLowerCase().includes(skuSearch.toLowerCase())).length === 0 && (
-                        <span className="text-xs text-[#08183A]/50">{skuSearch ? 'No matching codes' : 'No product codes found'}</span>
+                        <span className="text-xs text-gray-900/50">{skuSearch ? 'No matching codes' : 'No product codes found'}</span>
                       )}
                     </div>
                   </div>
@@ -388,13 +388,13 @@ export function AdminCouponsPage() {
               </div>
               <div className="flex items-center gap-2 mt-4">
                 <input type="checkbox" id="coupon_active" checked={formData.is_active} onChange={(e) => setFormData({ ...formData, is_active: e.target.checked })}
-                  className="w-4 h-4 text-[#08183A]" />
-                <label htmlFor="coupon_active" className="text-sm font-sans font-semibold text-[#08183A] cursor-pointer">Active</label>
+                  className="w-4 h-4 text-gray-900" />
+                <label htmlFor="coupon_active" className="text-sm font-sans font-semibold text-gray-900 cursor-pointer">Active</label>
               </div>
             </div>
-            <div className="border-t border-[#08183A]/10 px-6 py-4 flex gap-3">
-              <button onClick={() => setEditCoupon(null)} className="flex-1 px-4 py-2 bg-[#FDF8F0] text-[#08183A] rounded-xl font-semibold">Cancel</button>
-              <button onClick={handleSave} disabled={saving} className="flex-1 px-4 py-2 bg-[#08183A] text-white rounded-xl font-semibold flex justify-center items-center gap-2">
+            <div className="border-t border-brand-red/10 px-6 py-4 flex gap-3">
+              <button onClick={() => setEditCoupon(null)} className="flex-1 px-4 py-2 bg-[#FDF8F0] text-gray-900 rounded-xl font-semibold">Cancel</button>
+              <button onClick={handleSave} disabled={saving} className="flex-1 px-4 py-2 bg-brand-red text-white rounded-xl font-semibold flex justify-center items-center gap-2">
                 {saving ? "Saving..." : <><Save className="w-4 h-4" /> Save</>}
               </button>
             </div>

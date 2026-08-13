@@ -14,7 +14,7 @@ const STATUS_COLORS = {
   cancelled: 'bg-red-100 text-red-700',
 };
 
-export function AdminPickupOrdersPage() {
+export function AdminDirectOrdersPage() {
   const [orders, setOrders] = useState([]);
   const [loading, setLoading] = useState(true);
   const [expanded, setExpanded] = useState(null);
@@ -24,7 +24,7 @@ export function AdminPickupOrdersPage() {
     const token = localStorage.getItem('token');
     fetch(`${BACKEND_URL}/admin/orders`, { headers: { Authorization: `Bearer ${token}` } })
       .then(r => r.json())
-      .then(d => { if (d.orders) setOrders(d.orders.filter(o => o.order_type === 'pickup')); })
+      .then(d => { if (d.orders) setOrders(d.orders.filter(o => o.order_type === 'direct')); })
       .catch(() => {})
       .finally(() => setLoading(false));
   }, []);
@@ -65,7 +65,7 @@ export function AdminPickupOrdersPage() {
       <div className="flex flex-col xs:flex-row xs:items-center justify-between gap-3 mb-4">
         <div>
           <h1 className="font-serif text-xl sm:text-2xl lg:text-3xl font-bold text-gray-900 flex items-center gap-2">
-            <Store className="w-6 h-6" /> Pickup Orders
+            <Store className="w-6 h-6" /> Direct Orders
           </h1>
           <p className="text-gray-900/40 text-xs font-sans mt-0.5">{orders.length} total</p>
         </div>
@@ -89,7 +89,7 @@ export function AdminPickupOrdersPage() {
         <div className="bg-white rounded-2xl border border-brand-red/10 p-10 text-center">
           <Store className="w-12 h-12 text-gray-300 mx-auto mb-3" />
           <p className="text-gray-900/50 font-sans text-sm">
-            {orders.length === 0 ? 'No pickup orders yet.' : `No ${statusFilter} pickup orders.`}
+            {orders.length === 0 ? 'No direct orders yet.' : `No ${statusFilter} direct orders.`}
           </p>
         </div>
       ) : (

@@ -7,14 +7,14 @@ export function QuantityStepper({ quantity, onIncrease, onDecrease, className })
     <div className={cn("flex items-center gap-3 bg-white border border-gray-200 rounded-full px-2 py-1 shadow-sm w-fit", className)}>
       <button 
         onClick={onDecrease}
-        className="w-6 h-6 flex items-center justify-center rounded-full text-brand-dark-blue hover:bg-gray-100 disabled:opacity-50"
+        className="w-6 h-6 flex items-center justify-center rounded-full text-gray-600 hover:bg-gray-100 disabled:opacity-50"
       >
         <Minus className="w-4 h-4" />
       </button>
       <span className="text-sm font-semibold w-4 text-center">{quantity}</span>
       <button 
         onClick={onIncrease}
-        className="w-6 h-6 flex items-center justify-center rounded-full bg-brand-cream text-brand-dark-blue hover:bg-gray-100 transition-colors"
+        className="w-6 h-6 flex items-center justify-center rounded-full bg-brand-cream text-gray-600 hover:bg-gray-100 transition-colors"
       >
         <Plus className="w-4 h-4" />
       </button>

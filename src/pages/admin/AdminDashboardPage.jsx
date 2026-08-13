@@ -29,10 +29,10 @@ export function AdminDashboardPage() {
   const pending = orders.filter((o) => o.status === "paid" || o.status === "processing" || o.status === "pending").length;
 
   const stats = [
-    { label: "Total Orders", value: orders.length, icon: <ShoppingBag className="w-6 h-6" />, color: "bg-[#08183A]/10 text-[#08183A]" },
-    { label: "Total Revenue", value: `$${revenue.toLocaleString()}`, icon: <TrendingUp className="w-6 h-6" />, color: "bg-green-100 text-green-600" },
+    { label: "Total Orders", value: orders.length, icon: <ShoppingBag className="w-6 h-6" />, color: "bg-brand-red text-white/10 text-gray-900" },
+    { label: "Total Revenue", value: `₹${revenue.toLocaleString()}`, icon: <TrendingUp className="w-6 h-6" />, color: "bg-green-100 text-green-600" },
     { label: "Customers", value: users.length, icon: <Users className="w-6 h-6" />, color: "bg-blue-100 text-blue-600" },
-    { label: "Pending Orders", value: pending, icon: <Clock className="w-6 h-6" />, color: "bg-[#D4AF37]/10 text-[#D4AF37]" },
+    { label: "Pending Orders", value: pending, icon: <Clock className="w-6 h-6" />, color: "bg-brand-orange text-white/10 text-brand-orange" },
     { label: "Products", value: productsCount, icon: <Package className="w-6 h-6" />, color: "bg-purple-100 text-purple-600" },
   ];
 
@@ -45,33 +45,33 @@ export function AdminDashboardPage() {
 
   return (
     <div>
-      <h1 className="font-serif text-2xl sm:text-3xl font-bold text-[#08183A] mb-6 sm:mb-8">Admin Dashboard</h1>
+      <h1 className="font-serif text-2xl sm:text-3xl font-bold text-gray-900 mb-6 sm:mb-8">Admin Dashboard</h1>
 
       {/* Stats */}
       <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3 sm:gap-4 mb-6 sm:mb-8">
         {stats.map((s, i) => (
           <motion.div key={s.label} initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: i * 0.08 }}
-            className="bg-white rounded-xl sm:rounded-2xl border border-[#08183A]/10 p-3 sm:p-4 flex flex-col gap-2 sm:gap-3">
+            className="bg-white rounded-xl sm:rounded-2xl border border-brand-red/10 p-3 sm:p-4 flex flex-col gap-2 sm:gap-3">
             <div className={`w-8 h-8 sm:w-10 sm:h-10 rounded-lg sm:rounded-xl flex items-center justify-center ${s.color}`}>{s.icon}</div>
             <div>
-              <p className="text-lg sm:text-xl font-serif font-bold text-[#08183A]">{s.value}</p>
-              <p className="text-[#08183A]/50 text-[10px] sm:text-xs font-sans">{s.label}</p>
+              <p className="text-lg sm:text-xl font-serif font-bold text-gray-900">{s.value}</p>
+              <p className="text-gray-900/50 text-[10px] sm:text-xs font-sans">{s.label}</p>
             </div>
           </motion.div>
         ))}
       </div>
 
       {/* Recent Orders with WhatsApp Notify */}
-      <div className="bg-white rounded-xl sm:rounded-2xl border border-[#08183A]/10 p-3 sm:p-6">
-        <h2 className="font-serif text-base sm:text-lg font-bold text-[#08183A] mb-3 sm:mb-4">Recent Orders</h2>
+      <div className="bg-white rounded-xl sm:rounded-2xl border border-brand-red/10 p-3 sm:p-6">
+        <h2 className="font-serif text-base sm:text-lg font-bold text-gray-900 mb-3 sm:mb-4">Recent Orders</h2>
         {orders.length === 0 ? (
-          <p className="text-[#08183A]/50 font-sans text-sm text-center py-8">No orders yet.</p>
+          <p className="text-gray-900/50 font-sans text-sm text-center py-8">No orders yet.</p>
         ) : (
           <div className="overflow-x-auto -mx-3 sm:mx-0">
             <div className="inline-block min-w-full align-middle px-3 sm:px-0">
               <table className="w-full text-sm font-sans min-w-[480px]">
                 <thead>
-                  <tr className="text-[#08183A]/50 text-[10px] sm:text-xs uppercase tracking-wider border-b border-[#08183A]/5">
+                  <tr className="text-gray-900/50 text-[10px] sm:text-xs uppercase tracking-wider border-b border-brand-red/5">
                     <th className="text-left py-3 pr-2 sm:pr-4">Order</th>
                     <th className="text-left py-3 pr-2 sm:pr-4">Customer</th>
                     <th className="text-left py-3 pr-2 sm:pr-4">Total</th>
@@ -82,14 +82,14 @@ export function AdminDashboardPage() {
                 <tbody className="divide-y divide-[#08183A]/5">
                   {orders.slice(0, 8).map((order) => (
                     <tr key={order.id} className="hover:bg-[#FDF8F0]/30 transition-colors">
-                      <td className="py-3 pr-2 sm:pr-4 font-semibold text-[#08183A] text-xs sm:text-sm">#{order.id}</td>
-                      <td className="py-3 pr-2 sm:pr-4 text-[#08183A]/70 text-xs sm:text-sm truncate max-w-[100px] sm:max-w-none">{order.address?.name || "—"}</td>
-                      <td className="py-3 pr-2 sm:pr-4 font-serif font-bold text-[#D4AF37] text-xs sm:text-sm">${order.total}</td>
+                      <td className="py-3 pr-2 sm:pr-4 font-semibold text-gray-900 text-xs sm:text-sm">MSM - {order.id}</td>
+                      <td className="py-3 pr-2 sm:pr-4 text-gray-900/70 text-xs sm:text-sm truncate max-w-[100px] sm:max-w-none">{order.address?.name || "—"}</td>
+                      <td className="py-3 pr-2 sm:pr-4 font-serif font-bold text-brand-orange text-xs sm:text-sm">${order.total}</td>
                       <td className="py-3 pr-2 sm:pr-4">
                         <span className={`px-2 py-0.5 rounded-full text-[9px] sm:text-[10px] font-bold ${
                           order.status === "delivered" ? "bg-green-100 text-green-700" :
                           order.status === "paid" ? "bg-blue-100 text-blue-700" :
-                          order.status === "shipped" ? "bg-purple-100 text-purple-700" : "bg-[#D4AF37]/10 text-[#D4AF37]"
+                          order.status === "shipped" ? "bg-purple-100 text-purple-700" : "bg-brand-orange text-white/10 text-brand-orange"
                         }`}>{order.status}</span>
                       </td>
                       <td className="py-3">

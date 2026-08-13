@@ -47,23 +47,23 @@ export function AdminVacationPage() {
   if (loading)
     return (
       <div className="flex items-center justify-center py-20">
-        <div className="w-8 h-8 border-4 border-[#08183A]/20 border-t-[#08183A] rounded-full animate-spin" />
+        <div className="w-8 h-8 border-4 border-brand-red/20 border-t-[#08183A] rounded-full animate-spin" />
       </div>
     );
 
   return (
     <div className="w-full max-w-2xl mx-auto space-y-6">
       <div>
-        <h1 className="font-serif text-2xl sm:text-3xl font-bold text-[#08183A]">Vacation Mode</h1>
-        <p className="text-[#08183A]/60 font-sans mt-1">
+        <h1 className="font-serif text-2xl sm:text-3xl font-bold text-gray-900">Vacation Mode</h1>
+        <p className="text-gray-900/60 font-sans mt-1">
           Temporarily disable checkout and show a message to customers
         </p>
       </div>
 
-      <div className="bg-white rounded-2xl border border-[#08183A]/10 shadow-sm overflow-hidden">
-        <div className="border-b border-[#08183A]/10 px-6 py-4 flex items-center gap-3 bg-[#FDF8F0]">
+      <div className="bg-white rounded-2xl border border-brand-red/10 shadow-sm overflow-hidden">
+        <div className="border-b border-brand-red/10 px-6 py-4 flex items-center gap-3 bg-[#FDF8F0]">
           <span className="text-xl">🌴</span>
-          <h2 className="font-bold text-[#08183A]">Vacation / Pause Orders</h2>
+          <h2 className="font-bold text-gray-900">Vacation / Pause Orders</h2>
         </div>
 
         <div className="p-6 space-y-6">
@@ -73,14 +73,14 @@ export function AdminVacationPage() {
             className={`w-full flex items-center justify-between p-4 rounded-xl border-2 transition-all ${
               vacation.is_active
                 ? 'border-amber-400 bg-amber-50'
-                : 'border-[#08183A]/10 bg-[#08183A]/5'
+                : 'border-brand-red/10 bg-brand-red text-white/5'
             }`}
           >
             <div className="text-left">
-              <p className="font-bold text-[#08183A]">
+              <p className="font-bold text-gray-900">
                 {vacation.is_active ? '🔴 Vacation Mode is ON' : '🟢 `Vacation Mode` is OFF'}
               </p>
-              <p className="text-xs text-[#08183A]/60 mt-0.5">
+              <p className="text-xs text-gray-900/60 mt-0.5">
                 {vacation.is_active
                   ? 'Customers cannot place orders right now'
                   : 'Orders are being accepted normally'}
@@ -89,13 +89,13 @@ export function AdminVacationPage() {
             {vacation.is_active ? (
               <ToggleRight className="w-8 h-8 text-amber-500 shrink-0" />
             ) : (
-              <ToggleLeft className="w-8 h-8 text-[#08183A]/30 shrink-0" />
+              <ToggleLeft className="w-8 h-8 text-gray-900/30 shrink-0" />
             )}
           </button>
 
           {/* Message */}
           <div>
-            <label className="text-sm font-bold text-[#08183A] mb-2 block">
+            <label className="text-sm font-bold text-gray-900 mb-2 block">
               Message to Customers {vacation.is_active && <span className="text-red-500">*</span>}
             </label>
             <textarea
@@ -103,9 +103,9 @@ export function AdminVacationPage() {
               placeholder="e.g. We're on vacation and will be back on Jan 15th. Orders will resume from that date. Thank you for your patience!"
               value={vacation.message}
               onChange={(e) => setVacation((v) => ({ ...v, message: e.target.value }))}
-              className="w-full px-4 py-3 rounded-xl bg-[#FDF8F0] border border-[#08183A]/20 focus:outline-none focus:border-[#D4AF37] text-[#08183A] text-sm resize-none"
+              className="w-full px-4 py-3 rounded-xl bg-[#FDF8F0] border border-brand-red/20 focus:outline-none focus:border-[#D4AF37] text-gray-900 text-sm resize-none"
             />
-            <p className="text-xs text-[#08183A]/40 mt-1">
+            <p className="text-xs text-gray-900/40 mt-1">
               This message will be shown to customers when they try to checkout.
             </p>
           </div>
@@ -121,7 +121,7 @@ export function AdminVacationPage() {
           <button
             onClick={handleSave}
             disabled={saving}
-            className="bg-[#08183A] hover:bg-[#D4AF37] text-white px-6 py-2.5 rounded-xl font-bold transition-colors flex items-center gap-2 disabled:opacity-50"
+            className="bg-brand-red text-white hover:bg-brand-orange text-white text-white px-6 py-2.5 rounded-xl font-bold transition-colors flex items-center gap-2 disabled:opacity-50"
           >
             {saving ? 'Saving...' : <><Save className="w-4 h-4" /> Save Settings</>}
           </button>

@@ -1,28 +1,42 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { Package, ShoppingBag, FileText, RefreshCw, Store, Truck, MapPin, MessageCircle, CreditCard, ExternalLink, Tag } from 'lucide-react';
+import { Package, ShoppingBag, FileText, RefreshCw, Store, Truck, MapPin, MessageCircle, CreditCard, ExternalLink, Tag, ChevronDown, ChevronUp, CheckCircle, Clock, XCircle } from 'lucide-react';
 import { useAuthStore } from '../store/useAuthStore';
 import { useCartStore } from '../store/useCartStore';
 import { Header } from '../components/Header';
 import logoUrl from '../assets/logo.png';
 
 const STATUS_COLORS = {
-  pending: 'bg-yellow-100 text-yellow-700 border-yellow-200',
-  processing: 'bg-blue-100 text-blue-700 border-blue-200',
-  shipped: 'bg-purple-100 text-purple-700 border-purple-200',
-  delivered: 'bg-green-100 text-green-700 border-green-200',
-  'ready for pickup': 'bg-orange-100 text-orange-700 border-orange-200',
-  'pickup completed': 'bg-green-100 text-green-700 border-green-200',
-  cancelled: 'bg-red-100 text-red-700 border-red-200',
+  pending: { text: 'text-amber-600', bg: 'bg-amber-50', dot: 'bg-amber-500' },
+  processing: { text: 'text-blue-600', bg: 'bg-blue-50', dot: 'bg-blue-500' },
+  shipped: { text: 'text-purple-600', bg: 'bg-purple-50', dot: 'bg-purple-500' },
+  delivered: { text: 'text-green-600', bg: 'bg-green-50', dot: 'bg-green-500' },
+  'out for delivery': { text: 'text-blue-500', bg: 'bg-blue-50', dot: 'bg-blue-400' },
+  'ready for pickup': { text: 'text-orange-600', bg: 'bg-orange-50', dot: 'bg-orange-500' },
+  'pickup completed': { text: 'text-green-600', bg: 'bg-green-50', dot: 'bg-green-500' },
+  cancelled: { text: 'text-red-500', bg: 'bg-red-50', dot: 'bg-red-500' },
 };
 
 const SHIPPING_STEPS = ['pending', 'processing', 'shipped', 'delivered'];
 const PICKUP_STEPS = ['pending', 'processing', 'ready for pickup', 'pickup completed'];
 
+function formatOrderDate(dateStr) {
+  if (!dateStr) return '—';
+  const d = new Date(dateStr);
+  const now = new Date();
+  const diffMs = now - d;
+  const diffDays = Math.floor(diffMs / (1000 * 60 * 60 * 24));
+  if (diffDays === 0) return `Today, ${d.toLocaleTimeString('en-IN', { hour: '2-digit', minute: '2-digit', hour12: true })}`;
+  if (diffDays === 1) return `Yesterday, ${d.toLocaleTimeString('en-IN', { hour: '2-digit', minute: '2-digit', hour12: true })}`;
+  return d.toLocaleDateString('en-IN', { day: 'numeric', month: 'long', year: 'numeric' });
+}
+
 export function MyOrdersPage() {
   const navigate = useNavigate();
   const { token, orders, fetchProfile, user } = useAuthStore();
   const addToCart = useCartStore(state => state.addToCart);
+  const [activeFilter, setActiveFilter] = useState('all');
+  const [expandedOrder, setExpandedOrder] = useState(null);
 
   useEffect(() => {
     if (!token) { navigate('/login'); return; }
@@ -49,7 +63,7 @@ export function MyOrdersPage() {
     const shippingCost = parseFloat(order.shipping_fee) ?? (!isPickup && Number(order.total) - subtotal > 0 ? Number(order.total) - subtotal : 0);
     const taxAmt = parseFloat(order.tax_amount) || 0;
     const orderDate = order.created_at
-      ? new Date(order.created_at).toLocaleString('en-US', { day: 'numeric', month: 'long', year: 'numeric', hour: '2-digit', minute: '2-digit', timeZone: 'America/Chicago', timeZoneName: 'short' })
+      ? new Date(order.created_at).toLocaleString('en-IN', { day: 'numeric', month: 'long', year: 'numeric', hour: '2-digit', minute: '2-digit' })
       : '—';
 
     const rows = items.map((item, idx) => {
@@ -72,116 +86,30 @@ export function MyOrdersPage() {
         </td>
         <td style="padding:10px 12px;border-bottom:1px solid #F6EFEF;vertical-align:middle;text-align:center;font-size:9pt;">${escapeHtml(item.variant?.size || item.size || '—')}</td>
         <td style="padding:10px 12px;border-bottom:1px solid #F6EFEF;vertical-align:middle;text-align:center;font-size:9pt;">${item.qty}</td>
-        <td style="padding:10px 12px;border-bottom:1px solid #F6EFEF;vertical-align:middle;text-align:right;font-size:9pt;font-weight:600;">$${Number(item.variant?.price || item.product?.price || item.price || 0).toFixed(2)}</td>
-        <td style="padding:10px 12px;border-bottom:1px solid #F6EFEF;vertical-align:middle;text-align:right;font-size:9pt;font-weight:700;color:#08183A;">$${(Number(item.variant?.price || item.product?.price || item.price || 0) * item.qty).toFixed(2)}</td>
+        <td style="padding:10px 12px;border-bottom:1px solid #F6EFEF;vertical-align:middle;text-align:right;font-size:9pt;font-weight:600;">₹${Number(item.variant?.price || item.product?.price || item.price || 0).toFixed(2)}</td>
+        <td style="padding:10px 12px;border-bottom:1px solid #F6EFEF;vertical-align:middle;text-align:right;font-size:9pt;font-weight:700;color:#08183A;">₹${(Number(item.variant?.price || item.product?.price || item.price || 0) * item.qty).toFixed(2)}</td>
       </tr>`;
     }).join('');
 
     return `<!doctype html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <title>Invoice #${order.order_number || order.id}</title>
-  <style>
-    *, *::before, *::after { box-sizing: border-box; }
-    @page { size: A4; margin: 15mm 12mm 20mm 12mm; }
-    body { font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; color: #333; margin: 0; padding: 20px; font-size: 10pt; line-height: 1.4; background: #fff; }
-    .print-btn { text-align: center; margin: 20px 0; }
-    .print-btn button { padding: 8px 24px; margin: 0 6px; border-radius: 999px; font-size: 13px; font-weight: 600; cursor: pointer; border: none; }
-    .btn-print { background: #08183A; color: #D4AF37; }
-    .btn-dl { background: #D4AF37; color: #08183A; }
-    @media print { .print-btn { display: none !important; } * { -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; } }
-  </style>
-</head>
-<body>
-
-<!-- HEADER -->
-<table style="width:100%;border-collapse:collapse;border-bottom:3px solid #08183A;padding-bottom:16px;margin-bottom:20px;">
-  <tr>
-    <td style="vertical-align:middle;width:50%;">
-      <img src="${new URL(logoUrl, window.location.href).href}" style="height:64px;width:auto;object-fit:contain;" alt="Houra Jewels" />
-    </td>
-    <td style="vertical-align:top;text-align:right;">
-      <div style="font-size:20pt;font-weight:900;color:#08183A;letter-spacing:-0.5px;">INVOICE</div>
-      <div style="font-size:9pt;color:#555;margin-top:6px;line-height:1.7;">
-        <strong>Invoice No:</strong> #${escapeHtml(order.order_number || String(order.id))}<br>
-        <strong>Date:</strong> ${orderDate}<br>
-        <strong>Order Type:</strong> <span style="font-weight:700;color:${isPickup ? '#1d4ed8' : '#059669'};">${isPickup ? '🏪 Store Pickup' : '🚚 Shipping'}</span><br>
-        <strong>Status:</strong> ${escapeHtml(order.status)}
-        ${order.stripe_payment_intent_id ? `<br><strong>Transaction ID:</strong> <span style="font-family:monospace;font-size:8pt;color:#555;">${escapeHtml(order.stripe_payment_intent_id)}</span>` : ''}
-      </div>
-    </td>
-  </tr>
-</table>
-
-<!-- FROM / SHIP TO -->
-<table style="width:100%;border-collapse:collapse;margin-bottom:22px;">
-  <tr>
-    <td style="width:${isPickup ? '100%' : '50%'};vertical-align:top;padding:12px;border:1px solid #e8d5b0;background:#FFFDFD;border-radius:4px;">
-      <div style="font-size:9pt;font-weight:700;color:#08183A;text-transform:uppercase;letter-spacing:0.5px;border-bottom:1px solid #e8d5b0;padding-bottom:5px;margin-bottom:8px;">From</div>
-      <div style="font-size:9.5pt;color:#555;line-height:1.6;">
-        <strong style="color:#08183A;">Houra Jewels</strong><br>
-        Texas, 76227<br>
-        Phone: +1 940-465-6563<br>
-        Email: support@hourajewels.com
-      </div>
-    </td>
-    ${!isPickup ? `
-    <td style="width:4px;"></td>
-    <td style="width:50%;vertical-align:top;padding:12px;border:1px solid #e8d5b0;background:#FFFAF9;border-radius:4px;">
-      <div style="font-size:9pt;font-weight:700;color:#08183A;text-transform:uppercase;letter-spacing:0.5px;border-bottom:1px solid #e8d5b0;padding-bottom:5px;margin-bottom:8px;">Ship To</div>
-      <div style="font-size:9.5pt;color:#555;line-height:1.6;">
-        <strong style="color:#08183A;">${escapeHtml(address.name || user?.name || '')}</strong><br>
-        ${escapeHtml(address.line1 || '')}${address.line2 ? ', ' + escapeHtml(address.line2) : ''}<br>
-        ${escapeHtml(address.city || '')}, ${escapeHtml(address.state || '')} ${escapeHtml(address.pincode || '')}<br>
-        ${address.mobile ? `<strong>Phone:</strong> ${escapeHtml(address.mobile)}` : ''}
-      </div>
-    </td>` : ''}
-  </tr>
-</table>
-
-<!-- ITEMS TABLE -->
-<table style="width:100%;border-collapse:collapse;margin-bottom:20px;">
-  <thead>
-    <tr style="background:#08183A;">
-      <th style="padding:10px 12px;color:#D4AF37;font-size:9pt;text-align:center;width:5%;">#</th>
-      <th style="padding:10px 12px;color:#D4AF37;font-size:9pt;text-align:left;width:45%;">Item</th>
-      <th style="padding:10px 12px;color:#D4AF37;font-size:9pt;text-align:center;width:15%;">Size</th>
-      <th style="padding:10px 12px;color:#D4AF37;font-size:9pt;text-align:center;width:10%;">Qty</th>
-      <th style="padding:10px 12px;color:#D4AF37;font-size:9pt;text-align:right;width:12%;">Unit Price</th>
-      <th style="padding:10px 12px;color:#D4AF37;font-size:9pt;text-align:right;width:13%;">Total</th>
-    </tr>
-  </thead>
+<html>
+<head><title>Invoice #${order.order_number || order.id}</title></head>
+<body style="font-family:sans-serif;max-width:700px;margin:auto;padding:20px;">
+<h2>Invoice - MSM ${order.order_number || order.id}</h2>
+<p>Date: ${orderDate}</p>
+<table style="width:100%;border-collapse:collapse;">
+  <thead><tr style="background:#08183A;"><th style="padding:10px;color:#D4AF37;">#</th><th style="padding:10px;color:#D4AF37;text-align:left;">Item</th><th style="padding:10px;color:#D4AF37;">Size</th><th style="padding:10px;color:#D4AF37;">Qty</th><th style="padding:10px;color:#D4AF37;text-align:right;">Unit</th><th style="padding:10px;color:#D4AF37;text-align:right;">Total</th></tr></thead>
   <tbody>${rows}</tbody>
 </table>
-
-<!-- TOTALS -->
-<table style="width:100%;border-collapse:collapse;margin-top:8px;">
-  <tr>
-    <td style="width:55%;"></td>
-    <td style="width:45%;">
-      <table style="width:100%;border-collapse:collapse;">
-        <tr><td style="padding:7px 12px;text-align:right;color:#555;font-size:9.5pt;border-bottom:1px solid #F6EFEF;">Subtotal</td><td style="padding:7px 12px;text-align:right;font-weight:600;font-size:9.5pt;border-bottom:1px solid #F6EFEF;width:110px;">$${subtotal.toFixed(2)}</td></tr>
-        ${discountAmt > 0 ? `<tr><td style="padding:7px 12px;text-align:right;color:#059669;font-size:9.5pt;border-bottom:1px solid #F6EFEF;">Discount${order.coupon_code ? ' (' + order.coupon_code + ')' : ''}</td><td style="padding:7px 12px;text-align:right;font-weight:600;font-size:9.5pt;border-bottom:1px solid #F6EFEF;color:#059669;">-$${discountAmt.toFixed(2)}</td></tr>` : ''}
-        ${shippingCost > 0 ? `<tr><td style="padding:7px 12px;text-align:right;color:#555;font-size:9.5pt;border-bottom:1px solid #F6EFEF;">Shipping</td><td style="padding:7px 12px;text-align:right;font-weight:600;font-size:9.5pt;border-bottom:1px solid #F6EFEF;">$${shippingCost.toFixed(2)}</td></tr>` : ''}
-        ${taxAmt > 0 ? `<tr><td style="padding:7px 12px;text-align:right;color:#555;font-size:9.5pt;border-bottom:1px solid #F6EFEF;">Tax</td><td style="padding:7px 12px;text-align:right;font-weight:600;font-size:9.5pt;border-bottom:1px solid #F6EFEF;">$${taxAmt.toFixed(2)}</td></tr>` : ''}
-        <tr style="background:#FDF8F0;"><td style="padding:10px 12px;text-align:right;font-weight:700;font-size:11pt;color:#08183A;border-top:2px solid #08183A;">TOTAL</td><td style="padding:10px 12px;text-align:right;font-weight:700;font-size:11pt;color:#D4AF37;border-top:2px solid #08183A;">$${Number(order.total).toFixed(2)}</td></tr>
-      </table>
-    </td>
-  </tr>
+<table style="width:100%;margin-top:16px;border-collapse:collapse;">
+  <tr><td style="text-align:right;padding:6px 12px;color:#555;">Subtotal</td><td style="text-align:right;padding:6px 12px;font-weight:600;width:120px;">₹${subtotal.toFixed(2)}</td></tr>
+  ${discountAmt > 0 ? `<tr><td style="text-align:right;padding:6px 12px;color:#059669;">Discount</td><td style="text-align:right;padding:6px 12px;font-weight:600;color:#059669;">-₹${discountAmt.toFixed(2)}</td></tr>` : ''}
+  ${shippingCost > 0 ? `<tr><td style="text-align:right;padding:6px 12px;color:#555;">Shipping</td><td style="text-align:right;padding:6px 12px;font-weight:600;">₹${shippingCost.toFixed(2)}</td></tr>` : ''}
+  ${taxAmt > 0 ? `<tr><td style="text-align:right;padding:6px 12px;color:#555;">Tax</td><td style="text-align:right;padding:6px 12px;font-weight:600;">₹${taxAmt.toFixed(2)}</td></tr>` : ''}
+  <tr style="background:#FDF8F0;"><td style="text-align:right;padding:10px 12px;font-weight:700;font-size:11pt;border-top:2px solid #08183A;">TOTAL</td><td style="text-align:right;padding:10px 12px;font-weight:700;font-size:11pt;color:#D4AF37;border-top:2px solid #08183A;">₹${Number(order.total).toFixed(2)}</td></tr>
 </table>
-
-<!-- FOOTER -->
-<div style="margin-top:30px;padding-top:12px;border-top:1px solid #e8d5b0;text-align:center;font-size:8.5pt;color:#999;">
-  Thank you for shopping with Houra Jewels! &nbsp;|&nbsp; support@hourajewels.com &nbsp;|&nbsp; +1 940-465-6563
-</div>
-
-<div class="print-btn">
-  <button class="btn-print" onclick="window.print()">🖨️ Print</button>
-  <button class="btn-dl" onclick="window.print()">📥 Download PDF</button>
-</div>
-</body>
-</html>`;
+<div style="margin-top:24px;text-align:center;font-size:9pt;color:#999;">Thank you for shopping with Manikanta Super Market!</div>
+</body></html>`;
   };
 
   const openInvoice = (order) => {
@@ -198,334 +126,294 @@ export function MyOrdersPage() {
     try { items = typeof order.items === 'string' ? JSON.parse(order.items) : (order.items || []); } catch(e) {}
     
     for (const item of items) {
-      // Reconstruct the product/variant object expected by addToCart
       const productObj = item.product || { id: item.id || item.product_id, name: item.name, price: item.price, image_url: item.image_url };
       const variantObj = item.variant || { size: item.size, color: item.color, price: item.price };
       await addToCart(productObj, variantObj, item.qty || 1, item.color || variantObj?.color);
     }
-    
     navigate('/cart');
   };
 
+  const getOrderCategory = (order) => {
+    if (order.status === 'cancelled') return 'cancelled';
+    if (order.status === 'delivered' || order.status === 'pickup completed') return 'delivered';
+    return 'ongoing';
+  };
+
+  const filteredOrders = orders.filter(o => {
+    if (activeFilter === 'all') return true;
+    return getOrderCategory(o) === activeFilter;
+  });
+
+  const filters = [
+    { key: 'all', label: 'All' },
+    { key: 'ongoing', label: 'Ongoing' },
+    { key: 'delivered', label: 'Delivered' },
+    { key: 'cancelled', label: 'Cancelled' },
+  ];
+
   return (
-    <div className="min-h-screen bg-gray-50 pb-24">
+    <div className="min-h-screen pb-24" style={{ background: 'linear-gradient(160deg, #fff9f0 0%, #fff 60%)' }}>
       <Header title="My Orders" />
 
-      <div className="max-w-4xl mx-auto px-4 py-8 space-y-6">
-        <div className="flex items-center justify-between mb-2">
-          <h2 className="text-2xl font-serif font-bold text-[#08183A]">Order History</h2>
-          <span className="text-sm font-semibold text-[#08183A]/60 bg-[#08183A]/10 px-3 py-1 rounded-full">{orders.length} Orders</span>
+      <div className="max-w-lg mx-auto px-4 pt-4 pb-8">
+        {/* Filter Tabs */}
+        <div className="flex items-center gap-2 mb-5 overflow-x-auto no-scrollbar pb-1">
+          {filters.map(f => (
+            <button
+              key={f.key}
+              onClick={() => setActiveFilter(f.key)}
+              className={`shrink-0 px-5 py-2 rounded-full text-sm font-bold transition-all ${
+                activeFilter === f.key
+                  ? 'bg-brand-red text-white shadow-md shadow-brand-red/30'
+                  : 'bg-white text-gray-500 border border-gray-200 hover:border-brand-red/30'
+              }`}
+            >
+              {f.label}
+            </button>
+          ))}
         </div>
 
-        {orders.length === 0 ? (
+        {/* Orders List */}
+        {filteredOrders.length === 0 ? (
           <div className="flex flex-col items-center justify-center py-24 gap-4 bg-white rounded-3xl border border-gray-100 shadow-sm">
-            <div className="w-24 h-24 bg-gray-50 rounded-full flex items-center justify-center">
-              <ShoppingBag className="w-12 h-12 text-[#08183A]" />
+            <div className="w-20 h-20 bg-gray-50 rounded-full flex items-center justify-center">
+              <ShoppingBag className="w-10 h-10 text-gray-300" />
             </div>
-            <p className="text-[#08183A] font-bold text-lg">No orders yet</p>
-            <p className="text-sm text-[#08183A]/50 text-center max-w-sm">Looks like you haven't made your first order. Explore our spiritual collection today!</p>
-            <Link to="/" className="mt-4 bg-gradient-to-r from-[#08183A] to-[#D4AF37] text-white text-sm font-bold px-8 py-3 rounded-xl shadow-lg hover:shadow-xl transition-all hover:-translate-y-0.5">
-              Start Shopping
-            </Link>
+            <p className="text-gray-900 font-bold text-lg">No orders here</p>
+            <p className="text-sm text-gray-400 text-center max-w-xs">
+              {activeFilter === 'all' ? "You haven't placed any orders yet." : `No ${activeFilter} orders.`}
+            </p>
+            {activeFilter === 'all' && (
+              <Link to="/" className="mt-2 bg-brand-red text-white text-sm font-bold px-8 py-3 rounded-xl shadow-lg hover:shadow-xl transition-all hover:-translate-y-0.5">
+                Start Shopping
+              </Link>
+            )}
           </div>
         ) : (
-          orders.map((order) => {
-            const STATUS_STEPS = order.order_type === 'pickup' ? PICKUP_STEPS : SHIPPING_STEPS;
-            const stepIdx = STATUS_STEPS.indexOf(order.status);
-            return (
-              <div key={order.id} className="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden hover:shadow-md transition-shadow">
-                {/* Order Header */}
-                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 px-6 py-4 border-b border-gray-100 bg-[#FDF8F0]">
-                  <div>
-                    <p className="text-sm font-bold text-[#08183A]">Order #{order.order_number || order.id}</p>
-                    <p className="text-xs text-[#08183A]/60 mt-1">
-                      Placed on {new Date(order.created_at).toLocaleString('en-US', { day: 'numeric', month: 'long', year: 'numeric', hour: '2-digit', minute: '2-digit', timeZone: 'America/Chicago', timeZoneName: 'short' })}
-                    </p>
-                    {order.stripe_payment_intent_id && (
-                      <p className="text-[10px] text-gray-400 font-mono mt-1">Txn: {order.stripe_payment_intent_id}</p>
-                    )}
-                  </div>
-                  <div className="flex items-center gap-3">
-                    <span className={`text-xs font-bold px-3 py-1.5 rounded-full border flex items-center gap-1.5 shadow-sm ${
-                      order.order_type === 'pickup' ? 'bg-blue-50 text-blue-700 border-blue-200' : 'bg-green-50 text-green-700 border-green-200'
-                    }`}>
-                      {order.order_type === 'pickup' ? <Store className="w-3 h-3" /> : <Truck className="w-3 h-3" />}
-                      {order.order_type === 'pickup' ? 'Pickup' : 'Delivery'}
-                    </span>
-                    <span className={`text-xs font-bold px-4 py-1.5 rounded-full border capitalize shadow-sm ${STATUS_COLORS[order.status] || 'bg-gray-100 text-gray-600 border-gray-200'}`}>
-                      {order.status}
-                    </span>
-                    {order.payment_method === 'cod' && (
-                      <span className="text-xs font-bold px-3 py-1.5 rounded-full bg-emerald-50 text-emerald-700 border border-emerald-200 shadow-sm">
-                        COD (${order.total - (order.advance_paid || 0)} pending)
+          <div className="space-y-4">
+            {filteredOrders.map((order) => {
+              let parsedItems = [];
+              try { parsedItems = typeof order.items === 'string' ? JSON.parse(order.items) : (order.items || []); } catch(e) {}
+              const totalQty = parsedItems.reduce((s, i) => s + (i.qty || 1), 0);
+              const statusCfg = STATUS_COLORS[order.status] || { text: 'text-gray-500', bg: 'bg-gray-50', dot: 'bg-gray-400' };
+              const isExpanded = expandedOrder === order.id;
+              const STATUS_STEPS = order.order_type === 'pickup' ? PICKUP_STEPS : SHIPPING_STEPS;
+              const stepIdx = STATUS_STEPS.indexOf(order.status);
+              const discount = parseFloat(order.discount_amount) || 0;
+              const shipping = parseFloat(order.shipping_fee) || 0;
+              const tax = parseFloat(order.tax_amount) || 0;
+
+              return (
+                <div key={order.id} className="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
+                  {/* Card Top */}
+                  <div className="px-4 pt-4 pb-3">
+                    {/* Order number + Status */}
+                    <div className="flex items-center justify-between mb-1">
+                      <p className="text-sm font-bold text-gray-900">Order #MSM{order.order_number || order.id}</p>
+                      <span className={`flex items-center gap-1 text-xs font-bold ${statusCfg.text}`}>
+                        <span className={`w-2 h-2 rounded-full ${statusCfg.dot} inline-block`} />
+                        {order.status === 'delivered' ? 'Delivered'
+                          : order.status === 'pickup completed' ? 'Picked Up'
+                          : order.status === 'shipped' ? 'Out for Delivery'
+                          : order.status === 'ready for pickup' ? 'Ready for Pickup'
+                          : order.status === 'processing' ? 'Processing'
+                          : order.status === 'pending' ? 'Pending'
+                          : order.status === 'cancelled' ? 'Cancelled'
+                          : order.status}
                       </span>
-                    )}
-                    <p className="text-lg font-bold text-[#D4AF37]">${Number(order.total).toLocaleString('en-IN')}</p>
-                  </div>
-                </div>
-
-                {/* Progress Bar */}
-                {order.status !== 'cancelled' && (
-                  <div className="px-6 py-6 border-b border-gray-100 bg-white">
-                    <div className="max-w-2xl mx-auto">
-                      <div className="flex items-center justify-between mb-2">
-                        {STATUS_STEPS.map((step, i) => (
-                          <div key={step} className="flex flex-col items-center flex-1 relative">
-                            <div className={`w-8 h-8 rounded-full flex items-center justify-center text-xs font-bold border-2 transition-all z-10 ${
-                              i <= stepIdx ? 'bg-[#08183A] border-[#08183A] text-white shadow-md' : 'bg-white border-gray-200 text-gray-400'
-                            }`}>
-                              {i < stepIdx ? '✓' : i + 1}
-                            </div>
-                            {i < STATUS_STEPS.length - 1 && (
-                              <div className={`absolute top-4 left-1/2 w-full h-0.5 -z-0 ${i < stepIdx ? 'bg-[#08183A]' : 'bg-gray-200'}`} />
-                            )}
-                          </div>
-                        ))}
-                      </div>
-                      <div className="flex items-center mt-2">
-                        {STATUS_STEPS.map((step, i) => (
-                          <span key={step} className={`text-[10px] sm:text-xs font-bold capitalize flex-1 text-center ${i <= stepIdx ? 'text-[#08183A]' : 'text-gray-400'}`}>
-                            {step}
-                          </span>
-                        ))}
-                      </div>
                     </div>
-                  </div>
-                )}
+                    <p className="text-xs text-gray-400 mb-3">{formatOrderDate(order.created_at)}</p>
 
-                {/* Pickup Info Banner */}
-                {order.order_type === 'pickup' && (
-                  <div className="mx-6 mb-4 space-y-3">
-                    {/* Notification */}
-                    <div className="bg-blue-50 border border-blue-200 rounded-xl p-4 space-y-3">
-                      <div className="flex items-start gap-3">
-                        <MessageCircle className="w-4 h-4 text-blue-600 shrink-0 mt-0.5" />
-                        <p className="text-xs text-blue-700 leading-relaxed">
-                          Once your order is ready, our team will message you for pickup via <strong>WhatsApp/Text</strong> from <strong>+1 940-465-6563</strong>
-                        </p>
-                      </div>
-                      <div className="flex items-start gap-3 border-t border-blue-200 pt-3">
-                        <MapPin className="w-4 h-4 text-blue-600 shrink-0 mt-0.5" />
-                        <div>
-                          <p className="text-xs font-bold text-blue-800">Pickup Location</p>
-                          <p className="text-xs text-blue-700">2965 FM1385, Aubrey, TX 76227</p>
-                          <a href="https://maps.google.com/?q=2965+FM1385,+Aubrey,+TX+76227" target="_blank" rel="noopener noreferrer"
-                            className="text-xs text-blue-600 font-bold underline hover:text-blue-800">View on Google Maps →</a>
-                        </div>
-                      </div>
-                    </div>
-                    {/* Pickup T&C */}
-                    <div className="bg-amber-50 border border-amber-200 rounded-xl p-4">
-                      <p className="text-[10px] font-bold text-amber-700 uppercase tracking-wider mb-2">⚠️ Pickup Terms & Conditions</p>
-                      <ul className="space-y-1.5 text-xs text-amber-800 leading-relaxed list-none">
-                        <li className="flex items-start gap-2"><span className="shrink-0 mt-0.5">•</span><span>Please inspect your item(s) carefully at the time of pickup before leaving the store.</span></li>
-                        <li className="flex items-start gap-2"><span className="shrink-0 mt-0.5">•</span><span><strong>Any damage must be reported within 1–2 business days</strong> of pickup. Claims made after this window cannot be accepted.</span></li>
-                        <li className="flex items-start gap-2"><span className="shrink-0 mt-0.5">•</span><span>Bring a valid photo ID and your order confirmation when picking up.</span></li>
-                        <li className="flex items-start gap-2"><span className="shrink-0 mt-0.5">•</span><span>Orders not picked up within 7 days of the ready notification may be subject to restocking.</span></li>
-                      </ul>
-                    </div>
-                  </div>
-                )}
-
-                {/* Items */}
-                <div className="px-6 py-4 bg-white">
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    {(() => {
-                      let parsedItems = [];
-                      try { parsedItems = typeof order.items === 'string' ? JSON.parse(order.items) : (order.items || []); } catch(e) {}
-                      return parsedItems.map((item, i) => {
+                    {/* Product image row */}
+                    <div className="flex items-center gap-2 mb-3 overflow-x-auto no-scrollbar">
+                      {parsedItems.slice(0, 5).map((item, i) => {
                         const variantColor = (item.variant?.color || '').toLowerCase().trim();
                         const matchedVariant = item.product?.variants?.find(v => (v.color || '').toLowerCase().trim() === variantColor);
-                        const variantImg = item.variant?.image || matchedVariant?.images?.[0] || item.product?.images?.[0] || item.product?.image_url;
-                        const variantCode = item.variant?.code || matchedVariant?.code;
-                        const sizeCode = item.variant?.size ? matchedVariant?.sizes?.find(s => s.size === item.variant.size)?.code : null;
-                        const urlCode = sizeCode || variantCode || variantColor;
-                        const productName = item.product?.name || item.name || 'Product';
-                        const productId = item.product?.id || item.id;
-                        const unitPrice = Number(item.variant?.price || item.product?.price || item.price || 0);
-                        const qty = item.qty || 1;
+                        const img = item.variant?.image || matchedVariant?.images?.[0] || item.product?.images?.[0] || item.product?.image_url || item.image_url;
                         return (
-                        <div key={i} className="flex items-start gap-4 p-3 rounded-xl border border-gray-50 hover:bg-gray-50 transition-colors">
-                          <div className="w-16 h-16 bg-[#FDF8F0] rounded-xl flex items-center justify-center shrink-0 border border-[#08183A]/10 overflow-hidden">
-                            {variantImg ? (
-                              <img src={variantImg} alt={productName} className="w-full h-full object-cover" />
+                          <div key={i} className="shrink-0 w-16 h-16 rounded-xl overflow-hidden border border-gray-100 bg-gray-50">
+                            {img ? (
+                              <img src={img} alt={item.product?.name || 'Item'} className="w-full h-full object-cover" />
                             ) : (
-                              <Package className="w-8 h-8 text-[#08183A]/40" />
+                              <div className="w-full h-full flex items-center justify-center">
+                                <Package className="w-6 h-6 text-gray-300" />
+                              </div>
                             )}
                           </div>
-                          <div className="flex-1 min-w-0 pt-1">
-                            <p className="text-sm font-bold text-[#08183A] line-clamp-1">
-                              <Link to={`/product/${productId}${urlCode ? `?variantCode=${urlCode}` : ''}`} className="hover:text-[#D4AF37] transition-colors">
-                                {productName}{item.variant?.color ? ` — ${item.variant.color}` : ''}
-                              </Link>
-                            </p>
-                            <div className="flex items-center gap-2 mt-1.5 flex-wrap">
-                              {(item.size || item.variant?.size) && (
-                                <span className="text-xs text-[#08183A]/60 bg-white px-2 py-0.5 rounded-md border border-gray-100">{item.size || item.variant?.size}</span>
-                              )}
-                              {variantCode && (
-                                <span className="text-xs text-[#D4AF37] font-bold bg-[#D4AF37]/10 px-2 py-0.5 rounded-md border border-[#D4AF37]/20">#{variantCode}</span>
-                              )}
-                            </div>
-                            <div className="flex items-center gap-1.5 mt-1.5">
-                              <span className="text-xs text-[#08183A]/50">${unitPrice.toFixed(2)} × {qty}</span>
-                              <span className="text-xs text-[#08183A]/30">=</span>
-                              <span className="text-xs font-bold text-[#08183A]">${(unitPrice * qty).toFixed(2)}</span>
-                            </div>
+                        );
+                      })}
+                      {parsedItems.length > 5 && (
+                        <div className="shrink-0 w-16 h-16 rounded-xl border border-gray-100 bg-gray-50 flex items-center justify-center">
+                          <span className="text-xs font-bold text-gray-400">+{parsedItems.length - 5}</span>
+                        </div>
+                      )}
+                    </div>
+
+                    {/* Footer row */}
+                    <div className="flex items-center justify-between">
+                      <p className="text-sm text-gray-500 font-medium">
+                        {totalQty} item{totalQty !== 1 ? 's' : ''} · <span className="font-bold text-gray-900">₹{Number(order.total).toLocaleString('en-IN')}</span>
+                      </p>
+                      <button
+                        onClick={() => setExpandedOrder(isExpanded ? null : order.id)}
+                        className="text-sm font-bold text-brand-red flex items-center gap-1 hover:opacity-80 transition-opacity"
+                      >
+                        {isExpanded ? 'Hide Details' : 'View Details'}
+                        {isExpanded ? <ChevronUp className="w-3.5 h-3.5" /> : <ChevronDown className="w-3.5 h-3.5" />}
+                      </button>
+                    </div>
+                  </div>
+
+                  {/* Expanded Detail View */}
+                  {isExpanded && (
+                    <div className="border-t border-gray-100">
+                      {/* Progress Bar */}
+                      {order.status !== 'cancelled' && (
+                        <div className="px-4 py-4 bg-gray-50 border-b border-gray-100">
+                          <div className="flex items-center justify-between mb-3 relative">
+                            {/* Connector lines */}
+                            {STATUS_STEPS.map((_, i) => i < STATUS_STEPS.length - 1 && (
+                              <div key={`line-${i}`} className={`absolute h-0.5 top-4 ${i < stepIdx ? 'bg-brand-red' : 'bg-gray-200'}`}
+                                style={{ left: `${(i / (STATUS_STEPS.length - 1)) * 100 + 100 / STATUS_STEPS.length / 2}%`, width: `${100 / (STATUS_STEPS.length - 1)}%`, transform: 'translateX(-50%)' }} />
+                            ))}
+                            {STATUS_STEPS.map((step, i) => (
+                              <div key={step} className="flex flex-col items-center flex-1 z-10">
+                                <div className={`w-8 h-8 rounded-full flex items-center justify-center text-xs font-bold border-2 transition-all ${
+                                  i < stepIdx ? 'bg-brand-red border-brand-red text-white' : i === stepIdx ? 'bg-brand-red border-brand-red text-white shadow-lg shadow-brand-red/30' : 'bg-white border-gray-200 text-gray-300'
+                                }`}>
+                                  {i < stepIdx ? '✓' : i + 1}
+                                </div>
+                              </div>
+                            ))}
+                          </div>
+                          <div className="flex">
+                            {STATUS_STEPS.map((step, i) => (
+                              <span key={step} className={`text-[9px] font-bold capitalize flex-1 text-center leading-tight ${i <= stepIdx ? 'text-gray-700' : 'text-gray-300'}`}>
+                                {step}
+                              </span>
+                            ))}
                           </div>
                         </div>
-                      );
-                    });
-                    })()}
-                  </div>
-                </div>
+                      )}
 
-                {/* Price Summary */}
-                {(() => {
-                  let parsedItems = [];
-                  try { parsedItems = typeof order.items === 'string' ? JSON.parse(order.items) : (order.items || []); } catch(e) {}
-                  const subtotal = parsedItems.reduce((sum, item) => sum + (Number(item.variant?.price || item.product?.price || item.price || 0) * (item.qty || 1)), 0);
-                  const discount = parseFloat(order.discount_amount) || 0;
-                  const shipping = parseFloat(order.shipping_fee) || 0;
-                  const tax = parseFloat(order.tax_amount) || 0;
-                  const taxRate = subtotal > 0 && tax > 0 ? ((tax / (subtotal - discount + shipping)) * 100).toFixed(2) : null;
-                  return (
-                    <div className="mx-6 mb-4 rounded-xl border border-gray-100 overflow-hidden">
-                      <div className="px-4 py-2 bg-[#08183A]/5 border-b border-gray-100">
-                        <p className="text-[10px] font-bold text-[#08183A]/50 uppercase tracking-wider">Price Summary</p>
-                      </div>
-                      <div className="px-4 py-3 space-y-2 bg-white">
-                        {/* Per-item breakdown */}
+                      {/* Item list */}
+                      <div className="px-4 py-3 space-y-3 border-b border-gray-100">
+                        <p className="text-xs font-bold text-gray-400 uppercase tracking-wider">Items Ordered</p>
                         {parsedItems.map((item, i) => {
+                          const variantColor = (item.variant?.color || '').toLowerCase().trim();
+                          const matchedVariant = item.product?.variants?.find(v => (v.color || '').toLowerCase().trim() === variantColor);
+                          const img = item.variant?.image || matchedVariant?.images?.[0] || item.product?.images?.[0] || item.product?.image_url || item.image_url;
                           const unitPrice = Number(item.variant?.price || item.product?.price || item.price || 0);
                           const qty = item.qty || 1;
-                          const name = item.product?.name || item.name || 'Item';
                           return (
-                            <div key={i} className="flex justify-between text-xs text-[#08183A]/70">
-                              <span className="truncate max-w-[60%]">{name}{qty > 1 ? ` ×${qty}` : ''}</span>
-                              <span className="font-semibold shrink-0">
-                                {qty > 1 ? <span className="text-[#08183A]/40 mr-1">${unitPrice.toFixed(2)} ea</span> : null}
-                                ${(unitPrice * qty).toFixed(2)}
-                              </span>
+                            <div key={i} className="flex items-center gap-3">
+                              <div className="w-12 h-12 rounded-xl overflow-hidden border border-gray-100 bg-gray-50 shrink-0">
+                                {img ? <img src={img} alt="" className="w-full h-full object-cover" /> : <Package className="w-6 h-6 text-gray-300 m-auto mt-3" />}
+                              </div>
+                              <div className="flex-1 min-w-0">
+                                <p className="text-sm font-semibold text-gray-900 line-clamp-1">{item.product?.name || item.name || 'Product'}</p>
+                                <p className="text-xs text-gray-400">{item.variant?.color ? `${item.variant.color} · ` : ''}{item.variant?.size || item.size || ''}</p>
+                              </div>
+                              <div className="text-right shrink-0">
+                                <p className="text-sm font-bold text-gray-900">₹{(unitPrice * qty).toFixed(0)}</p>
+                                <p className="text-xs text-gray-400">×{qty}</p>
+                              </div>
                             </div>
                           );
                         })}
-                        <div className="border-t border-dashed border-gray-100 pt-2 mt-1 space-y-1.5">
-                          <div className="flex justify-between text-xs text-[#08183A]/70">
-                            <span>Item Total</span>
-                            <span className="font-semibold">${subtotal.toFixed(2)}</span>
+                      </div>
+
+                      {/* Price breakdown */}
+                      <div className="px-4 py-3 space-y-1.5 border-b border-gray-100">
+                        <p className="text-xs font-bold text-gray-400 uppercase tracking-wider mb-2">Bill Summary</p>
+                        <div className="flex justify-between text-sm text-gray-600">
+                          <span>Item Total</span>
+                          <span className="font-semibold">₹{parsedItems.reduce((s, i) => s + (Number(i.variant?.price || i.product?.price || i.price || 0) * (i.qty || 1)), 0).toFixed(0)}</span>
+                        </div>
+                        {discount > 0 && (
+                          <div className="flex justify-between text-sm text-green-600">
+                            <span>Discount{order.coupon_code ? ` (${order.coupon_code})` : ''}</span>
+                            <span className="font-semibold">-₹{discount.toFixed(0)}</span>
                           </div>
-                          {discount > 0 && (
-                            <div className="flex justify-between text-xs text-green-600">
-                              <span className="flex items-center gap-1"><Tag className="w-3 h-3" />{order.coupon_code ? `Discount (${order.coupon_code})` : 'Discount'}</span>
-                              <span className="font-semibold">-${discount.toFixed(2)}</span>
-                            </div>
-                          )}
-                          {shipping > 0 && (
-                            <div className="flex justify-between text-xs text-[#08183A]/70">
-                              <span>Shipping Fee</span>
-                              <span className="font-semibold">${shipping.toFixed(2)}</span>
-                            </div>
-                          )}
-                          {tax > 0 && (
-                            <div className="flex justify-between text-xs text-[#08183A]/70">
-                              <span>Tax{taxRate ? ` (${taxRate}%)` : ''}</span>
-                              <span className="font-semibold">${tax.toFixed(2)}</span>
-                            </div>
-                          )}
-                        </div>
-                        <div className="flex justify-between text-sm font-bold text-[#08183A] border-t border-gray-200 pt-2 mt-1">
-                          <span>Grand Total</span>
-                          <span className="text-[#D4AF37]">${Number(order.total).toFixed(2)}</span>
-                        </div>
-                        <p className="text-center text-[10px] text-[#08183A]/40 pt-1">🔒 100% Secure Transaction</p>
-                      </div>
-                    </div>
-                  );
-                })()}
-
-                {/* Payment Details */}
-                <div className="mx-6 mb-4 rounded-xl border border-gray-100 overflow-hidden">
-                  <div className="px-4 py-2 bg-[#08183A]/5 border-b border-gray-100">
-                    <p className="text-[10px] font-bold text-[#08183A]/50 uppercase tracking-wider">Payment Details</p>
-                  </div>
-                  <div className="px-4 py-3 bg-white space-y-2">
-                    <div className="flex items-center justify-between">
-                      <span className="text-xs text-[#08183A]/60">Payment Mode</span>
-                      <span className="text-xs font-bold text-[#08183A] capitalize flex items-center gap-1.5">
-                        {order.payment_method === 'stripe' ? (
-                          <><CreditCard className="w-3.5 h-3.5 text-[#635BFF]" /> Online (Card)</>  
-                        ) : order.payment_method === 'cod' ? (
-                          <>💵 Cash on Delivery</>
-                        ) : (
-                          order.payment_method || '—'
                         )}
-                      </span>
-                    </div>
-                    {order.card_last4 && (
-                      <div className="flex items-center justify-between">
-                        <span className="text-xs text-[#08183A]/60">Card</span>
-                        <span className="text-xs font-bold text-[#08183A] font-mono flex items-center gap-1.5">
-                          <CreditCard className="w-3.5 h-3.5 text-[#08183A]/40" />
-                          •••• •••• •••• {order.card_last4}
-                          {order.card_brand && <span className="text-[#08183A]/40 font-sans capitalize ml-1">{order.card_brand}</span>}
-                        </span>
+                        {shipping > 0 && (
+                          <div className="flex justify-between text-sm text-gray-600">
+                            <span>Delivery Fee</span>
+                            <span className="font-semibold">₹{shipping.toFixed(0)}</span>
+                          </div>
+                        )}
+                        {tax > 0 && (
+                          <div className="flex justify-between text-sm text-gray-600">
+                            <span>Taxes & Charges</span>
+                            <span className="font-semibold">₹{tax.toFixed(0)}</span>
+                          </div>
+                        )}
+                        <div className="flex justify-between text-sm font-bold text-gray-900 pt-2 border-t border-gray-100">
+                          <span>Grand Total</span>
+                          <span className="text-brand-red">₹{Number(order.total).toLocaleString('en-IN')}</span>
+                        </div>
                       </div>
-                    )}
-                    {order.payment_method === 'cod' && (
-                      <div className="flex items-center justify-between">
-                        <span className="text-xs text-[#08183A]/60">Amount Pending</span>
-                        <span className="text-xs font-bold text-amber-600">${(Number(order.total) - Number(order.advance_paid || 0)).toFixed(2)}</span>
-                      </div>
-                    )}
-                    {order.stripe_payment_intent_id && (
-                      <div className="flex items-center justify-between gap-4">
-                        <span className="text-xs text-[#08183A]/60 shrink-0">Transaction ID</span>
-                        <span className="text-[10px] font-mono text-[#08183A]/70 truncate">{order.stripe_payment_intent_id}</span>
-                      </div>
-                    )}
-                  </div>
-                </div>
 
-                {/* Tracking Section — shipping orders only */}
-                {order.order_type !== 'pickup' && (order.tracking_id || order.tracking_link) && (
-                  <div className="mx-6 mb-4 rounded-xl border border-purple-100 overflow-hidden">
-                    <div className="px-4 py-2 bg-purple-50 border-b border-purple-100 flex items-center gap-2">
-                      <Truck className="w-3.5 h-3.5 text-purple-600" />
-                      <p className="text-[10px] font-bold text-purple-700 uppercase tracking-wider">Shipment Tracking</p>
-                    </div>
-                    <div className="px-4 py-3 bg-white space-y-2">
-                      {order.tracking_id && (
+                      {/* Payment info */}
+                      <div className="px-4 py-3 border-b border-gray-100">
+                        <p className="text-xs font-bold text-gray-400 uppercase tracking-wider mb-2">Payment</p>
                         <div className="flex items-center justify-between">
-                          <span className="text-xs text-[#08183A]/60">Tracking ID</span>
-                          <span className="text-xs font-mono font-bold text-[#08183A]">{order.tracking_id}</span>
+                          <span className="text-sm text-gray-600">
+                            {order.payment_method === 'razorpay' ? '💳 Online (Razorpay)' : order.payment_method === 'cod' ? '💵 Cash on Delivery' : order.payment_method || '—'}
+                          </span>
+                          <span className="text-sm font-bold text-gray-900">₹{Number(order.total).toLocaleString('en-IN')}</span>
+                        </div>
+                        {order.razorpay_payment_id && (
+                          <p className="text-[10px] font-mono text-gray-400 mt-1">Txn: {order.razorpay_payment_id}</p>
+                        )}
+                      </div>
+
+                      {/* Tracking (shipping only) */}
+                      {order.order_type !== 'pickup' && (order.tracking_id || order.tracking_link) && (
+                        <div className="px-4 py-3 border-b border-gray-100">
+                          <p className="text-xs font-bold text-gray-400 uppercase tracking-wider mb-2">Tracking</p>
+                          {order.tracking_id && <p className="text-sm font-mono font-bold text-gray-800">{order.tracking_id}</p>}
+                          {order.tracking_link && (
+                            <a href={order.tracking_link} target="_blank" rel="noopener noreferrer"
+                              className="inline-flex items-center gap-1 text-xs font-bold text-blue-600 hover:underline mt-1">
+                              Track Package <ExternalLink className="w-3 h-3" />
+                            </a>
+                          )}
                         </div>
                       )}
-                      {order.tracking_link && (
-                        <a href={order.tracking_link} target="_blank" rel="noopener noreferrer"
-                          className="flex items-center justify-between w-full mt-1 px-3 py-2 bg-purple-50 hover:bg-purple-100 rounded-lg transition-colors">
-                          <span className="text-xs font-bold text-purple-700">Track Package</span>
-                          <ExternalLink className="w-3.5 h-3.5 text-purple-600" />
-                        </a>
-                      )}
-                    </div>
-                  </div>
-                )}
 
-                {/* Footer Actions */}
-                <div className="flex flex-col sm:flex-row items-center justify-end gap-3 px-6 py-4 bg-[#FDF8F0] border-t border-[#08183A]/10">
-                  <button onClick={() => openInvoice(order)}
-                    className="w-full sm:w-auto flex items-center justify-center gap-2 bg-white text-[#08183A] border border-[#08183A]/20 px-5 py-2.5 rounded-xl text-sm font-bold hover:bg-[#08183A]/5 transition-colors shadow-sm">
-                    <FileText className="w-4 h-4 text-[#08183A]" /> Download Invoice
-                  </button>
-                  <button onClick={() => handleReorder(order)}
-                    className="w-full sm:w-auto flex items-center justify-center gap-2 bg-[#08183A] text-white px-5 py-2.5 rounded-xl text-sm font-bold hover:bg-[#D4AF37] transition-colors shadow-sm">
-                    <RefreshCw className="w-4 h-4" /> Reorder Items
-                  </button>
+                      {/* Pickup info */}
+                      {order.order_type === 'pickup' && (
+                        <div className="px-4 py-3 border-b border-gray-100 bg-blue-50">
+                          <div className="flex items-start gap-2">
+                            <MapPin className="w-4 h-4 text-blue-600 shrink-0 mt-0.5" />
+                            <div>
+                              <p className="text-xs font-bold text-blue-800">Pickup Location</p>
+                              <p className="text-xs text-blue-700">Aspari main road opposite APGB Bank, 518347</p>
+                              <a href="https://maps.google.com/?q=Aspari+main+road+opposite+APGB+Bank,+518347" target="_blank" rel="noopener noreferrer"
+                                className="text-xs text-blue-600 font-bold underline">View on Maps →</a>
+                            </div>
+                          </div>
+                        </div>
+                      )}
+
+                      {/* Actions */}
+                      <div className="px-4 py-3 flex gap-3">
+                        <button onClick={() => openInvoice(order)}
+                          className="flex-1 flex items-center justify-center gap-2 border border-gray-200 rounded-xl py-2.5 text-sm font-bold text-gray-600 hover:bg-gray-50 transition-colors">
+                          <FileText className="w-4 h-4" /> Invoice
+                        </button>
+                        <button onClick={() => handleReorder(order)}
+                          className="flex-1 flex items-center justify-center gap-2 bg-brand-red text-white rounded-xl py-2.5 text-sm font-bold hover:opacity-90 transition-opacity">
+                          <RefreshCw className="w-4 h-4" /> Reorder
+                        </button>
+                      </div>
+                    </div>
+                  )}
                 </div>
-              </div>
-            );
-          })
+              );
+            })}
+          </div>
         )}
       </div>
     </div>

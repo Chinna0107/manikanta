@@ -124,12 +124,12 @@ export function AdminShippingPage() {
     } catch (err) { setError(err.message); }
   };
 
-  if (loading) return <div className="p-8 flex justify-center"><Loader className="w-8 h-8 text-brand-dark-blue animate-spin" /></div>;
+  if (loading) return <div className="p-8 flex justify-center"><Loader className="w-8 h-8 text-gray-900 animate-spin" /></div>;
 
   return (
     <div className="p-6 max-w-4xl mx-auto space-y-8">
       <div>
-        <h1 className="text-2xl font-bold text-brand-dark-blue flex items-center gap-2">
+        <h1 className="text-2xl font-bold text-gray-900 flex items-center gap-2">
           <Package className="w-6 h-6" /> Shipping & Tax Settings
         </h1>
         <p className="text-gray-500 mt-1">Configure shipping fee, tax, and pickup options at checkout</p>
@@ -146,35 +146,6 @@ export function AdminShippingPage() {
         </div>
       )}
 
-      {/* Store Pickup Toggle */}
-      <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-6">
-        <div className="flex items-center justify-between">
-          <div className="flex items-center gap-3">
-            <div className="w-10 h-10 bg-brand-gold/10 rounded-xl flex items-center justify-center">
-              <Store className="w-5 h-5 text-brand-dark-blue" />
-            </div>
-            <div>
-              <h2 className="text-lg font-bold text-gray-900">Store Pickup</h2>
-              <p className="text-sm text-gray-500">
-                {pickupEnabled
-                  ? 'Customers can choose between pickup or home delivery at checkout'
-                  : 'Customers will only see home delivery at checkout'}
-              </p>
-            </div>
-          </div>
-          <button
-            onClick={() => handleTogglePickup(!pickupEnabled)}
-            disabled={savingPickup}
-            className={`relative inline-flex h-7 w-14 items-center rounded-full transition-colors duration-300 focus:outline-none disabled:opacity-60 ${pickupEnabled ? 'bg-brand-dark-blue' : 'bg-gray-200'}`}
-          >
-            <span className={`inline-block h-5 w-5 transform rounded-full bg-white shadow-md transition-transform duration-300 ${pickupEnabled ? 'translate-x-8' : 'translate-x-1'}`} />
-          </button>
-        </div>
-        <div className={`mt-4 px-4 py-3 rounded-xl text-sm font-semibold flex items-center gap-2 ${pickupEnabled ? 'bg-green-50 text-green-700 border border-green-100' : 'bg-gray-50 text-gray-500 border border-gray-100'}`}>
-          <span className={`w-2 h-2 rounded-full ${pickupEnabled ? 'bg-green-500' : 'bg-gray-400'}`} />
-          {pickupEnabled ? 'Pickup is ON — customers will see "Store Pickup" and "Home Delivery" options' : 'Pickup is OFF — customers go directly to home delivery checkout'}
-        </div>
-      </div>
 
       {/* Shipping Flat Rate */}
       <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-6">
@@ -194,7 +165,7 @@ export function AdminShippingPage() {
             <p className="text-xs text-gray-400 mt-1">Orders at or above this amount get free shipping</p>
           </div>
           <button onClick={handleSaveShipping} disabled={savingShipping}
-            className="flex items-center gap-2 bg-brand-dark-blue text-brand-gold px-5 py-2.5 rounded-xl font-bold hover:bg-brand-dark-blue/90 transition-all disabled:opacity-50">
+            className="flex items-center gap-2 bg-white text-brand-red px-5 py-2.5 rounded-xl font-bold hover:bg-white transition-all disabled:opacity-50">
             <Save className="w-4 h-4" /> {savingShipping ? 'Saving...' : 'Save'}
           </button>
         </div>
@@ -228,7 +199,7 @@ export function AdminShippingPage() {
         <div className="flex gap-3 mb-6">
           {['flat', 'pincode'].map(mode => (
             <button key={mode} onClick={() => setTaxMode(mode)}
-              className={`px-4 py-2 rounded-xl font-semibold text-sm border transition-all ${taxMode === mode ? 'bg-brand-dark-blue text-brand-gold border-brand-dark-blue' : 'bg-gray-50 text-gray-600 border-gray-200 hover:border-gray-300'}`}>
+              className={`px-4 py-2 rounded-xl font-semibold text-sm border transition-all ${taxMode === mode ? 'bg-white text-brand-red border-brand-dark-blue' : 'bg-gray-50 text-gray-600 border-gray-200 hover:border-gray-300'}`}>
               {mode === 'flat' ? 'Flat % (All Orders)' : 'Pincode Based'}
             </button>
           ))}
@@ -243,7 +214,7 @@ export function AdminShippingPage() {
               <p className="text-xs text-gray-400 mt-1">Applied on subtotal after coupon discount</p>
             </div>
             <button onClick={handleSaveTax} disabled={savingTax}
-              className="flex items-center gap-2 bg-brand-dark-blue text-brand-gold px-5 py-2.5 rounded-xl font-bold hover:bg-brand-dark-blue/90 transition-all disabled:opacity-50">
+              className="flex items-center gap-2 bg-white text-brand-red px-5 py-2.5 rounded-xl font-bold hover:bg-white transition-all disabled:opacity-50">
               <Save className="w-4 h-4" /> {savingTax ? 'Saving...' : 'Save'}
             </button>
           </div>
@@ -253,7 +224,7 @@ export function AdminShippingPage() {
           <div className="space-y-5">
             <div className="flex justify-end">
               <button onClick={handleSaveTax} disabled={savingTax}
-                className="flex items-center gap-2 bg-brand-dark-blue text-brand-gold px-5 py-2.5 rounded-xl font-bold hover:bg-brand-dark-blue/90 transition-all disabled:opacity-50">
+                className="flex items-center gap-2 bg-white text-brand-red px-5 py-2.5 rounded-xl font-bold hover:bg-white transition-all disabled:opacity-50">
                 <Save className="w-4 h-4" /> {savingTax ? 'Saving...' : 'Save Mode'}
               </button>
             </div>
@@ -264,7 +235,7 @@ export function AdminShippingPage() {
               <input type="number" placeholder="Tax %" min="0" step="0.1" value={newPercentage} onChange={e => setNewPercentage(e.target.value)}
                 className="w-full sm:w-32 px-4 py-2 border border-gray-200 rounded-xl focus:ring-2 focus:ring-brand-dark-blue outline-none bg-gray-50" required />
               <button type="submit" disabled={savingPincode}
-                className="flex items-center justify-center gap-2 bg-brand-dark-blue text-brand-gold px-5 py-2 rounded-xl font-bold hover:bg-brand-dark-blue/90 transition-all disabled:opacity-50 whitespace-nowrap">
+                className="flex items-center justify-center gap-2 bg-white text-brand-red px-5 py-2 rounded-xl font-bold hover:bg-white transition-all disabled:opacity-50 whitespace-nowrap">
                 <Plus className="w-4 h-4" /> Add Rule
               </button>
             </form>

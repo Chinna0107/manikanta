@@ -2,10 +2,17 @@
 @import "tailwindcss";
 
 @theme {
-  --color-brand-orange: #4A2E1B;
-  --color-brand-maroon: #2D1A10;
+  --color-brand-red: #D61A3C;
+  --color-brand-red-dark: #B81633;
+  --color-brand-yellow: #FFC107;
+  --color-brand-orange: #FF9800;
+  --color-brand-bg: #F9FAFB;
+  --color-brand-text: #333333;
+  
+  /* Retained for fallback during transition */
   --color-brand-dark-blue: #08183A;
   --color-brand-gold: #D4AF37;
+  --color-brand-maroon: #2D1A10;
   --color-brand-beige: #FDF8F0;
   --color-brand-beige-darker: #F4EBE0;
   --color-brand-cream: #FDFBF7;

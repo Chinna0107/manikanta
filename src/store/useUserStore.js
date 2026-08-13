@@ -3,7 +3,7 @@ import { create } from 'zustand';
 export const useUserStore = create(() => ({
   user: {
     name: 'Priya Sharma',
-    phone: '+91 98765 43210',
+    phone: '+91 98660 48155',
     email: 'priya.sharma@example.com',
     addresses: [
       {
@@ -14,7 +14,7 @@ export const useUserStore = create(() => ({
         city: 'Mumbai',
         state: 'Maharashtra',
         pincode: '400058',
-        mobile: '+91 98765 43210',
+        mobile: '+91 98660 48155',
         isDefault: true,
       }
     ]

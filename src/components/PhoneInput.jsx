@@ -233,11 +233,11 @@ export function parsePhone(value = '') {
     const country = COUNTRIES.find(c => c.iso === iso);
     if (country) return { iso, dialCode: country.code, number: rest.slice(country.code.length + 1) };
   }
-  if (!value.startsWith('+')) return { iso: 'US', dialCode: '1', number: value };
+  if (!value.startsWith('+')) return { iso: 'IN', dialCode: '91', number: value };
   const sorted = [...COUNTRIES].sort((a, b) => b.code.length - a.code.length);
   const match = sorted.find(c => value.startsWith(`+${c.code}`));
   if (match) return { iso: match.iso, dialCode: match.code, number: value.slice(match.code.length + 1) };
-  return { iso: 'US', dialCode: '1', number: value.slice(1) };
+  return { iso: 'IN', dialCode: '91', number: value.slice(1) };
 }
 
 // Returns full value like "US:+11234567890"
@@ -272,7 +272,7 @@ export function PhoneInput({ value = '', onChange, className = '', inputClassNam
     onChange(formatPhone(c.code, number, c.iso));
   };
 
-  const selected = COUNTRIES.find(c => c.iso === isoCode) || COUNTRIES.find(c => c.iso === 'US');
+  const selected = COUNTRIES.find(c => c.iso === isoCode) || COUNTRIES.find(c => c.iso === 'IN');
   const dialCode = selected.code;
 
   const handleNumber = (e) => {

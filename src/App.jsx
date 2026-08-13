@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import { AppLayout } from './components/AppLayout';
+import { ProtectedRoute } from './components/ProtectedRoute';
 import { SplashScreen } from './components/SplashScreen';
 import { useStoreData } from './store/useStoreData';
 import { HomePage } from './pages/HomePage';
@@ -38,6 +39,7 @@ import { AdminCategoriesPage } from './pages/admin/AdminCategoriesPage';
 import { AdminOffersPage } from './pages/admin/AdminOffersPage';
 import { AdminShippingPage } from './pages/admin/AdminShippingPage';
 import { AdminPickupOrdersPage } from './pages/admin/AdminPickupOrdersPage';
+import { AdminDirectOrdersPage } from './pages/admin/AdminDirectOrdersPage';
 import { AdminReviewsPage } from './pages/admin/AdminReviewsPage';
 import { AdminVacationPage } from './pages/admin/AdminVacationPage';
 import { PickupPage } from './pages/PickupPage';
@@ -73,6 +75,7 @@ function App() {
                   <Route path="offers" element={<AdminOffersPage />} />
                   <Route path="shipping" element={<AdminShippingPage />} />
                   <Route path="pickup-orders" element={<AdminPickupOrdersPage />} />
+                  <Route path="direct-orders" element={<AdminDirectOrdersPage />} />
                   <Route path="reviews" element={<AdminReviewsPage />} />
                   <Route path="vacation" element={<AdminVacationPage />} />
                   <Route path="banners" element={<AdminBannersPage />} />
@@ -85,7 +88,8 @@ function App() {
 
             {/* App pages — with AppLayout */}
             <Route path="/*" element={
-              <AppLayout>
+              <ProtectedRoute>
+                <AppLayout>
                 <Routes>
                   <Route path="/" element={<HomePage />} />
                   <Route path="/about" element={<AboutPage />} />
@@ -110,7 +114,8 @@ function App() {
                   <Route path="/privacy-policy" element={<PrivacyPolicyPage />} />
                   <Route path="/terms-of-service" element={<TermsOfServicePage />} />
                 </Routes>
-              </AppLayout>
+                </AppLayout>
+              </ProtectedRoute>
             } />
           </Routes>
         </BrowserRouter>

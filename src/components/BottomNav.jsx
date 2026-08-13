@@ -17,7 +17,7 @@ export function BottomNav() {
   ];
 
   return (
-    <div className="md:hidden fixed bottom-0 left-0 right-0 w-full bg-brand-dark-blue/95 backdrop-blur-lg border-t border-brand-gold/20 rounded-t-3xl shadow-[0_-8px_30px_rgba(0,0,0,0.2)] pb-safe z-50 transition-all">
+    <div className="md:hidden fixed bottom-0 left-0 right-0 w-full bg-white backdrop-blur-lg border-t border-brand-red/10 rounded-t-3xl shadow-[0_-8px_30px_rgba(0,0,0,0.2)] pb-safe z-50 transition-all">
       <div className="flex justify-around items-center h-[72px] px-2">
         {tabs.map((tab) => {
           const Icon = tab.icon;
@@ -34,11 +34,11 @@ export function BottomNav() {
               onClick={() => {}}
               className={cn(
                 'flex flex-col items-center justify-center w-full h-full space-y-1.5 transition-all duration-300 relative',
-                isActive ? 'text-brand-gold -translate-y-1' : 'text-gray-400 hover:text-white'
+                isActive ? 'text-brand-red -translate-y-1' : 'text-gray-400 hover:text-gray-900'
               )}>
               <div className={cn(
                 "p-1.5 rounded-full transition-all duration-300",
-                isActive ? "bg-brand-gold/10 shadow-sm" : "bg-transparent"
+                isActive ? "text-brand-red" : "bg-transparent"
               )}>
                 <Icon className={cn('w-5 h-5 transition-transform duration-300', isActive ? 'scale-110' : '')} strokeWidth={isActive ? 2.5 : 2} />
               </div>
@@ -47,7 +47,7 @@ export function BottomNav() {
                 isActive ? "opacity-100" : "opacity-80"
               )}>{tab.name}</span>
               {isActive && (
-                <div className="absolute -bottom-2 w-1 h-1 bg-brand-gold rounded-full shadow-[0_0_8px_rgba(212,175,55,0.6)]"></div>
+                <div className="absolute -bottom-2 w-1 h-1 bg-brand-red text-gray-900 rounded-full shadow-[0_0_8px_rgba(212,175,55,0.6)]"></div>
               )}
             </NavLink>
           );

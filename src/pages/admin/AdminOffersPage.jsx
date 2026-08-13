@@ -140,7 +140,7 @@ export function AdminOffersPage() {
 
   if (loading) return (
     <div className="flex items-center justify-center py-20">
-      <div className="w-8 h-8 border-4 border-[#08183A]/20 border-t-[#08183A] rounded-full animate-spin" />
+      <div className="w-8 h-8 border-4 border-brand-red/20 border-t-[#08183A] rounded-full animate-spin" />
     </div>
   );
 
@@ -148,11 +148,11 @@ export function AdminOffersPage() {
     <div className="w-full max-w-5xl mx-auto">
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-6">
         <div>
-          <h1 className="font-serif text-2xl sm:text-3xl font-bold text-[#08183A]">Offers</h1>
-          <p className="text-[#08183A]/40 text-xs font-sans mt-0.5">Manage promotional offers</p>
+          <h1 className="font-serif text-2xl sm:text-3xl font-bold text-gray-900">Offers</h1>
+          <p className="text-gray-900/40 text-xs font-sans mt-0.5">Manage promotional offers</p>
         </div>
         <button onClick={handleAdd}
-          className="flex items-center gap-2 bg-[#08183A] hover:bg-[#D4AF37] text-white px-4 py-2.5 rounded-xl font-semibold transition-colors">
+          className="flex items-center gap-2 bg-brand-red text-white hover:bg-brand-orange text-white text-white px-4 py-2.5 rounded-xl font-semibold transition-colors">
           <Plus className="w-4 h-4" /> Create Offer
         </button>
       </div>
@@ -160,7 +160,7 @@ export function AdminOffersPage() {
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
         {offers.map((offer, i) => (
           <motion.div key={offer.id} initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: i * 0.05 }}
-            className="bg-white rounded-2xl border border-[#08183A]/10 p-5 shadow-sm relative overflow-hidden flex flex-col justify-between">
+            className="bg-white rounded-2xl border border-brand-red/10 p-5 shadow-sm relative overflow-hidden flex flex-col justify-between">
             {!offer.is_active && (
               <div className="absolute top-0 right-0 bg-red-100 text-red-600 text-[10px] font-bold px-3 py-1 rounded-bl-xl">INACTIVE</div>
             )}
@@ -171,19 +171,19 @@ export function AdminOffersPage() {
                   <span className="font-bold tracking-wider">{offer.title}</span>
                 </div>
                 <div className="flex gap-2">
-                  <button onClick={() => handleEdit(offer)} className="text-[#08183A] hover:bg-[#08183A]/10 p-1.5 rounded transition-colors"><Edit2 className="w-4 h-4" /></button>
+                  <button onClick={() => handleEdit(offer)} className="text-gray-900 hover:bg-brand-red text-white/10 p-1.5 rounded transition-colors"><Edit2 className="w-4 h-4" /></button>
                   <button onClick={() => handleDelete(offer.id)} className="text-red-500 hover:bg-red-50 p-1.5 rounded transition-colors"><Trash2 className="w-4 h-4" /></button>
                 </div>
               </div>
               
               <div className="space-y-2">
-                <p className="font-serif text-xl font-bold text-[#08183A]">
+                <p className="font-serif text-xl font-bold text-gray-900">
                   {parseFloat(offer.discount_percentage)}% OFF
                 </p>
               </div>
             </div>
-            <div className="mt-4 pt-4 border-t border-[#08183A]/10">
-               <button onClick={() => setApplyOfferId(offer.id)} className="w-full py-2 bg-gray-100 hover:bg-gray-200 rounded-lg text-sm font-semibold flex items-center justify-center gap-2 text-[#08183A] transition-colors">
+            <div className="mt-4 pt-4 border-t border-brand-red/10">
+               <button onClick={() => setApplyOfferId(offer.id)} className="w-full py-2 bg-gray-100 hover:bg-gray-200 rounded-lg text-sm font-semibold flex items-center justify-center gap-2 text-gray-900 transition-colors">
                  Apply Offer <ArrowRight className="w-4 h-4" />
                </button>
             </div>
@@ -194,33 +194,33 @@ export function AdminOffersPage() {
       {editOffer && (
         <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-[100] p-4">
           <div className="bg-white rounded-2xl w-full max-w-md overflow-hidden">
-            <div className="bg-white border-b border-[#08183A]/10 px-6 py-4 flex items-center justify-between">
-              <h2 className="font-serif text-xl font-bold text-[#08183A]">{isNew ? "Create" : "Edit"} Offer</h2>
-              <button onClick={() => setEditOffer(null)} className="text-[#08183A]/50 hover:text-[#08183A]">
+            <div className="bg-white border-b border-brand-red/10 px-6 py-4 flex items-center justify-between">
+              <h2 className="font-serif text-xl font-bold text-gray-900">{isNew ? "Create" : "Edit"} Offer</h2>
+              <button onClick={() => setEditOffer(null)} className="text-gray-900/50 hover:text-gray-900">
                 <X className="w-5 h-5" />
               </button>
             </div>
             <div className="p-6 space-y-4">
               <div>
-                <label className="text-xs font-sans font-semibold text-[#08183A]/70 mb-1 block">Offer Title</label>
+                <label className="text-xs font-sans font-semibold text-gray-900/70 mb-1 block">Offer Title</label>
                 <input value={formData.title} onChange={(e) => setFormData({ ...formData, title: e.target.value })}
                   placeholder="e.g. Diwali Special"
-                  className="w-full px-3 py-2 rounded-lg bg-[#FDF8F0] border border-[#08183A]/10 focus:outline-none" />
+                  className="w-full px-3 py-2 rounded-lg bg-[#FDF8F0] border border-brand-red/10 focus:outline-none" />
               </div>
               <div>
-                <label className="text-xs font-sans font-semibold text-[#08183A]/70 mb-1 block">Discount Percentage (%)</label>
+                <label className="text-xs font-sans font-semibold text-gray-900/70 mb-1 block">Discount Percentage (%)</label>
                 <input type="number" value={formData.discount_percentage} onChange={(e) => setFormData({ ...formData, discount_percentage: Number(e.target.value) })}
-                  className="w-full px-3 py-2 rounded-lg bg-[#FDF8F0] border border-[#08183A]/10 focus:outline-none" />
+                  className="w-full px-3 py-2 rounded-lg bg-[#FDF8F0] border border-brand-red/10 focus:outline-none" />
               </div>
               <div className="flex items-center gap-2 mt-4">
                 <input type="checkbox" id="offer_active" checked={formData.is_active} onChange={(e) => setFormData({ ...formData, is_active: e.target.checked })}
-                  className="w-4 h-4 text-[#08183A]" />
-                <label htmlFor="offer_active" className="text-sm font-sans font-semibold text-[#08183A] cursor-pointer">Active</label>
+                  className="w-4 h-4 text-gray-900" />
+                <label htmlFor="offer_active" className="text-sm font-sans font-semibold text-gray-900 cursor-pointer">Active</label>
               </div>
             </div>
-            <div className="border-t border-[#08183A]/10 px-6 py-4 flex gap-3">
-              <button onClick={() => setEditOffer(null)} className="flex-1 px-4 py-2 bg-[#FDF8F0] text-[#08183A] rounded-xl font-semibold">Cancel</button>
-              <button onClick={handleSave} disabled={saving} className="flex-1 px-4 py-2 bg-[#08183A] text-white rounded-xl font-semibold flex justify-center items-center gap-2">
+            <div className="border-t border-brand-red/10 px-6 py-4 flex gap-3">
+              <button onClick={() => setEditOffer(null)} className="flex-1 px-4 py-2 bg-[#FDF8F0] text-gray-900 rounded-xl font-semibold">Cancel</button>
+              <button onClick={handleSave} disabled={saving} className="flex-1 px-4 py-2 bg-brand-red text-white rounded-xl font-semibold flex justify-center items-center gap-2">
                 {saving ? "Saving..." : <><Save className="w-4 h-4" /> Save</>}
               </button>
             </div>
@@ -231,9 +231,9 @@ export function AdminOffersPage() {
       {applyOfferId && (
         <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-[100] p-4">
           <div className="bg-white rounded-2xl w-full max-w-lg overflow-hidden flex flex-col max-h-[90vh]">
-            <div className="bg-white border-b border-[#08183A]/10 px-6 py-4 flex items-center justify-between shrink-0">
-              <h2 className="font-serif text-xl font-bold text-[#08183A]">Apply Offer</h2>
-              <button onClick={() => { setApplyOfferId(null); setSelectedCategory(""); setSelectedProducts([]); }} className="text-[#08183A]/50 hover:text-[#08183A]">
+            <div className="bg-white border-b border-brand-red/10 px-6 py-4 flex items-center justify-between shrink-0">
+              <h2 className="font-serif text-xl font-bold text-gray-900">Apply Offer</h2>
+              <button onClick={() => { setApplyOfferId(null); setSelectedCategory(""); setSelectedProducts([]); }} className="text-gray-900/50 hover:text-gray-900">
                 <X className="w-5 h-5" />
               </button>
             </div>
@@ -241,13 +241,13 @@ export function AdminOffersPage() {
             <div className="p-6 overflow-y-auto">
               <div className="flex border-b border-gray-200 mb-4">
                 <button 
-                  className={`flex-1 py-2 font-semibold text-sm ${applyMode === 'category' ? 'border-b-2 border-[#08183A] text-[#08183A]' : 'text-gray-500 hover:text-gray-700'}`}
+                  className={`flex-1 py-2 font-semibold text-sm ${applyMode === 'category' ? 'border-b-2 border-brand-red text-gray-900' : 'text-gray-500 hover:text-gray-700'}`}
                   onClick={() => setApplyMode('category')}
                 >
                   By Category
                 </button>
                 <button 
-                  className={`flex-1 py-2 font-semibold text-sm ${applyMode === 'products' ? 'border-b-2 border-[#08183A] text-[#08183A]' : 'text-gray-500 hover:text-gray-700'}`}
+                  className={`flex-1 py-2 font-semibold text-sm ${applyMode === 'products' ? 'border-b-2 border-brand-red text-gray-900' : 'text-gray-500 hover:text-gray-700'}`}
                   onClick={() => setApplyMode('products')}
                 >
                   Specific Products
@@ -256,11 +256,11 @@ export function AdminOffersPage() {
 
               {applyMode === 'category' ? (
                 <div className="space-y-2">
-                  <label className="text-sm font-semibold block text-[#08183A]">Select Category</label>
+                  <label className="text-sm font-semibold block text-gray-900">Select Category</label>
                   <select 
                     value={selectedCategory} 
                     onChange={(e) => setSelectedCategory(e.target.value)}
-                    className="w-full px-3 py-2 rounded-lg bg-[#FDF8F0] border border-[#08183A]/10 focus:outline-none"
+                    className="w-full px-3 py-2 rounded-lg bg-[#FDF8F0] border border-brand-red/10 focus:outline-none"
                   >
                     <option value="">-- Choose Category --</option>
                     {categories.map(c => (
@@ -277,7 +277,7 @@ export function AdminOffersPage() {
                       placeholder="Search products..." 
                       value={searchQuery}
                       onChange={(e) => setSearchQuery(e.target.value)}
-                      className="w-full px-3 py-2 rounded-lg bg-[#FDF8F0] border border-[#08183A]/10 focus:outline-none text-sm"
+                      className="w-full px-3 py-2 rounded-lg bg-[#FDF8F0] border border-brand-red/10 focus:outline-none text-sm"
                     />
                   </div>
                   <div className="max-h-[300px] overflow-y-auto border border-gray-100 rounded-lg p-2 space-y-1">
@@ -287,7 +287,7 @@ export function AdminOffersPage() {
                           type="checkbox" 
                           checked={selectedProducts.includes(p.id)}
                           onChange={() => toggleProductSelection(p.id)}
-                          className="w-4 h-4 text-[#08183A]"
+                          className="w-4 h-4 text-gray-900"
                         />
                         <div className="flex items-center gap-2">
                           <img src={p.image_url} alt="" className="w-8 h-8 rounded object-cover" />
@@ -307,9 +307,9 @@ export function AdminOffersPage() {
               )}
             </div>
 
-            <div className="border-t border-[#08183A]/10 px-6 py-4 flex gap-3 shrink-0">
-              <button onClick={() => { setApplyOfferId(null); setSelectedCategory(""); setSelectedProducts([]); }} className="flex-1 px-4 py-2 bg-[#FDF8F0] text-[#08183A] rounded-xl font-semibold">Cancel</button>
-              <button onClick={handleApplyAction} className="flex-1 px-4 py-2 bg-[#08183A] text-white rounded-xl font-semibold">
+            <div className="border-t border-brand-red/10 px-6 py-4 flex gap-3 shrink-0">
+              <button onClick={() => { setApplyOfferId(null); setSelectedCategory(""); setSelectedProducts([]); }} className="flex-1 px-4 py-2 bg-[#FDF8F0] text-gray-900 rounded-xl font-semibold">Cancel</button>
+              <button onClick={handleApplyAction} className="flex-1 px-4 py-2 bg-brand-red text-white rounded-xl font-semibold">
                 Apply Offer
               </button>
             </div>

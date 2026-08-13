@@ -111,8 +111,8 @@ function AddressAutocomplete({ value, onChange, onSelect, mapsLoaded }) {
           {suggestions.map(s => (
             <li key={s.place_id}>
               <button type="button" onMouseDown={(e) => { e.preventDefault(); handleSelect(s); }}
-                className="w-full text-left px-4 py-3 text-sm text-gray-700 hover:bg-brand-gold/5 flex items-start gap-2.5 border-b border-gray-50 last:border-0">
-                <MapPin className="w-3.5 h-3.5 text-brand-gold shrink-0 mt-0.5" />
+                className="w-full text-left px-4 py-3 text-sm text-gray-700 hover:bg-brand-red text-white/5 flex items-start gap-2.5 border-b border-gray-50 last:border-0">
+                <MapPin className="w-3.5 h-3.5 text-brand-red shrink-0 mt-0.5" />
                 <div>
                   <span className="font-medium">{s.structured_formatting.main_text}</span>
                   <span className="text-gray-400 text-xs block">{s.structured_formatting.secondary_text}</span>
@@ -206,14 +206,14 @@ function AddressForm({ onClose, onSave, saving, mapsLoaded, initial }) {
 
         <label className="flex items-center gap-2.5 mt-4 cursor-pointer">
           <div onClick={() => setForm(f => ({ ...f, is_default: !f.is_default }))}
-            className={`w-5 h-5 rounded-md border-2 flex items-center justify-center transition-colors ${form.is_default ? 'bg-brand-gold border-brand-gold' : 'border-gray-300'}`}>
+            className={`w-5 h-5 rounded-md border-2 flex items-center justify-center transition-colors ${form.is_default ? 'bg-brand-red text-white border-brand-red/10' : 'border-gray-300'}`}>
             {form.is_default && <Check className="w-3 h-3 text-white" />}
           </div>
           <span className="text-sm text-gray-700 font-medium">Set as default address</span>
         </label>
 
         <button onClick={handleSubmit} disabled={saving}
-          className="w-full mt-5 bg-brand-gold text-white font-bold py-3.5 rounded-xl text-sm hover:bg-gray-600 transition-colors disabled:opacity-60">
+          className="w-full mt-5 bg-brand-red text-white font-bold py-3.5 rounded-xl text-sm hover:bg-gray-600 transition-colors disabled:opacity-60">
           {saving ? 'Saving...' : initial ? 'Update Address' : 'Save Address'}
         </button>
       </div>
@@ -260,9 +260,9 @@ export function MyAddressesPage() {
       <Header title="My Addresses" />
       <div className="max-w-4xl mx-auto px-4 py-8">
         <div className="flex items-center justify-between mb-6">
-          <h2 className="text-2xl font-serif font-bold text-[#08183A]">Saved Addresses</h2>
+          <h2 className="text-2xl font-serif font-bold text-gray-900">Saved Addresses</h2>
           <button onClick={() => { setEditingAddress(null); setShowForm(true); }}
-            className="flex items-center gap-2 text-sm font-bold text-white bg-brand-gold px-4 py-2.5 rounded-xl hover:bg-gray-600 transition-colors shadow-sm">
+            className="flex items-center gap-2 text-sm font-bold text-white bg-brand-red text-white px-4 py-2.5 rounded-xl hover:bg-gray-600 transition-colors shadow-sm">
             <Plus className="w-4 h-4" /> Add New Address
           </button>
         </div>
@@ -276,7 +276,7 @@ export function MyAddressesPage() {
               <p className="text-gray-500 font-semibold">No saved addresses</p>
               <p className="text-xs text-gray-400">Add an address for faster checkout</p>
               <button onClick={() => setShowForm(true)}
-                className="bg-brand-gold text-white text-sm font-bold px-6 py-2.5 rounded-xl hover:bg-gray-600 transition-colors">
+                className="bg-brand-red text-white text-sm font-bold px-6 py-2.5 rounded-xl hover:bg-gray-600 transition-colors">
                 Add Address
               </button>
             </div>
@@ -285,7 +285,7 @@ export function MyAddressesPage() {
               <div key={addr.id} className="bg-white rounded-2xl shadow-sm border border-gray-100 p-4 relative">
                 <div className="flex items-start gap-3">
                   <div className="w-9 h-9 bg-gray-50 rounded-xl flex items-center justify-center shrink-0 mt-0.5">
-                    <Home className="w-4 h-4 text-brand-gold" />
+                    <Home className="w-4 h-4 text-brand-red" />
                   </div>
                   <div className="flex-1 pr-20">
                     <div className="flex items-center gap-2 flex-wrap">

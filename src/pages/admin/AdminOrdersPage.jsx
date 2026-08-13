@@ -6,7 +6,7 @@ import logoUrl from '../../assets/logo.png';
 
 const BACKEND_URL = import.meta.env.VITE_BACKEND_URL || "http://localhost:5000/api";
 const FROM_ADDRESS = {
-  name: "Houra Jewels",
+  name: "Manikanta Super Market",
   line1: "1-1-738, Vinayaka temple road",
   city: "Koratla",
   state: "Telangana",
@@ -43,7 +43,7 @@ function BalanceDuePanel({ order, onUpdate }) {
   const sendWhatsApp = (link) => {
     const msg = encodeURIComponent(
       `Hi ${addr.name || order.user_name || 'Customer'}, your order #${order.order_number || order.id} has been updated.\n\n` +
-      `A balance of *$${balance.toFixed(2)}* is due.\n\nPay securely here: ${link}`
+      `A balance of *₹${balance.toFixed(2)}* is due.\n\nPay securely here: ${link}`
     );
     window.open(`https://wa.me/${phone}?text=${msg}`, '_blank');
   };
@@ -97,7 +97,7 @@ function BalanceDuePanel({ order, onUpdate }) {
           <a href={order.payment_link_url} target="_blank" rel="noopener noreferrer"
             className="text-[10px] text-blue-600 underline truncate flex-1">{order.payment_link_url}</a>
           <button onClick={() => navigator.clipboard.writeText(order.payment_link_url)}
-            className="text-[10px] font-bold text-[#08183A] bg-gray-100 hover:bg-gray-200 px-2 py-1 rounded transition-colors shrink-0">Copy</button>
+            className="text-[10px] font-bold text-gray-900 bg-gray-100 hover:bg-gray-200 px-2 py-1 rounded transition-colors shrink-0">Copy</button>
         </div>
       ) : (
         <p className="text-[10px] text-amber-600">No payment link yet — click “New Link” to generate one.</p>
@@ -116,7 +116,7 @@ function BalanceDuePanel({ order, onUpdate }) {
           <Link2 className="w-3.5 h-3.5" /> {order.payment_link_url ? 'New Link' : 'Generate Link'}
         </button>
         <button onClick={() => setShowMarkPaid(p => !p)}
-          className="flex items-center gap-1.5 bg-[#08183A] hover:bg-[#08183A]/80 text-white text-xs font-bold px-3 py-2 rounded-lg transition-colors">
+          className="flex items-center gap-1.5 bg-brand-red text-white hover:bg-brand-red text-white/80 text-white text-xs font-bold px-3 py-2 rounded-lg transition-colors">
           ✓ Mark as Paid
         </button>
       </div>
@@ -124,18 +124,18 @@ function BalanceDuePanel({ order, onUpdate }) {
       {/* Mark paid inline form */}
       {showMarkPaid && (
         <div className="bg-white border border-amber-200 rounded-lg p-3 space-y-2">
-          <p className="text-xs font-bold text-[#08183A]">How was the balance paid?</p>
+          <p className="text-xs font-bold text-gray-900">How was the balance paid?</p>
           <div className="flex flex-wrap gap-2">
-            {['cash', 'upi', 'bank_transfer', 'stripe', 'other'].map(m => (
+            {['cash', 'upi', 'bank_transfer', 'razorpay', 'other'].map(m => (
               <button key={m} onClick={() => setMarkMethod(m)}
                 className={`text-xs font-bold px-3 py-1.5 rounded-lg border transition-colors capitalize ${
-                  markMethod === m ? 'bg-[#08183A] text-white border-[#08183A]' : 'bg-white text-[#08183A]/60 border-[#08183A]/20 hover:border-[#08183A]/40'
+                  markMethod === m ? 'bg-brand-red text-white border-brand-red' : 'bg-white text-gray-900/60 border-brand-red/20 hover:border-brand-red/40'
                 }`}>{m.replace('_', ' ')}</button>
             ))}
           </div>
           <button onClick={handleMarkPaid} disabled={busy}
             className="w-full bg-green-600 hover:bg-green-700 text-white text-xs font-bold py-2 rounded-lg transition-colors disabled:opacity-50">
-            {busy ? 'Saving...' : `Confirm — $${balance.toFixed(2)} paid via ${markMethod.replace('_', ' ')}`}
+            {busy ? 'Saving...' : `Confirm — ₹${balance.toFixed(2)} paid via ${markMethod.replace('_', ' ')}`}
           </button>
         </div>
       )}
@@ -258,7 +258,7 @@ function EditOrderModal({ order, onClose, onSaved }) {
   const sendPaymentLinkWhatsApp = (link) => {
     const addr = parseO(order.address);
     const phone = (customerPhone || addr.mobile || '').replace(/\D/g, '');
-    const msg = encodeURIComponent(`Hi ${addr.name || order.user_name || 'Customer'}, your order #${order.order_number || order.id} has been updated. A balance of $${diff.toFixed(2)} is due. Please pay here: ${link}`);
+    const msg = encodeURIComponent(`Hi ${addr.name || order.user_name || 'Customer'}, your order #${order.order_number || order.id} has been updated. A balance of ₹${diff.toFixed(2)} is due. Please pay here: ${link}`);
     window.open(`https://wa.me/${phone}?text=${msg}`, '_blank');
   };
 
@@ -272,7 +272,7 @@ function EditOrderModal({ order, onClose, onSaved }) {
             <div className="w-8 h-8 bg-blue-100 rounded-full flex items-center justify-center">
               <Pencil className="w-4 h-4 text-blue-600" />
             </div>
-            <h2 className="font-serif text-lg font-bold text-[#08183A]">Edit Order #{order.order_number || order.id}</h2>
+            <h2 className="font-serif text-lg font-bold text-gray-900">Edit Order MSM - {order.order_number || order.id}</h2>
           </div>
           <button onClick={onClose} className="text-gray-400 hover:text-gray-700"><X className="w-5 h-5" /></button>
         </div>
@@ -291,7 +291,7 @@ function EditOrderModal({ order, onClose, onSaved }) {
                   <div className="w-14 h-14 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-3">
                     <RefreshCcw className="w-7 h-7 text-green-600" />
                   </div>
-                  <h3 className="font-bold text-lg text-[#08183A]">Order Updated!</h3>
+                  <h3 className="font-bold text-lg text-gray-900">Order Updated!</h3>
                   <p className="text-sm text-gray-500 mt-1">New total: <strong>${result.new_total?.toFixed(2)}</strong></p>
                 </div>
                 {result.balance_due > 0 && (
@@ -308,7 +308,7 @@ function EditOrderModal({ order, onClose, onSaved }) {
                           <MessageCircle className="w-4 h-4" /> Send Payment Link via WhatsApp
                         </button>
                         <button onClick={() => { navigator.clipboard.writeText(result.payment_link_url); }}
-                          className="w-full flex items-center justify-center gap-2 bg-[#08183A] text-white py-2.5 rounded-xl text-xs font-bold transition-colors">
+                          className="w-full flex items-center justify-center gap-2 bg-brand-red text-white py-2.5 rounded-xl text-xs font-bold transition-colors">
                           <Link2 className="w-4 h-4" /> Copy Payment Link
                         </button>
                       </>
@@ -322,7 +322,7 @@ function EditOrderModal({ order, onClose, onSaved }) {
                   </div>
                 )}
                 {diff === 0 && <p className="text-center text-sm text-gray-500">No price change — order updated.</p>}
-                <button onClick={onClose} className="w-full bg-[#08183A] text-white font-bold py-2.5 rounded-xl hover:bg-[#08183A]/80 transition-colors">Done</button>
+                <button onClick={onClose} className="w-full bg-brand-red text-white font-bold py-2.5 rounded-xl hover:bg-brand-red text-white/80 transition-colors">Done</button>
               </>
             )}
           </div>
@@ -331,7 +331,7 @@ function EditOrderModal({ order, onClose, onSaved }) {
 
             {/* Items */}
             <div>
-              <p className="text-[10px] font-bold text-[#08183A]/40 uppercase tracking-wider mb-3">Items</p>
+              <p className="text-[10px] font-bold text-gray-900/40 uppercase tracking-wider mb-3">Items</p>
               <div className="space-y-2">
                 {items.map((item, idx) => {
                   const price = (item.variant?.price || item.product?.price || 0);
@@ -342,23 +342,23 @@ function EditOrderModal({ order, onClose, onSaved }) {
                     ? variants.flatMap(v => (v.sizes || []).map(s => ({ size: s.size, price: Number(s.our_price) || Number(s.price) || 0, color: v.color })))
                     : legacySizes.map(s => ({ size: s.size, price: Number(s.our_price) || Number(s.price) || 0 }));
                   return (
-                    <div key={idx} className="flex gap-3 items-start p-3 bg-[#FDF8F0] rounded-xl border border-[#08183A]/10">
+                    <div key={idx} className="flex gap-3 items-start p-3 bg-[#FDF8F0] rounded-xl border border-brand-red/10">
                       {img && <img src={img} alt="" className="w-10 h-10 object-contain rounded-lg border border-gray-100 shrink-0" />}
                       <div className="flex-1 min-w-0 space-y-1.5">
-                        <p className="text-sm font-bold text-[#08183A] truncate">{item.product?.name}{item.variant?.color ? ` — ${item.variant.color}` : ''}</p>
+                        <p className="text-sm font-bold text-gray-900 truncate">{item.product?.name}{item.variant?.color ? ` — ${item.variant.color}` : ''}</p>
                         <div className="flex flex-wrap gap-2">
                           {allSizes.length > 0 && (
                             <select value={item.variant?.size || ''} onChange={e => updateVariantSize(idx, e.target.value)}
-                              className="text-xs border border-[#08183A]/20 rounded-lg px-2 py-1 bg-white text-[#08183A] focus:outline-none">
+                              className="text-xs border border-brand-red/20 rounded-lg px-2 py-1 bg-white text-gray-900 focus:outline-none">
                               {allSizes.map(s => <option key={s.size} value={s.size}>{s.size} — ${s.price}</option>)}
                             </select>
                           )}
                           <div className="flex items-center gap-1">
                             <span className="text-xs text-gray-500">Qty:</span>
                             <input type="number" min={1} value={item.qty} onChange={e => updateQty(idx, e.target.value)}
-                              className="w-14 text-xs border border-[#08183A]/20 rounded-lg px-2 py-1 bg-white text-[#08183A] focus:outline-none" />
+                              className="w-14 text-xs border border-brand-red/20 rounded-lg px-2 py-1 bg-white text-gray-900 focus:outline-none" />
                           </div>
-                          <span className="text-xs font-bold text-[#D4AF37] self-center">${(price * item.qty).toFixed(2)}</span>
+                          <span className="text-xs font-bold text-brand-orange self-center">${(price * item.qty).toFixed(2)}</span>
                         </div>
                       </div>
                       <div className="flex flex-col gap-1 shrink-0">
@@ -383,7 +383,7 @@ function EditOrderModal({ order, onClose, onSaved }) {
                     <Search className="w-4 h-4 text-blue-400 shrink-0" />
                     <input autoFocus value={productSearch} onChange={e => setProductSearch(e.target.value)}
                       placeholder={`Replace item ${replacingIdx + 1} — search products...`}
-                      className="flex-1 bg-transparent text-sm text-[#08183A] placeholder:text-gray-400 focus:outline-none" />
+                      className="flex-1 bg-transparent text-sm text-gray-900 placeholder:text-gray-400 focus:outline-none" />
                     <button onClick={() => setReplacingIdx(null)} className="text-gray-400 hover:text-gray-600"><X className="w-4 h-4" /></button>
                   </div>
                   {filteredProducts.length > 0 && (
@@ -395,7 +395,7 @@ function EditOrderModal({ order, onClose, onSaved }) {
                             className="w-full flex items-center gap-3 px-3 py-2.5 hover:bg-blue-50 transition-colors text-left">
                             {img && <img src={img} alt="" className="w-8 h-8 object-contain rounded border border-gray-100 shrink-0" />}
                             <div className="flex-1 min-w-0">
-                              <p className="text-sm font-semibold text-[#08183A] truncate">{p.name}</p>
+                              <p className="text-sm font-semibold text-gray-900 truncate">{p.name}</p>
                               <p className="text-xs text-gray-500">${resolvePrice(p).toFixed(2)}</p>
                             </div>
                           </button>
@@ -412,13 +412,13 @@ function EditOrderModal({ order, onClose, onSaved }) {
 
             {/* Shipping Address */}
             <div>
-              <p className="text-[10px] font-bold text-[#08183A]/40 uppercase tracking-wider mb-3">Shipping Address</p>
+              <p className="text-[10px] font-bold text-gray-900/40 uppercase tracking-wider mb-3">Shipping Address</p>
               <div className="grid grid-cols-2 gap-2">
                 {[['name','Full Name'],['line1','Address Line 1'],['line2','Line 2 (optional)'],['city','City'],['state','State'],['pincode','ZIP']].map(([field, label]) => (
                   <div key={field} className={field === 'line1' ? 'col-span-2' : ''}>
-                    <label className="text-[10px] font-bold text-[#08183A]/50 uppercase tracking-wider block mb-1">{label}</label>
+                    <label className="text-[10px] font-bold text-gray-900/50 uppercase tracking-wider block mb-1">{label}</label>
                     <input value={address[field] || ''} onChange={e => setAddress(a => ({ ...a, [field]: e.target.value }))}
-                      className="w-full text-sm border border-[#08183A]/15 rounded-xl px-3 py-2 bg-[#FDF8F0] text-[#08183A] focus:outline-none focus:border-[#08183A]/30" />
+                      className="w-full text-sm border border-brand-red/15 rounded-xl px-3 py-2 bg-[#FDF8F0] text-gray-900 focus:outline-none focus:border-brand-red/30" />
                   </div>
                 ))}
               </div>
@@ -426,17 +426,17 @@ function EditOrderModal({ order, onClose, onSaved }) {
 
             {/* Customer Phone */}
             <div>
-              <p className="text-[10px] font-bold text-[#08183A]/40 uppercase tracking-wider mb-2">Customer Phone</p>
+              <p className="text-[10px] font-bold text-gray-900/40 uppercase tracking-wider mb-2">Customer Phone</p>
               <input value={customerPhone} onChange={e => setCustomerPhone(e.target.value)}
                 placeholder="+1 555 000 0000"
-                className="w-full text-sm border border-[#08183A]/15 rounded-xl px-3 py-2 bg-[#FDF8F0] text-[#08183A] focus:outline-none focus:border-[#08183A]/30" />
+                className="w-full text-sm border border-brand-red/15 rounded-xl px-3 py-2 bg-[#FDF8F0] text-gray-900 focus:outline-none focus:border-brand-red/30" />
             </div>
 
             {/* Note */}
             <div>
-              <p className="text-[10px] font-bold text-[#08183A]/40 uppercase tracking-wider mb-2">Edit Note (internal)</p>
+              <p className="text-[10px] font-bold text-gray-900/40 uppercase tracking-wider mb-2">Edit Note (internal)</p>
               <input value={note} onChange={e => setNote(e.target.value)} placeholder="Reason for edit..."
-                className="w-full text-sm border border-[#08183A]/15 rounded-xl px-3 py-2 bg-[#FDF8F0] text-[#08183A] focus:outline-none focus:border-[#08183A]/30" />
+                className="w-full text-sm border border-brand-red/15 rounded-xl px-3 py-2 bg-[#FDF8F0] text-gray-900 focus:outline-none focus:border-brand-red/30" />
             </div>
 
             {/* Price diff summary */}
@@ -444,20 +444,20 @@ function EditOrderModal({ order, onClose, onSaved }) {
               diff > 0 ? 'bg-amber-50 border-amber-200' : diff < 0 ? 'bg-green-50 border-green-200' : 'bg-gray-50 border-gray-200'
             }`}>
               <div>
-                <p className="text-xs font-bold text-[#08183A]">New Total: ${newTotal.toFixed(2)}</p>
+                <p className="text-xs font-bold text-gray-900">New Total: ${newTotal.toFixed(2)}</p>
                 <p className="text-[10px] text-gray-500 mt-0.5">Was: ${oldTotal.toFixed(2)}</p>
               </div>
               {diff !== 0 && (
                 <span className={`text-sm font-bold ${ diff > 0 ? 'text-amber-700' : 'text-green-700' }`}>
-                  {diff > 0 ? `+$${diff.toFixed(2)} balance due` : `-$${Math.abs(diff).toFixed(2)} refund`}
+                  {diff > 0 ? `+₹${diff.toFixed(2)} balance due` : `-₹${Math.abs(diff).toFixed(2)} refund`}
                 </span>
               )}
             </div>
 
             <div className="flex gap-3">
-              <button onClick={onClose} className="flex-1 px-4 py-2.5 bg-gray-100 text-[#08183A] rounded-xl font-semibold hover:bg-gray-200 transition-colors">Cancel</button>
+              <button onClick={onClose} className="flex-1 px-4 py-2.5 bg-gray-100 text-gray-900 rounded-xl font-semibold hover:bg-gray-200 transition-colors">Cancel</button>
               <button onClick={handleSave} disabled={saving || items.length === 0}
-                className="flex-1 px-4 py-2.5 bg-[#08183A] text-white rounded-xl font-bold hover:bg-[#08183A]/80 transition-colors disabled:opacity-50 flex items-center justify-center gap-2">
+                className="flex-1 px-4 py-2.5 bg-brand-red text-white rounded-xl font-bold hover:bg-brand-red text-white/80 transition-colors disabled:opacity-50 flex items-center justify-center gap-2">
                 {saving ? <><div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />Saving...</> : 'Save Changes'}
               </button>
             </div>
@@ -549,7 +549,7 @@ function RefundModal({ order, refunding, refundResult, onConfirm, onClose }) {
             <div className="w-8 h-8 bg-red-100 rounded-full flex items-center justify-center">
               <AlertTriangle className="w-4 h-4 text-red-600" />
             </div>
-            <h2 className="font-serif text-lg font-bold text-[#08183A]">Cancel Order</h2>
+            <h2 className="font-serif text-lg font-bold text-gray-900">Cancel Order</h2>
           </div>
           <button onClick={onClose} className="text-gray-400 hover:text-gray-700"><X className="w-5 h-5" /></button>
         </div>
@@ -561,7 +561,7 @@ function RefundModal({ order, refunding, refundResult, onConfirm, onClose }) {
                 <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
                   <RefreshCcw className="w-8 h-8 text-green-600" />
                 </div>
-                <h3 className="font-bold text-lg text-[#08183A] mb-1">
+                <h3 className="font-bold text-lg text-gray-900 mb-1">
                   {refundResult.partial ? 'Partially Cancelled!' : 'Order Cancelled!'}
                 </h3>
                 {cancelType === 'refund' ? (
@@ -575,28 +575,28 @@ function RefundModal({ order, refunding, refundResult, onConfirm, onClose }) {
                   <span className="block mt-1 text-blue-600 font-medium">{refundResult.remainingItems} item(s) remain active in the order.</span>
                 )}
                 {refundResult.refundId && <p className="text-xs text-gray-400 font-mono">ID: {refundResult.refundId}</p>}
-                <button onClick={onClose} className="mt-5 w-full bg-[#08183A] text-white font-bold py-2.5 rounded-xl hover:bg-[#08183A]/80 transition-colors">Done</button>
+                <button onClick={onClose} className="mt-5 w-full bg-brand-red text-white font-bold py-2.5 rounded-xl hover:bg-brand-red text-white/80 transition-colors">Done</button>
               </>
             ) : (
               <>
                 <div className="w-16 h-16 bg-red-100 rounded-full flex items-center justify-center mx-auto mb-4">
                   <AlertTriangle className="w-8 h-8 text-red-500" />
                 </div>
-                <h3 className="font-bold text-lg text-[#08183A] mb-1">Cancellation Failed</h3>
+                <h3 className="font-bold text-lg text-gray-900 mb-1">Cancellation Failed</h3>
                 <p className="text-sm text-red-500 mb-4">{refundResult.error}</p>
-                <button onClick={onClose} className="w-full bg-gray-100 text-[#08183A] font-bold py-2.5 rounded-xl">Close</button>
+                <button onClick={onClose} className="w-full bg-gray-100 text-gray-900 font-bold py-2.5 rounded-xl">Close</button>
               </>
             )}
           </div>
         ) : (
           <div className="p-6 space-y-5 overflow-y-auto">
-            <p className="text-sm text-gray-500">Order <strong>#{order.order_number || order.id}</strong></p>
+            <p className="text-sm text-gray-500">Order <strong>MSM - {order.order_number || order.id}</strong></p>
 
             {/* Cancel Type */}
             <div>
-              <p className="text-[10px] font-bold text-[#08183A]/40 uppercase tracking-wider mb-2">Cancellation Type</p>
+              <p className="text-[10px] font-bold text-gray-900/40 uppercase tracking-wider mb-2">Cancellation Type</p>
               <select value={cancelType} onChange={e => setCancelType(e.target.value)}
-                className="w-full border border-gray-200 rounded-xl px-3 py-2 text-sm text-[#08183A] bg-gray-50 focus:outline-none">
+                className="w-full border border-gray-200 rounded-xl px-3 py-2 text-sm text-gray-900 bg-gray-50 focus:outline-none">
                 <option value="refund">Cancel & Refund Payment</option>
                 <option value="no_refund">Cancel Without Refund</option>
                 <option value="coupon_cancel">Cancel Without Refund (Discount Coupon)</option>
@@ -605,7 +605,7 @@ function RefundModal({ order, refunding, refundResult, onConfirm, onClose }) {
 
             {/* Items */}
             <div className="space-y-2">
-              <p className="text-[10px] font-bold text-[#08183A]/40 uppercase tracking-wider">Select Items to Cancel</p>
+              <p className="text-[10px] font-bold text-gray-900/40 uppercase tracking-wider">Select Items to Cancel</p>
               {items.map((item, idx) => {
                 const price = (item.variant?.price || item.product?.price || 0) * (selectedQty[idx] || 0);
                 const variantColor = (item.variant?.color || '').toLowerCase().trim();
@@ -619,11 +619,11 @@ function RefundModal({ order, refunding, refundResult, onConfirm, onClose }) {
                   }`}>
                     {img && <img src={img} alt="" className="w-10 h-10 object-contain rounded-lg border border-gray-100 shrink-0" />}
                     <div className="flex-1 min-w-0">
-                      <p className="text-sm font-bold text-[#08183A] truncate">{item.product?.name || 'Product'}{item.variant?.color ? ` — ${item.variant.color}` : ''}</p>
+                      <p className="text-sm font-bold text-gray-900 truncate">{item.product?.name || 'Product'}{item.variant?.color ? ` — ${item.variant.color}` : ''}</p>
                       <p className="text-xs text-gray-500">{item.variant?.size || 'Standard'} {itemCode ? ` • #${itemCode}` : ''}</p>
                     </div>
                     <div className="flex flex-col items-end gap-1">
-                      <span className="font-bold text-[#08183A] text-sm">${price.toFixed(2)}</span>
+                      <span className="font-bold text-gray-900 text-sm">${price.toFixed(2)}</span>
                       <div className="flex items-center gap-1 bg-white border border-gray-200 rounded px-1">
                         <span className="text-[10px] text-gray-400">Cancel Qty:</span>
                         <input type="number" min="0" max={item.qty} value={selectedQty[idx]} 
@@ -642,37 +642,37 @@ function RefundModal({ order, refunding, refundResult, onConfirm, onClose }) {
               <div className="space-y-4">
                 <div className="space-y-2">
                   {isFullCancel && shippingDisplay > 0 && (
-                    <label className="flex items-center justify-between p-3 bg-[#FDF8F0] rounded-xl border border-[#08183A]/10 cursor-pointer">
+                    <label className="flex items-center justify-between p-3 bg-[#FDF8F0] rounded-xl border border-brand-red/10 cursor-pointer">
                       <div className="flex items-center gap-3">
                         <input type="checkbox" checked={refundShipping} onChange={e => setRefundShipping(e.target.checked)} className="w-4 h-4 accent-[#08183A]" />
-                        <span className="text-sm font-bold text-[#08183A]">Refund Shipping Fee</span>
+                        <span className="text-sm font-bold text-gray-900">Refund Shipping Fee</span>
                       </div>
-                      <span className="font-bold text-[#08183A]">${shippingDisplay.toFixed(2)}</span>
+                      <span className="font-bold text-gray-900">${shippingDisplay.toFixed(2)}</span>
                     </label>
                   )}
                   {taxDisplay > 0 && (
-                    <label className="flex items-center justify-between p-3 bg-[#FDF8F0] rounded-xl border border-[#08183A]/10 cursor-pointer">
+                    <label className="flex items-center justify-between p-3 bg-[#FDF8F0] rounded-xl border border-brand-red/10 cursor-pointer">
                       <div className="flex items-center gap-3">
                         <input type="checkbox" checked={refundTax} onChange={e => setRefundTax(e.target.checked)} className="w-4 h-4 accent-[#08183A]" />
-                        <span className="text-sm font-bold text-[#08183A]">Refund Tax {isFullCancel ? '' : '(Prorated)'}</span>
+                        <span className="text-sm font-bold text-gray-900">Refund Tax {isFullCancel ? '' : '(Prorated)'}</span>
                       </div>
-                      <span className="font-bold text-[#08183A]">${(isFullCancel ? taxDisplay : proratedTax).toFixed(2)}</span>
+                      <span className="font-bold text-gray-900">${(isFullCancel ? taxDisplay : proratedTax).toFixed(2)}</span>
                     </label>
                   )}
                 </div>
 
                 {/* Transaction/Cancellation Charge */}
                 <div className="p-3 bg-gray-50 border border-gray-200 rounded-xl space-y-2">
-                  <p className="text-[10px] font-bold text-[#08183A]/40 uppercase tracking-wider">Deduct Cancellation Charge</p>
+                  <p className="text-[10px] font-bold text-gray-900/40 uppercase tracking-wider">Deduct Cancellation Charge</p>
                   <div className="flex gap-2">
                     <select value={chargeType} onChange={e => setChargeType(e.target.value)}
-                      className="border border-gray-200 rounded-lg px-2 py-1.5 text-xs text-[#08183A] bg-white focus:outline-none w-24">
-                      <option value="flat">Flat ($)</option>
+                      className="border border-gray-200 rounded-lg px-2 py-1.5 text-xs text-gray-900 bg-white focus:outline-none w-24">
+                      <option value="flat">Flat (₹)</option>
                       <option value="percent">Percent (%)</option>
                     </select>
                     <input type="number" min="0" step="0.01" value={chargeValue} onChange={e => setChargeValue(e.target.value)}
                       placeholder="0.00"
-                      className="flex-1 border border-gray-200 rounded-lg px-3 py-1.5 text-sm text-[#08183A] bg-white focus:outline-none" />
+                      className="flex-1 border border-gray-200 rounded-lg px-3 py-1.5 text-sm text-gray-900 bg-white focus:outline-none" />
                   </div>
                   {transactionCharge > 0 && (
                     <p className="text-xs text-amber-600 font-semibold text-right">Deducting: ${transactionCharge.toFixed(2)}</p>
@@ -697,7 +697,7 @@ function RefundModal({ order, refunding, refundResult, onConfirm, onClose }) {
             </div>
 
             <div className="flex gap-3">
-              <button onClick={onClose} className="flex-1 px-4 py-2.5 bg-gray-100 text-[#08183A] rounded-xl font-semibold hover:bg-gray-200 transition-colors">Abort</button>
+              <button onClick={onClose} className="flex-1 px-4 py-2.5 bg-gray-100 text-gray-900 rounded-xl font-semibold hover:bg-gray-200 transition-colors">Abort</button>
               <button onClick={handleConfirm} disabled={refunding || !anySelected || (cancelType === 'refund' && refundTotal <= 0 && selectedItemsTotal > 0)}
                 className={`flex-1 px-4 py-2.5 text-white rounded-xl font-bold transition-colors disabled:opacity-50 flex items-center justify-center gap-2 ${
                   cancelType === 'refund' ? 'bg-red-600 hover:bg-red-700' : 'bg-amber-600 hover:bg-amber-700'
@@ -920,8 +920,8 @@ export function AdminOrdersPage() {
         </td>
         <td style="padding:10px 12px;border-bottom:1px solid #F6EFEF;vertical-align:middle;text-align:center;font-size:9pt;">${escapeHtml(item.variant?.size || item.size || '—')}</td>
         <td style="padding:10px 12px;border-bottom:1px solid #F6EFEF;vertical-align:middle;text-align:center;font-size:9pt;">${item.qty}</td>
-        <td style="padding:10px 12px;border-bottom:1px solid #F6EFEF;vertical-align:middle;text-align:right;font-size:9pt;font-weight:600; ${isCancelled ? 'text-decoration: line-through;' : ''}">$${(item.variant?.price || item.product?.price || item.price || 0).toFixed(2)}</td>
-        <td style="padding:10px 12px;border-bottom:1px solid #F6EFEF;vertical-align:middle;text-align:right;font-size:9pt;font-weight:700;color:#08183A; ${isCancelled ? 'text-decoration: line-through;' : ''}">$${((item.variant?.price || item.product?.price || item.price || 0) * item.qty).toFixed(2)}</td>
+        <td style="padding:10px 12px;border-bottom:1px solid #F6EFEF;vertical-align:middle;text-align:right;font-size:9pt;font-weight:600; ${isCancelled ? 'text-decoration: line-through;' : ''}">₹${(item.variant?.price || item.product?.price || item.price || 0).toFixed(2)}</td>
+        <td style="padding:10px 12px;border-bottom:1px solid #F6EFEF;vertical-align:middle;text-align:right;font-size:9pt;font-weight:700;color:#08183A; ${isCancelled ? 'text-decoration: line-through;' : ''}">₹${((item.variant?.price || item.product?.price || item.price || 0) * item.qty).toFixed(2)}</td>
       </tr>`;
     };
 
@@ -950,7 +950,7 @@ export function AdminOrdersPage() {
 <table style="width:100%;border-collapse:collapse;border-bottom:3px solid #08183A;padding-bottom:16px;margin-bottom:20px;">
   <tr>
     <td style="vertical-align:middle;width:50%;">
-      <img src="${new URL(logoUrl, window.location.href).href}" style="height:64px;width:auto;object-fit:contain;" alt="Houra Jewels" />
+      <img src="${new URL(logoUrl, window.location.href).href}" style="height:64px;width:auto;object-fit:contain;" alt="Manikanta Super Market" />
     </td>
     <td style="vertical-align:top;text-align:right;">
       <div style="font-size:20pt;font-weight:900;color:#08183A;letter-spacing:-0.5px;">INVOICE</div>
@@ -959,7 +959,7 @@ export function AdminOrdersPage() {
         <strong>Date:</strong> ${orderDate}<br>
         <strong>Order Type:</strong> <span style="font-weight:700;color:${isPickup ? '#1d4ed8' : '#059669'};">${isPickup ? '🏪 Store Pickup' : '🚚 Shipping'}</span><br>
         <strong>Status:</strong> ${escapeHtml(order.status)}
-        ${order.stripe_payment_intent_id ? `<br><strong>Transaction ID:</strong> <span style="font-family:monospace;font-size:8pt;color:#555;">${escapeHtml(order.stripe_payment_intent_id)}</span>` : ''}
+        ${order.razorpay_payment_id ? `<br><strong>Transaction ID:</strong> <span style="font-family:monospace;font-size:8pt;color:#555;">${escapeHtml(order.razorpay_payment_id)}</span>` : ''}
       </div>
     </td>
   </tr>
@@ -970,10 +970,10 @@ export function AdminOrdersPage() {
     <td style="width:${isPickup ? '100%' : '50%'};vertical-align:top;padding:12px;border:1px solid #e8d5b0;background:#FFFDFD;border-radius:4px;">
       <div style="font-size:9pt;font-weight:700;color:#08183A;text-transform:uppercase;letter-spacing:0.5px;border-bottom:1px solid #e8d5b0;padding-bottom:5px;margin-bottom:8px;">From</div>
       <div style="font-size:9.5pt;color:#555;line-height:1.6;">
-        <strong style="color:#08183A;">Houra Jewels</strong><br>
+        <strong style="color:#08183A;">Manikanta Super Market</strong><br>
         Texas, 76227<br>
-        Phone: +1 940-465-6563<br>
-        Email: support@hourajewels.com
+        Phone: +91 98660 48155<br>
+        Email: mani.worriers@gmail.com
       </div>
     </td>
     ${!isPickup ? `
@@ -1009,19 +1009,19 @@ export function AdminOrdersPage() {
     <td style="width:55%;"></td>
     <td style="width:45%;">
       <table style="width:100%;border-collapse:collapse;">
-        <tr><td style="padding:7px 12px;text-align:right;color:#555;font-size:9.5pt;border-bottom:1px solid #F6EFEF;">Subtotal</td><td style="padding:7px 12px;text-align:right;font-weight:600;font-size:9.5pt;border-bottom:1px solid #F6EFEF;width:110px;">$${subtotal.toFixed(2)}</td></tr>
-        ${discountAmt > 0 ? `<tr><td style="padding:7px 12px;text-align:right;color:#059669;font-size:9.5pt;border-bottom:1px solid #F6EFEF;">Discount${order.coupon_code ? ' (' + order.coupon_code + ')' : ''}</td><td style="padding:7px 12px;text-align:right;font-weight:600;font-size:9.5pt;border-bottom:1px solid #F6EFEF;color:#059669;">-$${discountAmt.toFixed(2)}</td></tr>` : ''}
-        ${shippingCost > 0 ? `<tr><td style="padding:7px 12px;text-align:right;color:#555;font-size:9.5pt;border-bottom:1px solid #F6EFEF;">Shipping</td><td style="padding:7px 12px;text-align:right;font-weight:600;font-size:9.5pt;border-bottom:1px solid #F6EFEF;">$${shippingCost.toFixed(2)}</td></tr>` : ''}
-        ${taxAmt > 0 ? `<tr><td style="padding:7px 12px;text-align:right;color:#555;font-size:9.5pt;border-bottom:1px solid #F6EFEF;">Tax</td><td style="padding:7px 12px;text-align:right;font-weight:600;font-size:9.5pt;border-bottom:1px solid #F6EFEF;">$${taxAmt.toFixed(2)}</td></tr>` : ''}
-        <tr style="background:#FDF8F0;"><td style="padding:10px 12px;text-align:right;font-weight:700;font-size:11pt;color:#08183A;border-top:2px solid #08183A;">TOTAL</td><td style="padding:10px 12px;text-align:right;font-weight:700;font-size:11pt;color:#D4AF37;border-top:2px solid #08183A;">$${Number(order.total).toFixed(2)}</td></tr>
-        ${refundAmt > 0 ? `<tr style="background:#fef2f2;"><td style="padding:10px 12px;text-align:right;font-weight:700;font-size:10pt;color:#dc2626;border-top:1px solid #fecaca;">REFUNDED</td><td style="padding:10px 12px;text-align:right;font-weight:700;font-size:10pt;color:#dc2626;border-top:1px solid #fecaca;">-$${refundAmt.toFixed(2)}</td></tr>` : ''}
+        <tr><td style="padding:7px 12px;text-align:right;color:#555;font-size:9.5pt;border-bottom:1px solid #F6EFEF;">Subtotal</td><td style="padding:7px 12px;text-align:right;font-weight:600;font-size:9.5pt;border-bottom:1px solid #F6EFEF;width:110px;">₹${subtotal.toFixed(2)}</td></tr>
+        ${discountAmt > 0 ? `<tr><td style="padding:7px 12px;text-align:right;color:#059669;font-size:9.5pt;border-bottom:1px solid #F6EFEF;">Discount${order.coupon_code ? ' (' + order.coupon_code + ')' : ''}</td><td style="padding:7px 12px;text-align:right;font-weight:600;font-size:9.5pt;border-bottom:1px solid #F6EFEF;color:#059669;">-₹${discountAmt.toFixed(2)}</td></tr>` : ''}
+        ${shippingCost > 0 ? `<tr><td style="padding:7px 12px;text-align:right;color:#555;font-size:9.5pt;border-bottom:1px solid #F6EFEF;">Shipping</td><td style="padding:7px 12px;text-align:right;font-weight:600;font-size:9.5pt;border-bottom:1px solid #F6EFEF;">₹${shippingCost.toFixed(2)}</td></tr>` : ''}
+        ${taxAmt > 0 ? `<tr><td style="padding:7px 12px;text-align:right;color:#555;font-size:9.5pt;border-bottom:1px solid #F6EFEF;">Tax</td><td style="padding:7px 12px;text-align:right;font-weight:600;font-size:9.5pt;border-bottom:1px solid #F6EFEF;">₹${taxAmt.toFixed(2)}</td></tr>` : ''}
+        <tr style="background:#FDF8F0;"><td style="padding:10px 12px;text-align:right;font-weight:700;font-size:11pt;color:#08183A;border-top:2px solid #08183A;">TOTAL</td><td style="padding:10px 12px;text-align:right;font-weight:700;font-size:11pt;color:#D4AF37;border-top:2px solid #08183A;">₹${Number(order.total).toFixed(2)}</td></tr>
+        ${refundAmt > 0 ? `<tr style="background:#fef2f2;"><td style="padding:10px 12px;text-align:right;font-weight:700;font-size:10pt;color:#dc2626;border-top:1px solid #fecaca;">REFUNDED</td><td style="padding:10px 12px;text-align:right;font-weight:700;font-size:10pt;color:#dc2626;border-top:1px solid #fecaca;">-₹${refundAmt.toFixed(2)}</td></tr>` : ''}
       </table>
     </td>
   </tr>
 </table>
 
 <div style="margin-top:30px;padding-top:12px;border-top:1px solid #e8d5b0;text-align:center;font-size:8.5pt;color:#999;">
-  Thank you for shopping with Houra Jewels! &nbsp;|&nbsp; support@hourajewels.com &nbsp;|&nbsp; +1 940-465-6563
+  Thank you for shopping with Manikanta Super Market! &nbsp;|&nbsp; mani.worriers@gmail.com &nbsp;|&nbsp; +91 98660 48155
 </div>
 
 <div class="print-btn">
@@ -1049,12 +1049,12 @@ export function AdminOrdersPage() {
     try { address = typeof order.address === 'string' ? JSON.parse(order.address) : (order.address || {}); } catch(e) {}
     
     const phone = (order.user_phone || address.mobile || "0000000000").replace(/\D/g, "");
-    const itemsText = items.map((i) => `• ${i.product?.name} ×${i.qty} — $${(i.variant?.price || i.product?.price || 0) * i.qty}`).join("\n");
+    const itemsText = items.map((i) => `• ${i.product?.name} ×${i.qty} — ₹${(i.variant?.price || i.product?.price || 0) * i.qty}`).join("\n");
     const msg = encodeURIComponent(
       `Hi ${order.user_name || address.name || 'Customer'}! 🙏 Please find your *Invoice* for Order *#${order.order_number || order.id}* below:\n\n` +
       `*Items:*\n${itemsText}\n\n` +
-      `*Total: $${order.total}*\n\n` +
-      `Thank you for shopping with Houra Jewels!`
+      `*Total: ₹${order.total}*\n\n` +
+      `Thank you for shopping with Manikanta Super Market!`
     );
     window.open(`https://wa.me/${phone}?text=${msg}`, "_blank");
   };
@@ -1100,7 +1100,7 @@ export function AdminOrdersPage() {
 <body>
 <div class="box">
   <div class="hdr">
-    <div class="brand">Houra Jewels</div>
+    <div class="brand">Manikanta Super Market</div>
     <div class="oid">#${order.order_number || order.id}</div>
   </div>
   <div class="sec">
@@ -1136,32 +1136,32 @@ export function AdminOrdersPage() {
 
   if (loading) return (
     <div className="flex items-center justify-center py-20">
-      <div className="w-8 h-8 border-4 border-[#08183A]/20 border-t-[#08183A] rounded-full animate-spin" />
+      <div className="w-8 h-8 border-4 border-brand-red/20 border-t-[#08183A] rounded-full animate-spin" />
     </div>
   );
 
-  const filtered = orders.filter(o => (statusFilter === "all" || o.status === statusFilter) && o.order_type !== 'pickup');
+  const filtered = orders.filter(o => (statusFilter === "all" || o.status === statusFilter) && o.order_type === 'shipping');
 
   return (
     <div className="w-full max-w-5xl mx-auto">
       {/* Page Header */}
       <div className="flex flex-col xs:flex-row xs:items-center justify-between gap-3 mb-4">
         <div>
-          <h1 className="font-serif text-xl sm:text-2xl lg:text-3xl font-bold text-[#08183A]">Orders</h1>
-          <p className="text-[#08183A]/40 text-xs font-sans mt-0.5">{orders.filter(o => o.order_type !== 'pickup').length} total</p>
+          <h1 className="font-serif text-xl sm:text-2xl lg:text-3xl font-bold text-gray-900">Orders</h1>
+          <p className="text-gray-900/40 text-xs font-sans mt-0.5">{orders.filter(o => o.order_type === 'shipping').length} total</p>
         </div>
       </div>
 
       {/* Status Filter Buttons */}
       <div className="flex gap-2 mb-5 overflow-x-auto pb-1 scrollbar-hide -mx-1 px-1">
         {["all", ...SHIPPING_STATUSES].map((s) => {
-          const shippingOrders = orders.filter(o => o.order_type !== 'pickup');
+          const shippingOrders = orders.filter(o => o.order_type === 'shipping');
           return (
           <button key={s} onClick={() => setStatusFilter(s)}
             className={`flex-shrink-0 px-3 py-1.5 rounded-full text-xs font-bold font-sans capitalize transition-colors ${
               statusFilter === s
-                ? "bg-[#08183A] text-white shadow-sm"
-                : "bg-white border border-[#08183A]/20 text-[#08183A]/60 hover:border-[#08183A]/40"
+                ? "bg-brand-red text-white shadow-sm"
+                : "bg-white border border-brand-red/20 text-gray-900/60 hover:border-brand-red/40"
             }`}>
             {s === "all" ? `All (${shippingOrders.length})` : `${s} (${shippingOrders.filter(o => o.status === s).length})`}
           </button>
@@ -1169,8 +1169,8 @@ export function AdminOrdersPage() {
       </div>
 
       {filtered.length === 0 ? (
-        <div className="bg-white rounded-2xl border border-[#08183A]/10 p-10 sm:p-12 text-center">
-          <p className="text-[#08183A]/50 font-sans text-sm">
+        <div className="bg-white rounded-2xl border border-brand-red/10 p-10 sm:p-12 text-center">
+          <p className="text-gray-900/50 font-sans text-sm">
             {orders.length === 0 ? "No orders yet." : `No ${statusFilter} orders.`}
           </p>
         </div>
@@ -1178,14 +1178,14 @@ export function AdminOrdersPage() {
         <div className="space-y-3 sm:space-y-4">
           {filtered.map((order, i) => (
             <motion.div key={order.id} initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: i * 0.04 }}
-              className="bg-white rounded-2xl border border-[#08183A]/10 overflow-hidden">
+              className="bg-white rounded-2xl border border-brand-red/10 overflow-hidden">
 
               <div className="flex items-center gap-2 sm:gap-3 p-3 sm:p-4 lg:p-5 cursor-pointer hover:bg-[#FDF8F0]/30 transition-colors"
                 onClick={() => setExpanded(expanded === order.id ? null : order.id)}>
                 <div className="flex-1 min-w-0">
                   <div className="flex items-center gap-1.5 sm:gap-2 flex-wrap">
-                    <span className="font-serif font-bold text-[#08183A] text-sm sm:text-base">#{order.order_number || order.id}</span>
-                    <span className="text-[#08183A]/50 text-[10px] sm:text-xs font-sans">
+                    <span className="font-serif font-bold text-gray-900 text-sm sm:text-base">MSM - {order.order_number || order.id}</span>
+                    <span className="text-gray-900/50 text-[10px] sm:text-xs font-sans">
                       {new Date(order.created_at).toLocaleDateString("en-IN")}
                     </span>
                     <span className={`text-[9px] sm:text-[10px] font-bold font-sans px-2 py-0.5 rounded-full ${STATUS_COLORS[order.status] || "bg-[#FDF8F0] text-gray-500"}`}>
@@ -1202,45 +1202,45 @@ export function AdminOrdersPage() {
                       </span>
                     )}
                   </div>
-                  <p className="text-[#08183A]/60 text-[10px] sm:text-xs font-sans mt-0.5 truncate">
+                  <p className="text-gray-900/60 text-[10px] sm:text-xs font-sans mt-0.5 truncate">
                     {order.user_name || "Guest"}
                   </p>
                 </div>
-                <span className="font-serif font-bold text-[#D4AF37] text-sm sm:text-base lg:text-lg flex-shrink-0">${order.total}</span>
-                <ChevronDown className={`w-4 h-4 text-[#08183A]/40 transition-transform flex-shrink-0 ${expanded === order.id ? "rotate-180" : ""}`} />
+                <span className="font-serif font-bold text-brand-orange text-sm sm:text-base lg:text-lg flex-shrink-0">${order.total}</span>
+                <ChevronDown className={`w-4 h-4 text-gray-900/40 transition-transform flex-shrink-0 ${expanded === order.id ? "rotate-180" : ""}`} />
               </div>
 
               {expanded === order.id && (
-                <div className="border-t border-[#08183A]/5 p-3 sm:p-4 lg:p-5 space-y-4">
+                <div className="border-t border-brand-red/5 p-3 sm:p-4 lg:p-5 space-y-4">
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                     <div>
-                      <p className="text-[10px] font-sans text-[#08183A]/40 uppercase tracking-wider mb-2">Update Status</p>
+                      <p className="text-[10px] font-sans text-gray-900/40 uppercase tracking-wider mb-2">Update Status</p>
                       <select value={order.status} onChange={(e) => updateStatus(order.id, e.target.value)}
-                        className="w-full px-3 py-2 rounded-xl bg-[#FDF8F0] border border-[#08183A]/10 text-[#08183A] font-sans text-sm focus:outline-none">
+                        className="w-full px-3 py-2 rounded-xl bg-[#FDF8F0] border border-brand-red/10 text-gray-900 font-sans text-sm focus:outline-none">
                         {(order.order_type === 'pickup' ? PICKUP_STATUSES : SHIPPING_STATUSES).map((s) => <option key={s} value={s}>{s}</option>)}
                       </select>
                     </div>
                     <div>
-                      <p className="text-[10px] font-sans text-[#08183A]/40 uppercase tracking-wider mb-2">Shipment</p>
+                      <p className="text-[10px] font-sans text-gray-900/40 uppercase tracking-wider mb-2">Shipment</p>
                       {order.tracking_id && order.tracking_id.trim() !== "" ? (
                         <div className="space-y-2">
                           <div className="flex items-center gap-2 bg-green-50 border border-green-200 rounded-xl px-3 py-2">
                             <span className="text-green-700 font-bold font-sans text-xs truncate">AWB: {order.tracking_id}</span>
                             {order.tracking_link && (
                               <a href={order.tracking_link} target="_blank" rel="noopener noreferrer"
-                                className="ml-auto flex-shrink-0 text-[#08183A] hover:opacity-80 transition-colors">
+                                className="ml-auto flex-shrink-0 text-gray-900 hover:opacity-80 transition-colors">
                                 <ExternalLink className="w-3.5 h-3.5" />
                               </a>
                             )}
                           </div>
                           {order.shipping_label_url && (
-                             <a href={order.shipping_label_url} target="_blank" rel="noopener noreferrer" className="mt-2 w-full flex items-center justify-center gap-2 bg-[#08183A] text-white px-4 py-2 rounded-xl text-xs font-semibold hover:opacity-90">
+                             <a href={order.shipping_label_url} target="_blank" rel="noopener noreferrer" className="mt-2 w-full flex items-center justify-center gap-2 bg-brand-red text-white px-4 py-2 rounded-xl text-xs font-semibold hover:opacity-90">
                                📄 Download Label
                              </a>
                           )}
                           <div className="flex justify-between mt-2">
                             <button onClick={() => fetchShippoRates(order.id)} disabled={shipping[`shippo_${order.id}`]}
-                              className="text-[10px] font-sans text-[#08183A]/50 hover:text-[#08183A] transition-colors underline w-full text-center">
+                              className="text-[10px] font-sans text-gray-900/50 hover:text-gray-900 transition-colors underline w-full text-center">
                               {shipping[`shippo_${order.id}`] ? "Loading Rates..." : "Re-create Label (Shippo)"}
                             </button>
                           </div>
@@ -1248,7 +1248,7 @@ export function AdminOrdersPage() {
                       ) : (
                         <div className="space-y-2">
                           <button onClick={() => fetchShippoRates(order.id)} disabled={shipping[`shippo_${order.id}`]}
-                            className="w-full flex items-center justify-center gap-2 bg-[#D4AF37]/20 hover:bg-[#D4AF37]/30 text-[#08183A] px-4 py-2 rounded-xl text-xs font-semibold font-sans transition-colors disabled:opacity-50">
+                            className="w-full flex items-center justify-center gap-2 bg-brand-orange text-white/20 hover:bg-brand-orange text-white/30 text-gray-900 px-4 py-2 rounded-xl text-xs font-semibold font-sans transition-colors disabled:opacity-50">
                             {shipping[`shippo_${order.id}`] ? "Loading Rates..." : "📦 Select Shipping Rate (Shippo)"}
                           </button>
                         </div>
@@ -1267,20 +1267,20 @@ export function AdminOrdersPage() {
                     try { hist = typeof order.edit_history === 'string' ? JSON.parse(order.edit_history) : (order.edit_history || []); } catch {}
                     if (!hist.length) return null;
                     return (
-                      <div className="pt-4 border-t border-[#08183A]/5">
-                        <p className="text-[10px] font-bold text-[#08183A]/40 uppercase tracking-wider mb-2 flex items-center gap-1.5">
+                      <div className="pt-4 border-t border-brand-red/5">
+                        <p className="text-[10px] font-bold text-gray-900/40 uppercase tracking-wider mb-2 flex items-center gap-1.5">
                           <History className="w-3 h-3" /> Edit History
                         </p>
                         <div className="space-y-2">
                           {hist.map((h, i) => (
-                            <div key={i} className="bg-[#FDF8F0] rounded-xl px-3 py-2 text-xs text-[#08183A]/70">
+                            <div key={i} className="bg-[#FDF8F0] rounded-xl px-3 py-2 text-xs text-gray-900/70">
                               <div className="flex justify-between">
                                 <span className="font-semibold">{new Date(h.timestamp).toLocaleString('en-IN')}</span>
                                 <span className={h.diff > 0 ? 'text-amber-600 font-bold' : h.diff < 0 ? 'text-green-600 font-bold' : 'text-gray-400'}>
-                                  {h.diff > 0 ? `+$${h.diff.toFixed(2)}` : h.diff < 0 ? `-$${Math.abs(h.diff).toFixed(2)}` : 'No change'}
+                                  {h.diff > 0 ? `+₹${h.diff.toFixed(2)}` : h.diff < 0 ? `-₹${Math.abs(h.diff).toFixed(2)}` : 'No change'}
                                 </span>
                               </div>
-                              {h.note && <p className="text-[#08183A]/50 mt-0.5">{h.note}</p>}
+                              {h.note && <p className="text-gray-900/50 mt-0.5">{h.note}</p>}
                             </div>
                           ))}
                         </div>
@@ -1289,8 +1289,8 @@ export function AdminOrdersPage() {
                   })()}
 
                   {/* Customer Details */}
-                  <div className="pt-4 border-t border-[#08183A]/5">
-                    <p className="text-[10px] font-sans text-[#08183A]/40 uppercase tracking-wider mb-3">Customer Details</p>
+                  <div className="pt-4 border-t border-brand-red/5">
+                    <p className="text-[10px] font-sans text-gray-900/40 uppercase tracking-wider mb-3">Customer Details</p>
                     {(() => {
                       let address = {};
                       try { address = typeof order.address === 'string' ? JSON.parse(order.address) : (order.address || {}); } catch(e) {}
@@ -1301,37 +1301,37 @@ export function AdminOrdersPage() {
                       return (
                         <div className="bg-[#FDF8F0] rounded-xl p-4 grid grid-cols-1 sm:grid-cols-2 gap-3">
                           <div className="flex items-start gap-2">
-                            <span className="text-[10px] font-bold text-[#08183A]/40 uppercase tracking-wider w-14 shrink-0 mt-0.5">Name</span>
-                            <span className="text-sm font-semibold text-[#08183A]">{name}</span>
+                            <span className="text-[10px] font-bold text-gray-900/40 uppercase tracking-wider w-14 shrink-0 mt-0.5">Name</span>
+                            <span className="text-sm font-semibold text-gray-900">{name}</span>
                           </div>
                           <div className="flex items-start gap-2">
-                            <span className="text-[10px] font-bold text-[#08183A]/40 uppercase tracking-wider w-14 shrink-0 mt-0.5">Phone</span>
-                            <span className="text-sm font-semibold text-[#08183A]">{address.mobile || order.user_phone || '—'}</span>
+                            <span className="text-[10px] font-bold text-gray-900/40 uppercase tracking-wider w-14 shrink-0 mt-0.5">Phone</span>
+                            <span className="text-sm font-semibold text-gray-900">{address.mobile || order.user_phone || '—'}</span>
                           </div>
                           <div className="flex items-start gap-2">
-                            <span className="text-[10px] font-bold text-[#08183A]/40 uppercase tracking-wider w-14 shrink-0 mt-0.5">Email</span>
-                            <span className="text-sm font-semibold text-[#08183A] break-all">{email}</span>
+                            <span className="text-[10px] font-bold text-gray-900/40 uppercase tracking-wider w-14 shrink-0 mt-0.5">Email</span>
+                            <span className="text-sm font-semibold text-gray-900 break-all">{email}</span>
                           </div>
                           {addr && (
                             <div className="flex items-start gap-2 sm:col-span-2">
-                              <span className="text-[10px] font-bold text-[#08183A]/40 uppercase tracking-wider w-14 shrink-0 mt-0.5">Address</span>
-                              <span className="text-sm font-semibold text-[#08183A]">{addr}</span>
+                              <span className="text-[10px] font-bold text-gray-900/40 uppercase tracking-wider w-14 shrink-0 mt-0.5">Address</span>
+                              <span className="text-sm font-semibold text-gray-900">{addr}</span>
                             </div>
                           )}
                           <div className="flex items-start gap-2">
-                            <span className="text-[10px] font-bold text-[#08183A]/40 uppercase tracking-wider w-14 shrink-0 mt-0.5">Type</span>
+                            <span className="text-[10px] font-bold text-gray-900/40 uppercase tracking-wider w-14 shrink-0 mt-0.5">Type</span>
                             <span className={`text-xs font-bold px-2 py-0.5 rounded-full ${ order.order_type === 'pickup' ? 'bg-blue-100 text-blue-700' : 'bg-green-100 text-green-700' }`}>
                               {order.order_type === 'pickup' ? '🏪 Pickup' : '🚚 Shipping'}
                             </span>
                           </div>
                           <div className="flex items-start gap-2">
-                            <span className="text-[10px] font-bold text-[#08183A]/40 uppercase tracking-wider w-14 shrink-0 mt-0.5">Payment</span>
-                            <span className="text-sm font-semibold text-[#08183A] capitalize">{order.payment_method === 'stripe' ? 'Online (Stripe)' : order.payment_method || '—'}</span>
+                            <span className="text-[10px] font-bold text-gray-900/40 uppercase tracking-wider w-14 shrink-0 mt-0.5">Payment</span>
+                            <span className="text-sm font-semibold text-gray-900 capitalize">{order.payment_method === 'razorpay' ? 'Online (Razorpay)' : order.payment_method || '—'}</span>
                           </div>
-                          {order.stripe_payment_intent_id && (
+                          {order.razorpay_payment_id && (
                             <div className="flex items-start gap-2 sm:col-span-2">
-                              <span className="text-[10px] font-bold text-[#08183A]/40 uppercase tracking-wider w-14 shrink-0 mt-0.5">Txn ID</span>
-                              <span className="text-xs font-mono font-semibold text-[#08183A] break-all select-all">{order.stripe_payment_intent_id}</span>
+                              <span className="text-[10px] font-bold text-gray-900/40 uppercase tracking-wider w-14 shrink-0 mt-0.5">Txn ID</span>
+                              <span className="text-xs font-mono font-semibold text-gray-900 break-all select-all">{order.razorpay_payment_id}</span>
                             </div>
                           )}
                         </div>
@@ -1340,8 +1340,8 @@ export function AdminOrdersPage() {
                   </div>
 
                   {/* Order Items List */}
-                  <div className="pt-4 border-t border-[#08183A]/5">
-                    <p className="text-[10px] font-sans text-[#08183A]/40 uppercase tracking-wider mb-3">Order Items</p>
+                  <div className="pt-4 border-t border-brand-red/5">
+                    <p className="text-[10px] font-sans text-gray-900/40 uppercase tracking-wider mb-3">Order Items</p>
                     <div className="space-y-3">
                       {/* Cancelled Items */}
                       {(() => {
@@ -1414,23 +1414,23 @@ export function AdminOrdersPage() {
                                   <div className="flex-1 min-w-0">
                                     {item.product?.id ? (
                                       <Link to={`/product/${item.product.id}${itemCode ? `?variantCode=${itemCode}` : ''}`} target="_blank"
-                                        className="text-sm font-semibold text-[#08183A] truncate hover:text-[#D4AF37] hover:underline transition-colors flex items-center gap-1">
+                                        className="text-sm font-semibold text-gray-900 truncate hover:text-brand-orange hover:underline transition-colors flex items-center gap-1">
                                         {item.product?.name || 'Unknown Product'}{item.variant?.color ? ` — ${item.variant.color}` : ''}
                                         <ExternalLink className="w-3 h-3 shrink-0 opacity-50" />
                                       </Link>
                                     ) : (
-                                      <p className="text-sm font-semibold text-[#08183A] truncate">{item.product?.name || 'Unknown Product'}{item.variant?.color ? ` — ${item.variant.color}` : ''}</p>
+                                      <p className="text-sm font-semibold text-gray-900 truncate">{item.product?.name || 'Unknown Product'}{item.variant?.color ? ` — ${item.variant.color}` : ''}</p>
                                     )}
                                     <div className="flex items-center gap-2 flex-wrap mt-0.5">
                                       <p className="text-xs text-gray-500">
                                         {item.variant?.size ? `Size: ${item.variant.size}` : 'Standard'} • Qty: {item.qty}
                                       </p>
                                       {itemCode && (
-                                        <span className="text-[10px] font-mono font-bold text-[#D4AF37] bg-[#D4AF37]/10 px-1.5 py-0.5 rounded">#{itemCode}</span>
+                                        <span className="text-[10px] font-mono font-bold text-brand-orange bg-brand-orange text-white/10 px-1.5 py-0.5 rounded">#{itemCode}</span>
                                       )}
                                     </div>
                                   </div>
-                                  <div className="text-sm font-bold text-[#D4AF37]">
+                                  <div className="text-sm font-bold text-brand-orange">
                                     ${((item.variant?.price || item.product?.price || 0) * item.qty).toFixed(2)}
                                   </div>
                                 </div>
@@ -1444,14 +1444,14 @@ export function AdminOrdersPage() {
                   </div>
 
                   {/* Action Buttons */}
-                  <div className="grid grid-cols-2 sm:grid-cols-5 gap-2 pt-4 border-t border-[#08183A]/5">
+                  <div className="grid grid-cols-2 sm:grid-cols-5 gap-2 pt-4 border-t border-brand-red/5">
                     <button onClick={() => setEditModal(order)}
                       className="flex items-center justify-center gap-1.5 bg-blue-600 hover:bg-blue-700 text-white px-3 py-2.5 rounded-xl text-xs font-semibold font-sans transition-colors">
                       <Pencil className="w-3.5 h-3.5 flex-shrink-0" />
                       <span className="truncate">Edit Order</span>
                     </button>
                     <button onClick={() => printLabel(order)}
-                      className="flex items-center justify-center gap-1.5 bg-[#08183A] text-white px-3 py-2.5 rounded-xl text-xs font-semibold font-sans hover:bg-[#08183A]/80 transition-colors">
+                      className="flex items-center justify-center gap-1.5 bg-brand-red text-white px-3 py-2.5 rounded-xl text-xs font-semibold font-sans hover:bg-brand-red text-white/80 transition-colors">
                       <Printer className="w-3.5 h-3.5 flex-shrink-0" />
                       <span className="truncate">Print Label</span>
                     </button>
@@ -1461,7 +1461,7 @@ export function AdminOrdersPage() {
                       <span className="truncate">Notify WA</span>
                     </button>
                     <button onClick={() => openInvoice(order)}
-                      className="flex items-center justify-center gap-1.5 bg-[#D4AF37] hover:bg-amber-500 text-[#08183A] px-3 py-2.5 rounded-xl text-xs font-semibold font-sans transition-colors">
+                      className="flex items-center justify-center gap-1.5 bg-brand-orange text-white hover:bg-amber-500 text-gray-900 px-3 py-2.5 rounded-xl text-xs font-semibold font-sans transition-colors">
                       <FileText className="w-3.5 h-3.5 flex-shrink-0" />
                       <span className="truncate">Invoice</span>
                     </button>
@@ -1509,7 +1509,7 @@ export function AdminOrdersPage() {
             <motion.div initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} exit={{ opacity: 0, scale: 0.95 }}
               className="bg-white rounded-2xl w-full max-w-lg shadow-2xl overflow-hidden max-h-[90vh] flex flex-col">
               <div className="px-6 py-4 border-b border-gray-100 flex items-center justify-between sticky top-0 bg-white z-10">
-                <h2 className="font-serif text-lg font-bold text-[#08183A]">Select Shipping Rate</h2>
+                <h2 className="font-serif text-lg font-bold text-gray-900">Select Shipping Rate</h2>
                 <button onClick={() => setRatesModal(null)} className="text-gray-400 hover:text-gray-700"><X className="w-5 h-5" /></button>
               </div>
               <div className="p-6 overflow-y-auto space-y-3">
@@ -1521,15 +1521,15 @@ export function AdminOrdersPage() {
                       <div className="flex items-center gap-3">
                         {rate.providerImage75 && <img src={rate.providerImage75} alt={rate.provider} className="h-8 w-8 object-contain" />}
                         <div>
-                          <p className="font-bold text-[#08183A] text-sm">{rate.provider} - {rate.servicelevel?.name}</p>
+                          <p className="font-bold text-gray-900 text-sm">{rate.provider} - {rate.servicelevel?.name}</p>
                           <p className="text-xs text-gray-500">Est. {rate.estimatedDays || '?'} days</p>
                         </div>
                       </div>
                       <div className="text-right">
-                        <p className="font-bold text-[#D4AF37]">${rate.amount}</p>
+                        <p className="font-bold text-brand-orange">${rate.amount}</p>
                         <button onClick={() => purchaseShippoLabel(ratesModal.orderId, rate.objectId)}
                           disabled={shipping[`shippo_buy_${ratesModal.orderId}`]}
-                          className="mt-1 text-xs bg-[#08183A] text-white px-3 py-1.5 rounded-lg hover:bg-blue-900 disabled:opacity-50">
+                          className="mt-1 text-xs bg-brand-red text-white px-3 py-1.5 rounded-lg hover:bg-blue-900 disabled:opacity-50">
                           {shipping[`shippo_buy_${ratesModal.orderId}`] ? 'Buying...' : 'Buy Label'}
                         </button>
                       </div>

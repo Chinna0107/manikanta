@@ -103,47 +103,47 @@ function StatTile({ icon: Icon, target, prefix = '', suffix = '', label, link, c
 // ── Stats banner ─────────────────────────────────────────────────────────────
 function StatsBanner() {
   const stats = [
-    { icon: InstagramIcon, target: 12.6, decimals: 1, suffix: 'K', label: 'Instagram Family', color: '#E1306C', link: 'https://www.instagram.com/hourajewels?igsh=c2llNGRzM2RpbHZ3&utm_source=qr' },
-    { icon: Package, target: 1000, suffix: '+', label: 'Orders Delivered Across USA', color: '#D4AF37' },
-    { icon: MapPin, target: 500, suffix: '+', label: 'Pick Up Orders', color: '#60a5fa' },
-    { icon: Globe, target: 20, suffix: '+', label: 'International Orders', color: '#34d399' },
-    { icon: Users, target: 1000, suffix: '+', label: 'Happy Customers', color: '#f472b6' },
-    { icon: Store, target: 15, suffix: '+', label: 'Offline Expo Stalls', color: '#a78bfa' },
+    { icon: InstagramIcon, target: 12.6, decimals: 1, suffix: 'K', label: 'Instagram Family', color: '#E1306C', link: 'https://www.instagram.com/manikantasupermarket?igsh=c2llNGRzM2RpbHZ3&utm_source=qr' },
+    { icon: Package, target: 10, suffix: 'K+', label: 'Groceries Delivered', color: '#D4AF37' },
+    { icon: MapPin, target: 500, suffix: '+', label: 'Store Pickups', color: '#60a5fa' },
+    { icon: Globe, target: 50, suffix: '+', label: 'Neighborhoods Served', color: '#34d399' },
+    { icon: Users, target: 5, suffix: 'K+', label: 'Happy Customers', color: '#f472b6' },
+    { icon: Store, target: 5000, suffix: '+', label: 'Fresh Products', color: '#a78bfa' },
   ];
 
   return (
-    <div className="animate-section px-4 md:px-8 mb-10">
-      <div
-        className="relative rounded-2xl overflow-hidden py-8 px-6 md:px-10"
+    <div className="animate-section md:px-8 mb-4 md:mb-10">
+      {/* <div
+        className="relative md:rounded-2xl rounded-[24px] md:overflow-hidden py-10 px-2 md:px-10 mx-4 md:mx-0"
         style={{
-          background: 'linear-gradient(135deg, #08183A 0%, #0d2552 60%, #08183A 100%)',
-          boxShadow: '0 8px 40px rgba(8,24,58,0.35), inset 0 1px 0 rgba(212,175,55,0.15)'
+          background: 'linear-gradient(135deg, #D61A3C 0%, #B81633 60%, #D61A3C 100%)',
+          boxShadow: '0 8px 40px rgba(214,26,60,0.35), inset 0 1px 0 rgba(255,255,255,0.15)'
         }}
-      >
+      > */}
         {/* Decorative gold top border */}
-        <div className="absolute top-0 left-0 right-0 h-[2px]" style={{ background: 'linear-gradient(90deg, transparent, #D4AF37, transparent)' }} />
+        {/* <div className="hidden md:block absolute top-0 left-0 right-0 h-[2px]" style={{ background: 'linear-gradient(90deg, transparent, #D4AF37, transparent)' }} /> */}
         {/* Subtle pattern */}
-        <div className="absolute inset-0 opacity-[0.03] pointer-events-none" style={{ backgroundImage: 'radial-gradient(circle, #D4AF37 1px, transparent 1px)', backgroundSize: '28px 28px' }} />
+        {/* <div className="absolute inset-0 opacity-[0.03] pointer-events-none" style={{ backgroundImage: 'radial-gradient(circle, #D4AF37 1px, transparent 1px)', backgroundSize: '28px 28px' }} /> */}
 
-        <div className="relative z-10">
+        {/* <div className="relative z-10"> */}
           {/* Heading */}
-          <div className="text-center mb-8">
-            <p className="text-[11px] font-bold tracking-[0.2em] uppercase text-[#D4AF37] mb-1">Our Journey So Far</p>
-            <h2 className="font-serif text-xl md:text-2xl font-bold text-white">Trusted by Thousands Across the Globe</h2>
-          </div>
+          {/* <div className="text-center mb-8">
+            <p className="text-[11px] font-bold tracking-[0.2em] uppercase text-brand-orange mb-1">Serving Our Community</p>
+            <h2 className="font-serif text-xl md:text-2xl font-bold text-white">Trusted by Thousands Every Day</h2>
+          </div> */}
 
           {/* Stats grid */}
-          <div className="grid grid-cols-3 md:grid-cols-6 gap-6 md:gap-4">
+          {/* <div className="grid grid-cols-3 md:grid-cols-6 gap-6 md:gap-4">
             {stats.map((s, i) => (
               <StatTile key={i} {...s} />
             ))}
           </div>
-        </div>
+        </div> */}
 
-        {/* Decorative gold bottom border */}
-        <div className="absolute bottom-0 left-0 right-0 h-[2px]" style={{ background: 'linear-gradient(90deg, transparent, #D4AF37, transparent)' }} />
-      </div>
-    </div>
+        {/* Decorative gold bottom border
+        <div className="hidden md:block absolute bottom-0 left-0 right-0 h-[2px]" style={{ background: 'linear-gradient(90deg, transparent, #D4AF37, transparent)' }} />
+      </div>  */}
+   </div>
   );
 }
 
@@ -225,9 +225,70 @@ export function HomePage() {
     <div ref={container} className="bg-brand-beige flex-grow w-full flex flex-col pb-8">
       <Header variant="home" />
 
-      {/* Hero Banner Section */}
-      <div className="animate-section py-4 md:py-8">
+      {/* Mobile Top Section (Yellow bg + Red Banner) */}
+      <div className="md:hidden bg-[#FFC107] pt-[140px] pb-12 px-4 relative flex flex-col items-center">
         {banners.length > 0 ? (
+          <div className="relative w-full h-[180px] rounded-[20px] overflow-hidden shadow-xl bg-gradient-to-br from-[#E22E3C] to-[#8C0B14]">
+            <div
+              className="flex h-full transition-transform duration-700 ease-in-out"
+              style={{ transform: `translateX(-${currentSlide * 100}%)` }}
+            >
+              {banners.map((banner) => (
+                <div key={banner.id} className="relative w-full h-full shrink-0">
+                  <div className="absolute inset-0 flex flex-col justify-center px-6 z-10 w-[65%]">
+                    <h2 className="text-white text-xl font-serif font-bold leading-tight mb-3 drop-shadow-md">
+                      {banner.title}
+                    </h2>
+                    {(banner.link_url || banner.link_url === '') && (
+                      <Link to={banner.link_url || "/category/all"} className="bg-[#FFC107] text-[#8C0B14] text-[10px] font-extrabold px-5 py-2 rounded-lg w-fit shadow-md">
+                        Shop Now
+                      </Link>
+                    )}
+                  </div>
+                  <div className="absolute right-0 bottom-0 h-full w-[60%] z-0">
+                     <img src={banner.image_url} alt={banner.title} className="w-full h-full object-cover object-left" style={{ WebkitMaskImage: 'linear-gradient(to left, black 40%, transparent)', maskImage: 'linear-gradient(to left, black 40%, transparent)' }} />
+                  </div>
+                </div>
+              ))}
+            </div>
+            {banners.length > 1 && (
+              <div className="absolute bottom-3 left-0 right-0 flex justify-center gap-1.5 z-20">
+                {banners.map((_, i) => (
+                  <button
+                    key={i}
+                    onClick={() => setCurrentSlide(i)}
+                    className={`h-1.5 rounded-full transition-all ${i === currentSlide ? 'bg-white w-4' : 'bg-white/50 w-1.5 hover:bg-white/80'}`}
+                  />
+                ))}
+              </div>
+            )}
+          </div>
+        ) : (
+          <div className="relative w-full h-[180px] rounded-[20px] overflow-hidden shadow-xl bg-gradient-to-br from-[#E22E3C] to-[#8C0B14]">
+            <div className="absolute inset-0 flex flex-col justify-center px-6 z-10 w-[65%]">
+              <h2 className="text-white text-2xl font-serif font-bold leading-tight mb-1.5 drop-shadow-md">
+                Freshness<br />Delivered Daily
+              </h2>
+              <p className="text-brand-yellow text-[11px] font-semibold mb-4 opacity-90 tracking-wide">
+                From our store to your door
+              </p>
+              <Link to="/category/all" className="bg-[#FFC107] text-[#8C0B14] text-[10px] font-extrabold px-5 py-2 rounded-lg w-fit shadow-md">
+                Shop Now
+              </Link>
+            </div>
+            <div className="absolute right-0 bottom-0 h-full w-[50%] z-0">
+               <img src="https://images.unsplash.com/photo-1542838132-92c53300491e?w=500&auto=format&fit=crop" alt="Fruit Basket" className="w-full h-full object-cover object-left" style={{ WebkitMaskImage: 'linear-gradient(to left, black 40%, transparent)', maskImage: 'linear-gradient(to left, black 40%, transparent)' }} />
+            </div>
+          </div>
+        )}
+      </div>
+
+      {/* Content wrapper with rounded top on mobile */}
+      <div className="md:max-w-full mx-auto w-full pb-20 bg-white md:bg-transparent rounded-t-3xl md:rounded-none -mt-8 md:mt-0 relative z-10 pt-6 md:pt-0">
+
+        {/* Desktop Banner Section (hidden on mobile) */}
+        <div className="hidden md:block animate-section py-8">
+          {banners.length > 0 ? (
           <div className="relative w-full md:w-[75%] h-48 md:h-[400px] rounded-2xl overflow-hidden shadow-lg border border-gray-100 mx-auto px-4 md:px-0">
             <div
               className="flex h-full transition-transform duration-700 ease-in-out"
@@ -241,7 +302,7 @@ export function HomePage() {
                       {banner.title}
                     </h2>
                     {(banner.link_url || banner.link_url === '') && (
-                      <Link to={banner.link_url || "/category/all"} className="bg-brand-dark-blue text-brand-gold text-xs md:text-base font-bold px-8 py-3 md:py-4 rounded-xl w-fit shadow-xl hover:shadow-2xl hover:-translate-y-0.5 transition-all">
+                      <Link to={banner.link_url || "/category/all"} className="bg-white text-brand-red text-xs md:text-base font-bold px-8 py-3 md:py-4 rounded-xl w-fit shadow-xl hover:shadow-2xl hover:-translate-y-0.5 transition-all">
                         SHOP NOW
                       </Link>
                     )}
@@ -263,31 +324,30 @@ export function HomePage() {
           </div>
         ) : (
           <div className="flex justify-center px-4 md:px-24 pt-2 md:pt-6 pb-2">
-            <div className="relative w-full h-72 md:h-[360px] rounded-[24px] overflow-hidden shadow-2xl border border-brand-gold/20 bg-brand-beige group">
+            <div className="relative w-full h-72 md:h-[360px] rounded-[24px] overflow-hidden shadow-2xl border border-brand-red/10 bg-brand-beige group">
               <div className="absolute inset-0 z-0">
-                <img src="https://images.pexels.com/photos/265906/pexels-photo-265906.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2" alt="Jewelry Collection" className="w-full h-full object-cover object-right transition-transform duration-1000 group-hover:scale-105" />
+                <img src="https://images.pexels.com/photos/1132047/pexels-photo-1132047.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2" alt="Supermarket Collection" className="w-full h-full object-cover object-right transition-transform duration-1000 group-hover:scale-105" />
                 <div className="absolute inset-0 bg-gradient-to-r from-[#FDF8F0] via-[#FDF8F0]/95 to-[#FDF8F0]/0 z-10 pointer-events-none w-full md:w-[80%]"></div>
               </div>
 
               {/* Content */}
               <div className="absolute inset-0 flex flex-col justify-center px-8 md:px-12 z-10 w-[70%]">
-                <h2 className="text-[#08183A] text-2xl md:text-4xl lg:text-[40px] font-bold mb-3 md:mb-4 leading-[1.2] font-serif tracking-wide drop-shadow-sm">
-                  Timeless Elegance,<br />
-                  <span className="text-[#08183A]/80 font-light">Made for You</span>
+                <h2 className="text-gray-900 text-2xl md:text-4xl lg:text-[40px] font-bold mb-3 md:mb-4 leading-[1.2] font-serif tracking-wide drop-shadow-sm">
+                  Fresh Groceries,<br />
+<span className="text-gray-900/80 font-light">Delivered Daily</span>
                 </h2>
                 <p className="text-gray-600 text-xs md:text-sm lg:text-[15px] mb-6 md:mb-8 max-w-[280px] md:max-w-sm leading-relaxed">
-                  Discover our exquisite collection crafted to perfection.
+                  Shop farm-fresh fruits, vegetables, and everyday essentials.
                 </p>
-                <Link to="/category/all" className="bg-[#08183A] text-white text-[11px] md:text-xs font-bold px-6 py-3 md:px-8 md:py-3.5 rounded-xl w-fit shadow-lg hover:shadow-xl hover:-translate-y-0.5 transition-all hover:bg-[#D4AF37] tracking-wider uppercase">
+                <Link to="/category/all" className="bg-brand-red text-white text-[11px] md:text-xs font-bold px-6 py-3 md:px-8 md:py-3.5 rounded-xl w-fit shadow-lg hover:shadow-xl hover:-translate-y-0.5 transition-all hover:bg-brand-orange text-white tracking-wider uppercase">
                   SHOP NOW
                 </Link>
               </div>
             </div>
           </div>
         )}
-      </div>
+        </div>
 
-      <div className="md:max-w-full mx-auto w-full pb-20">
         {/* Categories Grid */}
         <div className="animate-section px-4 md:px-24 mb-10">
           <div className="flex justify-between items-center mb-6">
@@ -311,23 +371,27 @@ export function HomePage() {
               const Icon = IconMap[cat.icon] || Star;
 
               return (
-                <Link key={cat.id} to={`/category/${cat.id}`} className="group flex flex-col h-full rounded-[14px] overflow-hidden shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all duration-500 bg-brand-beige-darker border border-brand-gold/30">
-                  <div className="h-24 md:h-32 w-full flex items-center justify-center relative overflow-hidden bg-white/50">
-                    {cat.image_url ? (
-                      <img src={cat.image_url} alt={cat.name} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700 ease-out" />
-                    ) : (
-                      <Star className="w-8 h-8 text-brand-gold" strokeWidth={1.5} />
-                    )}
+                <Link key={cat.id} to={`/category/${cat.id}`} className="group flex flex-col items-center gap-2">
+                  <div className="w-[72px] h-[72px] md:w-32 md:h-32 rounded-full overflow-hidden shadow-sm hover:shadow-md bg-white border border-gray-100 p-1 flex-shrink-0 transition-transform duration-300 group-hover:scale-105">
+                    <div className="w-full h-full rounded-full overflow-hidden bg-gray-50 flex items-center justify-center">
+                      {cat.image_url ? (
+                        <img src={cat.image_url} alt={cat.name} className="w-full h-full object-cover" />
+                      ) : (
+                        <Star className="w-6 h-6 text-brand-red" />
+                      )}
+                    </div>
                   </div>
-                  <div className="bg-brand-dark-blue flex items-center justify-center gap-1.5 py-2.5 md:py-3 px-2 mt-auto border-t border-brand-gold/20">
-                    <Sparkles className="w-3 h-3 text-brand-gold shrink-0" />
-                    <span className="text-[10px] md:text-xs font-semibold text-white text-center leading-tight truncate">{cat.name}</span>
-                  </div>
+                  <span className="text-[10px] md:text-sm font-semibold text-gray-800 text-center leading-tight line-clamp-2 px-1 max-w-[80px] md:max-w-full">
+                    {cat.name}
+                  </span>
                 </Link>
               );
             })}
           </div>
         </div>
+
+        {/* ── Stats Banner (Moved here for mobile) ─────────────────────────────────────── */}
+        <StatsBanner />
 
         {/* Trending Products */}
         {products.filter(p => p.is_trending).length > 0 && (
@@ -349,18 +413,18 @@ export function HomePage() {
 
         {/* Special Offers / Premium Collection Banner */}
         {/* <div className="animate-section px-4 md:px-24 mb-12 flex justify-center mt-8">
-          <div className="relative w-full h-32 md:h-[300px] rounded-[24px] overflow-hidden shadow-lg border border-brand-gold/20 group">
+          <div className="relative w-full h-32 md:h-[300px] rounded-[24px] overflow-hidden shadow-lg border border-brand-red/10 group">
             <div className="absolute inset-0 z-0">
               <img src="https://images.pexels.com/photos/1458867/pexels-photo-1458867.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2" alt="Jewelry Offers" className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-105" />
               <div className="absolute inset-0 bg-gradient-to-r from-brand-dark-blue via-brand-dark-blue/90 to-brand-dark-blue/0 z-10 pointer-events-none w-full md:w-[70%]"></div>
             </div>
             
             <div className="absolute inset-0 z-20 flex flex-col justify-center px-6 md:px-12 pointer-events-none">
-              <div className="bg-brand-gold text-brand-dark-blue text-[10px] md:text-xs font-black uppercase tracking-widest px-3 py-1 rounded-full w-fit mb-3 drop-shadow-sm pointer-events-auto">Today's Offers</div>
+              <div className="bg-brand-red text-white text-gray-900 text-[10px] md:text-xs font-black uppercase tracking-widest px-3 py-1 rounded-full w-fit mb-3 drop-shadow-sm pointer-events-auto">Today's Offers</div>
               <h2 className="text-white text-xl md:text-4xl font-bold mb-4 leading-tight font-serif drop-shadow-md">
                 Get up to 50% OFF<br />on Diamond Collections
               </h2>
-              <Link to="/category/all" className="bg-brand-gold text-brand-dark-blue text-[10px] md:text-sm font-bold px-6 py-2.5 md:px-8 md:py-3 rounded-xl w-fit hover:bg-white hover:scale-105 shadow-lg shadow-brand-gold/20 transition-all pointer-events-auto">
+              <Link to="/category/all" className="bg-brand-red text-white text-gray-900 text-[10px] md:text-sm font-bold px-6 py-2.5 md:px-8 md:py-3 rounded-xl w-fit hover:bg-white hover:scale-105 shadow-lg shadow-brand-gold/20 transition-all pointer-events-auto">
                 SHOP OFFERS
               </Link>
             </div>
@@ -384,8 +448,7 @@ export function HomePage() {
           </div>
         )}
 
-        {/* ── Stats Banner ─────────────────────────────────────── */}
-        <StatsBanner />
+        {/* StatsBanner moved above */}
 
         {/* Offers Section */}
         {products.filter(p => p.is_offer).length > 0 && (
@@ -425,7 +488,7 @@ export function HomePage() {
         {reviews.filter(r => r.image_url).length > 0 && (
           <section className="mb-4 overflow-hidden">
             <div className="px-4 md:px-24 mb-6">
-              <h3 className="font-serif font-bold text-2xl text-brand-dark-blue">What Our Clients Say</h3>
+              <h3 className="font-serif font-bold text-2xl text-gray-900">What Our Clients Say</h3>
             </div>
 
             <div className="overflow-hidden w-full">
@@ -436,7 +499,7 @@ export function HomePage() {
               >
                 {/* Duplicate for seamless loop */}
                 {[...reviews.filter(r => r.image_url), ...reviews.filter(r => r.image_url)].map((rev, idx) => (
-                  <div key={idx} className="w-[260px] md:w-[300px] aspect-[4/3] shrink-0 bg-white border border-brand-gold/20 rounded-[20px] overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 relative group">
+                  <div key={idx} className="w-[260px] md:w-[300px] aspect-[4/3] shrink-0 bg-white border border-brand-red/10 rounded-[20px] overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 relative group">
                     <img src={rev.image_url} alt="Client review showcase" className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
                   </div>
                 ))}

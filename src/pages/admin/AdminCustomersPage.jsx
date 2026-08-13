@@ -67,7 +67,7 @@ export function AdminCustomersPage() {
 
   if (loading) return (
     <div className="flex items-center justify-center py-20">
-      <div className="w-8 h-8 border-4 border-[#08183A]/20 border-t-[#08183A] rounded-full animate-spin" />
+      <div className="w-8 h-8 border-4 border-brand-red/20 border-t-[#08183A] rounded-full animate-spin" />
     </div>
   );
 
@@ -75,23 +75,23 @@ export function AdminCustomersPage() {
     <div className="w-full max-w-5xl mx-auto">
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-6">
         <div>
-          <h1 className="font-serif text-2xl sm:text-3xl font-bold text-[#08183A]">Customers</h1>
-          <p className="text-[#08183A]/40 text-xs font-sans mt-0.5">{customers.length} total users</p>
+          <h1 className="font-serif text-2xl sm:text-3xl font-bold text-gray-900">Customers</h1>
+          <p className="text-gray-900/40 text-xs font-sans mt-0.5">{customers.length} total users</p>
         </div>
       </div>
 
       <div className="relative mb-6">
-        <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-[#08183A]/40" />
+        <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-900/40" />
         <input value={search} onChange={(e) => setSearch(e.target.value)}
           placeholder="Search by name, email, or phone..."
-          className="w-full pl-9 pr-4 py-3 rounded-xl bg-white border border-[#08183A]/10 text-[#08183A] font-sans text-sm focus:outline-none focus:border-[#08183A]/30 shadow-sm" />
+          className="w-full pl-9 pr-4 py-3 rounded-xl bg-white border border-brand-red/10 text-gray-900 font-sans text-sm focus:outline-none focus:border-brand-red/30 shadow-sm" />
       </div>
 
-      <div className="bg-white rounded-2xl border border-[#08183A]/10 overflow-hidden shadow-sm">
+      <div className="bg-white rounded-2xl border border-brand-red/10 overflow-hidden shadow-sm">
         <div className="overflow-x-auto">
           <table className="w-full text-sm font-sans min-w-[680px]">
             <thead>
-              <tr className="bg-[#FDF8F0] text-[#08183A]/60 text-xs uppercase tracking-wider border-b border-[#08183A]/10">
+              <tr className="bg-[#FDF8F0] text-gray-900/60 text-xs uppercase tracking-wider border-b border-brand-red/10">
                 <th className="text-left py-4 px-4 sm:px-6 font-semibold">Name</th>
                 <th className="text-left py-4 px-4 sm:px-6 font-semibold">Email</th>
                 <th className="text-left py-4 px-4 sm:px-6 font-semibold">Phone</th>
@@ -108,16 +108,16 @@ export function AdminCustomersPage() {
                   {/* Name */}
                   <td className="py-4 px-4 sm:px-6">
                     <div className="flex items-center gap-3">
-                      <div className="w-8 h-8 rounded-full bg-[#08183A]/10 flex items-center justify-center text-[#08183A] font-bold shrink-0">
+                      <div className="w-8 h-8 rounded-full bg-brand-red text-white/10 flex items-center justify-center text-gray-900 font-bold shrink-0">
                         {(customer.name || "U")[0].toUpperCase()}
                       </div>
-                      <span className="font-semibold text-[#08183A]">{customer.name || "Unknown"}</span>
+                      <span className="font-semibold text-gray-900">{customer.name || "Unknown"}</span>
                     </div>
                   </td>
 
                   {/* Email */}
                   <td className="py-4 px-4 sm:px-6">
-                    <div className="flex items-center gap-1.5 text-xs text-[#08183A]/70 mb-1">
+                    <div className="flex items-center gap-1.5 text-xs text-gray-900/70 mb-1">
                       <Mail className="w-3.5 h-3.5 shrink-0" />
                       <span className="truncate max-w-[160px]">{customer.email}</span>
                     </div>
@@ -128,14 +128,14 @@ export function AdminCustomersPage() {
                   <td className="py-4 px-4 sm:px-6">
                     {customer.phone ? (
                       <>
-                        <div className="flex items-center gap-1.5 text-xs text-[#08183A]/70 mb-1">
+                        <div className="flex items-center gap-1.5 text-xs text-gray-900/70 mb-1">
                           <Phone className="w-3.5 h-3.5 shrink-0" />
                           <span>{customer.phone}</span>
                         </div>
                         <VerifiedBadge verified={customer.phone_verified} label="Phone" />
                       </>
                     ) : (
-                      <span className="text-xs text-[#08183A]/30">—</span>
+                      <span className="text-xs text-gray-900/30">—</span>
                     )}
                   </td>
 
@@ -149,7 +149,7 @@ export function AdminCustomersPage() {
                   </td>
 
                   {/* Joined */}
-                  <td className="py-4 px-4 sm:px-6 text-xs text-[#08183A]/60">
+                  <td className="py-4 px-4 sm:px-6 text-xs text-gray-900/60">
                     <div className="flex items-center gap-1.5">
                       <Calendar className="w-3.5 h-3.5" />
                       {new Date(customer.created_at).toLocaleDateString("en-IN")}
@@ -173,7 +173,7 @@ export function AdminCustomersPage() {
               ))}
               {filtered.length === 0 && (
                 <tr>
-                  <td colSpan={6} className="py-12 text-center text-[#08183A]/50">
+                  <td colSpan={6} className="py-12 text-center text-gray-900/50">
                     No customers found
                   </td>
                 </tr>

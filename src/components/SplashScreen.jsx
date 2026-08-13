@@ -1,112 +1,119 @@
-import React, { useRef, useEffect } from 'react';
+import React, { useRef } from 'react';
 import gsap from 'gsap';
 import { useGSAP } from '@gsap/react';
 import logoImg from '../assets/logo.png';
+import splashBg from '../assets/splash_bg.png';
 
 export function SplashScreen({ onComplete }) {
   const container = useRef(null);
   const logoGroup = useRef(null);
-  const fireworks = useRef(null);
+  const taglineRef = useRef(null);
 
   useGSAP(() => {
-    // Generate firework particles
-    const particleCount = 40;
-    const colors = ['#D4AF37', '#ffffff', '#FF5733', '#FFC300', '#C6A184'];
-    
-    for (let i = 0; i < particleCount; i++) {
-      const particle = document.createElement('div');
-      particle.className = 'absolute w-1.5 h-1.5 rounded-full';
-      particle.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
-      particle.style.top = '50%';
-      particle.style.left = '50%';
-      particle.style.opacity = '0';
-      fireworks.current.appendChild(particle);
-    }
-
-    const particles = fireworks.current.childNodes;
-
     const tl = gsap.timeline({
       onComplete: () => {
         if (onComplete) onComplete();
       }
     });
 
-    // Logo appears
+    // Logo pops in
     tl.from(logoGroup.current, {
-      scale: 0.5,
+      scale: 0.7,
       opacity: 0,
-      duration: 1,
+      duration: 0.8,
       ease: 'back.out(1.7)'
     });
 
-    // Fireworks explode
-    tl.to(particles, {
-      duration: 1.5,
-      opacity: 1,
-      scale: 'random(1, 2)',
-      x: () => (Math.random() - 0.5) * window.innerWidth * 0.8,
-      y: () => (Math.random() - 0.5) * window.innerHeight * 0.8,
-      ease: 'power4.out',
-      stagger: {
-        amount: 0.2,
-        from: 'center'
-      }
-    }, '-=0.5');
-
-    // Particles fade out
-    tl.to(particles, {
+    // Tagline fades up
+    tl.from(taglineRef.current, {
+      y: 16,
       opacity: 0,
       duration: 0.5,
-      ease: 'power2.inOut'
-    }, '-=0.5');
+      ease: 'power2.out'
+    }, '-=0.3');
 
-    // Gentle floating effect for logo
-    tl.to(logoGroup.current, {
-      y: -15,
-      duration: 1.5,
-      yoyo: true,
-      repeat: 1,
-      ease: 'sine.inOut'
-    }, '-=2.0');
+    // Hold for a moment
+    tl.to({}, { duration: 1.5 });
 
     // Fade everything out
     tl.to(container.current, {
       opacity: 0,
-      duration: 0.8,
+      duration: 0.7,
       ease: 'power2.inOut'
-    }, '+=0.5');
+    });
 
   }, { scope: container });
 
   return (
     <div
       ref={container}
-      className="fixed inset-0 z-[100] bg-black flex flex-col items-center justify-center w-full h-full overflow-hidden"
+      className="fixed inset-0 z-[100] flex flex-col items-center w-full h-full overflow-hidden"
     >
-      {/* Fireworks container */}
-      <div ref={fireworks} className="absolute inset-0 pointer-events-none" />
+      {/* Full-screen background image — basket is baked in, no seams */}
+      <img
+        src={splashBg}
+        alt=""
+        className="absolute inset-0 w-full h-full object-cover"
+        style={{ zIndex: 0 }}
+      />
 
-      {/* Logo container */}
-      <div ref={logoGroup} className="relative z-10 flex flex-col items-center justify-center">
-        <div className="w-24 h-24 md:w-32 md:h-32 bg-black rounded-full flex items-center justify-center border border-[#D4AF37]/30 shadow-[0_0_40px_rgba(212,175,55,0.2)] mb-4 p-2">
+      {/* Content overlay */}
+      <div className="relative z-10 flex-1 flex flex-col items-center justify-center px-8 w-full" style={{ paddingBottom: '40vh' }}>
+        <div ref={logoGroup} className="flex flex-col items-center">
+          {/* Logo */}
           <img
             src={logoImg}
-            alt="Houra Jewels Logo"
-            className="w-full h-full object-contain"
+            alt="Manikanta Super Market Logo"
+            className="object-contain mb-3"
+            style={{
+              width: '140px',
+              height: '140px',
+              mixBlendMode: 'multiply',
+              filter: 'drop-shadow(0 4px 12px rgba(0,0,0,0.15))'
+            }}
           />
+
+          {/* Brand Name */}
+          <span
+            style={{
+              color: '#C8102E',
+              fontFamily: "'Georgia', serif",
+              fontSize: 'clamp(28px, 9vw, 44px)',
+              fontWeight: '900',
+              letterSpacing: '0.04em',
+              lineHeight: 1.1,
+              textShadow: '0 2px 8px rgba(0,0,0,0.10)'
+            }}
+          >
+            MANIKANTA
+          </span>
+          <span
+            style={{
+              color: '#C8102E',
+              fontFamily: "'Georgia', serif",
+              fontSize: 'clamp(16px, 5vw, 22px)',
+              fontWeight: '700',
+              letterSpacing: '0.20em',
+              textShadow: '0 1px 4px rgba(0,0,0,0.08)'
+            }}
+          >
+            SUPER MARKET
+          </span>
         </div>
-        <div className="flex flex-col items-center">
-          <span className="font-serif font-bold text-2xl md:text-4xl tracking-[0.15em] text-[#D4AF37] whitespace-nowrap">
-            HOURA JEWELS
-          </span>
-          <span className="text-white text-xs md:text-sm tracking-[0.3em] mt-2 uppercase font-medium">
-            By S & M
-          </span>
-          <span className="text-white text-sm md:text-base tracking-[0.15em] mt-3 font-bold" style={{ fontFamily: 'serif', letterSpacing: '0.08em' }}>
-            Wear it once,{' '}
-            <span className="text-[#D4AF37]">love it forever</span>
-          </span>
-        </div>
+
+        {/* Tagline */}
+        <p
+          ref={taglineRef}
+          style={{
+            color: '#5C2A00',
+            fontFamily: "'Georgia', serif",
+            fontSize: 'clamp(16px, 5vw, 22px)',
+            fontWeight: '700',
+            marginTop: '24px'
+          }}
+        >
+          Freshness Delivered Daily
+        </p>
       </div>
     </div>
   );
