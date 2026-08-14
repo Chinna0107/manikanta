@@ -90,8 +90,7 @@ function App() {
             <Route path="/*" element={
               <AppLayout>
                 <Routes>
-                  {/* Public Pages */}
-                  <Route path="/" element={<HomePage />} />
+                  {/* Public Pages (no login required) */}
                   <Route path="/about" element={<AboutPage />} />
                   <Route path="/contact" element={<ContactPage />} />
                   <Route path="/category/:categoryId" element={<CategoryListingPage />} />
@@ -102,11 +101,12 @@ function App() {
                   <Route path="/returns-policy" element={<ReturnsPolicyPage />} />
                   <Route path="/privacy-policy" element={<PrivacyPolicyPage />} />
                   <Route path="/terms-of-service" element={<TermsOfServicePage />} />
-                  
-                  {/* Protected Pages */}
+
+                  {/* Protected Pages (login required — including home) */}
                   <Route path="/*" element={
                     <ProtectedRoute>
                       <Routes>
+                        <Route path="/" element={<HomePage />} />
                         <Route path="cart" element={<CartPage />} />
                         <Route path="checkout" element={<CheckoutPage />} />
                         <Route path="pickup" element={<PickupPage />} />
