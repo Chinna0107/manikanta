@@ -416,7 +416,9 @@ export function CheckoutPage() {
   const [shippingFee, setShippingFee] = useState(0);
   const [taxAmount, setTaxAmount] = useState(0);
   const [taxLabel, setTaxLabel] = useState('Tax (enter pincode)');
-  const finalTotal = subtotal - discount + shippingFee + taxAmount;
+  const [useCoins, setUseCoins] = useState(false);
+  const coinsDiscount = useCoins ? Math.min(parseFloat(user?.m_coins) || 0, subtotal - discount + shippingFee + taxAmount) : 0;
+  const finalTotal = subtotal - discount + shippingFee + taxAmount - coinsDiscount;
 
   useEffect(() => {
     fetch(`${BACKEND_URL}/general/shipping`)
@@ -511,7 +513,7 @@ export function CheckoutPage() {
     const res = await fetch(endpoint, {
       method: 'POST',
       headers,
-      body: JSON.stringify({ items, address: (orderType === 'pickup') ? { name: pickupContact.name, mobile: `${COUNTRIES.find(c=>c.code===pickupDialCode)?.dial||'+1'}${pickupContact.phone}`, email: pickupContact.email } : address, total: finalTotal, coupon_code: couponCode, payment_method: pMethod, order_type: orderType, razorpay_order_id: razorpayOrderId, razorpay_payment_id: razorpayPaymentId, razorpay_signature: razorpaySignature, discount_amount: discount, shipping_fee: shippingFee, tax_amount: taxAmount })
+      body: JSON.stringify({ items, address: (orderType === 'pickup') ? { name: pickupContact.name, mobile: `${COUNTRIES.find(c=>c.code===pickupDialCode)?.dial||'+1'}${pickupContact.phone}`, email: pickupContact.email } : address, total: finalTotal, coupon_code: couponCode, payment_method: pMethod, order_type: orderType, razorpay_order_id: razorpayOrderId, razorpay_payment_id: razorpayPaymentId, razorpay_signature: razorpaySignature, discount_amount: discount, shipping_fee: shippingFee, tax_amount: taxAmount, m_coins_used: coinsDiscount })
     });
     return res.json();
   };
@@ -798,6 +800,15 @@ export function CheckoutPage() {
                 {(taxAmount > 0 || shippingConfig?.settings?.tax_mode === 'pincode') && (
                   <div className="flex justify-between text-sm text-gray-900/70">
                     <span>{taxLabel || 'Tax'}</span><span className="font-medium">₹{taxAmount.toFixed(2)}</span>
+                  </div>
+                )}
+                {user?.m_coins > 0 && (
+                  <div className="flex justify-between items-center text-sm pt-2 mt-1 border-t border-brand-red/5">
+                    <label className="flex items-center gap-2 cursor-pointer text-amber-700 font-medium">
+                      <input type="checkbox" checked={useCoins} onChange={e => setUseCoins(e.target.checked)} className="accent-amber-600 w-4 h-4" />
+                      Use M-Coins (Bal: {user.m_coins})
+                    </label>
+                    {useCoins && <span className="font-medium text-amber-600">- ₹{coinsDiscount.toFixed(2)}</span>}
                   </div>
                 )}
                 <div className="flex justify-between font-bold text-gray-900 text-base pt-2 border-t border-brand-red/10">
@@ -1456,6 +1467,15 @@ export function CheckoutPage() {
                   <div className="flex justify-between text-sm text-gray-900/80 mb-2">
                     <span>{taxLabel || 'Tax'}</span>
                     <span className="font-medium text-gray-900">₹{taxAmount.toFixed(2)}</span>
+                  </div>
+                )}
+                {user?.m_coins > 0 && (
+                  <div className="flex justify-between items-center text-sm mb-3 pb-2 border-b border-brand-red/5">
+                    <label className="flex items-center gap-2 cursor-pointer text-amber-700 font-medium hover:text-amber-800 transition-colors">
+                      <input type="checkbox" checked={useCoins} onChange={e => setUseCoins(e.target.checked)} className="accent-amber-600 w-4 h-4 rounded" />
+                      Use M-Coins (Balance: {user.m_coins})
+                    </label>
+                    {useCoins && <span className="font-medium text-amber-600">- ₹{coinsDiscount.toFixed(2)}</span>}
                   </div>
                 )}
                 <div className="flex justify-between font-bold text-gray-900 text-xl pt-2 border-t border-brand-red/10">

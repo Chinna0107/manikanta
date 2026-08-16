@@ -21,6 +21,7 @@ const NAV = [
   { href: "/admin/reports", label: "Reports", icon: <BarChart3 className="w-4 h-4" /> },
   { href: "/admin/vacation", label: "Vacation", icon: <PalmtreeIcon className="w-4 h-4" /> },
   { href: "/admin/settings", label: "Settings", icon: <Settings className="w-4 h-4" /> },
+  { href: "/admin/delivery-partners", label: "Delivery Partners", icon: <Truck className="w-4 h-4" /> },
 ];
 
 export function AdminLayout({ children }) {
@@ -103,7 +104,7 @@ export function AdminLayout({ children }) {
           <p className="text-[#08183A]/40 text-[10px] font-sans truncate">{admin.email}</p>
         </div>
 
-        <nav className="flex-1 p-4 space-y-1">
+        <nav className="flex-1 p-4 space-y-1 overflow-y-auto min-h-0">
           {NAV.map((item) => (
             <Link key={item.href} to={item.href} onClick={() => setMobileOpen(false)}
               className={`flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-sans font-medium transition-colors ${

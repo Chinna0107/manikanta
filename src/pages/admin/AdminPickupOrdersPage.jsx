@@ -16,24 +16,47 @@ const STATUS_COLORS = {
 
 export function AdminPickupOrdersPage() {
   const [orders, setOrders] = useState([]);
+  const [deliveryPartners, setDeliveryPartners] = useState([]);
   const [loading, setLoading] = useState(true);
   const [expanded, setExpanded] = useState(null);
   const [statusFilter, setStatusFilter] = useState('all');
 
   useEffect(() => {
     const token = localStorage.getItem('token');
-    fetch(`${BACKEND_URL}/admin/orders`, { headers: { Authorization: `Bearer ${token}` } })
+    fetch(`${BACKEND_URL}/admin/orders`, { headers: { Authorization: `Bearer ${localStorage.getItem('token')}` } })
       .then(r => r.json())
       .then(d => { if (d.orders) setOrders(d.orders.filter(o => o.order_type === 'pickup')); })
       .catch(() => {})
       .finally(() => setLoading(false));
   }, []);
 
-  const updateStatus = async (orderId, status) => {
+    const assignDeliveryPartner = async (orderId, partnerId) => {
+    try {
+      setShipping(prev => ({ ...prev, [`assign_${orderId}`]: true }));
+      const res = await fetch(`${BACKEND_URL}/admin/orders/${orderId}/assign-delivery`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${localStorage.getItem('token')}`
+        },
+        body: JSON.stringify({ partnerId })
+      });
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.error || "Failed to assign partner");
+      alert('Order assigned successfully!');
+      setOrders(prev => prev.map(o => o.id === orderId ? { ...o, delivery_partner_id: parseInt(partnerId) } : o));
+    } catch (err) {
+      alert(`Assign Error: ${err.message}`);
+    } finally {
+      setShipping(prev => ({ ...prev, [`assign_${orderId}`]: false }));
+    }
+  };
+
+const updateStatus = async (orderId, status) => {
     const token = localStorage.getItem('token');
     await fetch(`${BACKEND_URL}/admin/orders/${orderId}/status`, {
       method: 'PUT',
-      headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` },
+      headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${localStorage.getItem('token')}` },
       body: JSON.stringify({ status }),
     });
     setOrders(prev => prev.map(o => o.id === orderId ? { ...o, status } : o));
@@ -119,7 +142,7 @@ export function AdminPickupOrdersPage() {
                     </div>
                     <p className="text-gray-900/60 text-[10px] sm:text-xs font-sans mt-0.5 truncate">{name}</p>
                   </div>
-                  <span className="font-serif font-bold text-brand-orange text-sm sm:text-base lg:text-lg flex-shrink-0">${order.total}</span>
+                  <span className="font-serif font-bold text-brand-orange text-sm sm:text-base lg:text-lg flex-shrink-0">₹{order.total}</span>
                   <ChevronDown className={`w-4 h-4 text-gray-900/40 transition-transform flex-shrink-0 ${expanded === order.id ? 'rotate-180' : ''}`} />
                 </div>
 
@@ -179,7 +202,7 @@ export function AdminPickupOrdersPage() {
                               </div>
                             </div>
                             <div className="text-sm font-bold text-brand-orange">
-                              ${(item.variant?.price || item.product?.price || 0) * item.qty}
+                              ₹{(item.variant?.price || item.product?.price || 0) * item.qty}
                             </div>
                           </div>
                         ))}

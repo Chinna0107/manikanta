@@ -169,6 +169,7 @@ export function DashboardPage() {
               {[
                 { icon: Package, label: 'My Orders', action: () => navigate('/my-orders') },
                 { icon: Ticket, label: 'My Coupons', action: () => navigate('/my-coupons') },
+                { icon: Wallet, label: 'My Wallet', action: () => navigate('/my-wallet') },
                 { icon: Heart, label: 'Wishlist', action: () => navigate('/wishlist') },
                 { icon: MapPin, label: 'Saved Addresses', action: () => navigate('/my-addresses') },
                 { icon: Settings, label: 'Account Settings', action: () => navigate('/account-settings') },

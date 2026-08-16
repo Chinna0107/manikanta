@@ -26,6 +26,7 @@ import { ShippingPolicyPage } from './pages/ShippingPolicyPage';
 import { ReturnsPolicyPage } from './pages/ReturnsPolicyPage';
 import { PrivacyPolicyPage } from './pages/PrivacyPolicyPage';
 import { TermsOfServicePage } from './pages/TermsOfServicePage';
+import { WalletPage } from './pages/WalletPage';
 import { AdminLayout } from './components/admin/AdminLayout';
 import { AdminDashboardPage } from './pages/admin/AdminDashboardPage';
 import { AdminProductsPage } from './pages/admin/AdminProductsPage';
@@ -37,6 +38,10 @@ import { AdminReportsPage } from './pages/admin/AdminReportsPage';
 import { AdminSettingsPage } from './pages/admin/AdminSettingsPage';
 import { AdminCategoriesPage } from './pages/admin/AdminCategoriesPage';
 import { AdminOffersPage } from './pages/admin/AdminOffersPage';
+import { AdminDeliveryPartnersPage } from './pages/admin/AdminDeliveryPartnersPage';
+import { DeliveryLoginPage } from './pages/DeliveryLoginPage';
+import { DeliveryDashboardPage } from './pages/DeliveryDashboardPage';
+
 import { AdminShippingPage } from './pages/admin/AdminShippingPage';
 import { AdminPickupOrdersPage } from './pages/admin/AdminPickupOrdersPage';
 import { AdminDirectOrdersPage } from './pages/admin/AdminDirectOrdersPage';
@@ -63,7 +68,11 @@ function App() {
             <Route path="/login" element={<LoginPage />} />
             <Route path="/signup" element={<SignupPage />} />
 
-            {/* Admin — using AdminLayout */}
+                      {/* Delivery Routes */}
+          <Route path="/delivery/login" element={<DeliveryLoginPage />} />
+          <Route path="/delivery/dashboard" element={<ProtectedRoute><DeliveryDashboardPage /></ProtectedRoute>} />
+
+          {/* Admin — using AdminLayout */}
             <Route path="/admin/*" element={
               <AdminLayout>
                 <Routes>
@@ -73,6 +82,8 @@ function App() {
                   <Route path="products" element={<AdminProductsPage />} />
                   <Route path="categories" element={<AdminCategoriesPage />} />
                   <Route path="offers" element={<AdminOffersPage />} />
+                <Route path="delivery-partners" element={<AdminDeliveryPartnersPage />} />
+
                   <Route path="shipping" element={<AdminShippingPage />} />
                   <Route path="pickup-orders" element={<AdminPickupOrdersPage />} />
                   <Route path="direct-orders" element={<AdminDirectOrdersPage />} />
@@ -118,6 +129,7 @@ function App() {
                         <Route path="my-coupons" element={<MyCouponsPage />} />
                         <Route path="my-addresses" element={<MyAddressesPage />} />
                         <Route path="account-settings" element={<AccountSettingsPage />} />
+                        <Route path="my-wallet" element={<WalletPage />} />
                       </Routes>
                     </ProtectedRoute>
                   } />

@@ -29,10 +29,10 @@ export function AdminDashboardPage() {
   const pending = orders.filter((o) => o.status === "paid" || o.status === "processing" || o.status === "pending").length;
 
   const stats = [
-    { label: "Total Orders", value: orders.length, icon: <ShoppingBag className="w-6 h-6" />, color: "bg-brand-red text-white/10 text-gray-900" },
+    { label: "Total Orders", value: orders.length, icon: <ShoppingBag className="w-6 h-6" />, color: "bg-red-100 text-red-600" },
     { label: "Total Revenue", value: `₹${revenue.toLocaleString()}`, icon: <TrendingUp className="w-6 h-6" />, color: "bg-green-100 text-green-600" },
     { label: "Customers", value: users.length, icon: <Users className="w-6 h-6" />, color: "bg-blue-100 text-blue-600" },
-    { label: "Pending Orders", value: pending, icon: <Clock className="w-6 h-6" />, color: "bg-brand-orange text-white/10 text-brand-orange" },
+    { label: "Pending Orders", value: pending, icon: <Clock className="w-6 h-6" />, color: "bg-orange-100 text-orange-600" },
     { label: "Products", value: productsCount, icon: <Package className="w-6 h-6" />, color: "bg-purple-100 text-purple-600" },
   ];
 
@@ -84,12 +84,12 @@ export function AdminDashboardPage() {
                     <tr key={order.id} className="hover:bg-[#FDF8F0]/30 transition-colors">
                       <td className="py-3 pr-2 sm:pr-4 font-semibold text-gray-900 text-xs sm:text-sm">MSM - {order.id}</td>
                       <td className="py-3 pr-2 sm:pr-4 text-gray-900/70 text-xs sm:text-sm truncate max-w-[100px] sm:max-w-none">{order.address?.name || "—"}</td>
-                      <td className="py-3 pr-2 sm:pr-4 font-serif font-bold text-brand-orange text-xs sm:text-sm">${order.total}</td>
+                      <td className="py-3 pr-2 sm:pr-4 font-serif font-bold text-brand-orange text-xs sm:text-sm">₹{order.total}</td>
                       <td className="py-3 pr-2 sm:pr-4">
                         <span className={`px-2 py-0.5 rounded-full text-[9px] sm:text-[10px] font-bold ${
                           order.status === "delivered" ? "bg-green-100 text-green-700" :
                           order.status === "paid" ? "bg-blue-100 text-blue-700" :
-                          order.status === "shipped" ? "bg-purple-100 text-purple-700" : "bg-brand-orange text-white/10 text-brand-orange"
+                          order.status === "shipped" ? "bg-purple-100 text-purple-700" : "bg-orange-100 text-orange-700"
                         }`}>{order.status}</span>
                       </td>
                       <td className="py-3">

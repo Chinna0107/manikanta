@@ -43,7 +43,7 @@ function BalanceDuePanel({ order, onUpdate }) {
   const sendWhatsApp = (link) => {
     const msg = encodeURIComponent(
       `Hi ${addr.name || order.user_name || 'Customer'}, your order #${order.order_number || order.id} has been updated.\n\n` +
-      `A balance of *₹${balance.toFixed(2)}* is due.\n\nPay securely here: ${link}`
+      `A balance of *₹{balance.toFixed(2)}* is due.\n\nPay securely here: ${link}`
     );
     window.open(`https://wa.me/${phone}?text=${msg}`, '_blank');
   };
@@ -84,7 +84,7 @@ function BalanceDuePanel({ order, onUpdate }) {
     <div className="bg-amber-50 border border-amber-200 rounded-xl p-4 space-y-3">
       <div className="flex items-center justify-between">
         <div>
-          <p className="text-sm font-bold text-amber-800">💳 Balance Due: ${balance.toFixed(2)}</p>
+          <p className="text-sm font-bold text-amber-800">💳 Balance Due: ₹{balance.toFixed(2)}</p>
           <p className="text-[10px] text-amber-600 mt-0.5">Customer needs to pay this amount</p>
         </div>
         <span className="text-[10px] font-bold bg-amber-200 text-amber-800 px-2 py-1 rounded-full">PENDING</span>
@@ -135,7 +135,7 @@ function BalanceDuePanel({ order, onUpdate }) {
           </div>
           <button onClick={handleMarkPaid} disabled={busy}
             className="w-full bg-green-600 hover:bg-green-700 text-white text-xs font-bold py-2 rounded-lg transition-colors disabled:opacity-50">
-            {busy ? 'Saving...' : `Confirm — ₹${balance.toFixed(2)} paid via ${markMethod.replace('_', ' ')}`}
+            {busy ? 'Saving...' : `Confirm — ₹{balance.toFixed(2)} paid via ${markMethod.replace('_', ' ')}`}
           </button>
         </div>
       )}
@@ -292,11 +292,11 @@ function EditOrderModal({ order, onClose, onSaved }) {
                     <RefreshCcw className="w-7 h-7 text-green-600" />
                   </div>
                   <h3 className="font-bold text-lg text-gray-900">Order Updated!</h3>
-                  <p className="text-sm text-gray-500 mt-1">New total: <strong>${result.new_total?.toFixed(2)}</strong></p>
+                  <p className="text-sm text-gray-500 mt-1">New total: <strong>₹{result.new_total?.toFixed(2)}</strong></p>
                 </div>
                 {result.balance_due > 0 && (
                   <div className="bg-amber-50 border border-amber-200 rounded-xl p-4 space-y-3">
-                    <p className="text-sm font-bold text-amber-800">💳 Balance Due: ${result.balance_due?.toFixed(2)}</p>
+                    <p className="text-sm font-bold text-amber-800">💳 Balance Due: ₹{result.balance_due?.toFixed(2)}</p>
                     {result.payment_link_url && (
                       <>
                         <a href={result.payment_link_url} target="_blank" rel="noopener noreferrer"
@@ -317,7 +317,7 @@ function EditOrderModal({ order, onClose, onSaved }) {
                 )}
                 {Number(result.refund_amount) > 0 && (
                   <div className="bg-green-50 border border-green-200 rounded-xl p-4">
-                    <p className="text-sm font-bold text-green-800">✅ Refund of ${Number(result.refund_amount).toFixed(2)} issued</p>
+                    <p className="text-sm font-bold text-green-800">✅ Refund of ₹{Number(result.refund_amount).toFixed(2)} issued</p>
                     {result.refund_id && <p className="text-xs text-gray-500 font-mono mt-1">ID: {result.refund_id}</p>}
                   </div>
                 )}
@@ -350,7 +350,7 @@ function EditOrderModal({ order, onClose, onSaved }) {
                           {allSizes.length > 0 && (
                             <select value={item.variant?.size || ''} onChange={e => updateVariantSize(idx, e.target.value)}
                               className="text-xs border border-brand-red/20 rounded-lg px-2 py-1 bg-white text-gray-900 focus:outline-none">
-                              {allSizes.map(s => <option key={s.size} value={s.size}>{s.size} — ${s.price}</option>)}
+                              {allSizes.map(s => <option key={s.size} value={s.size}>{s.size} — ₹{s.price}</option>)}
                             </select>
                           )}
                           <div className="flex items-center gap-1">
@@ -358,7 +358,7 @@ function EditOrderModal({ order, onClose, onSaved }) {
                             <input type="number" min={1} value={item.qty} onChange={e => updateQty(idx, e.target.value)}
                               className="w-14 text-xs border border-brand-red/20 rounded-lg px-2 py-1 bg-white text-gray-900 focus:outline-none" />
                           </div>
-                          <span className="text-xs font-bold text-brand-orange self-center">${(price * item.qty).toFixed(2)}</span>
+                          <span className="text-xs font-bold text-brand-orange self-center">₹{(price * item.qty).toFixed(2)}</span>
                         </div>
                       </div>
                       <div className="flex flex-col gap-1 shrink-0">
@@ -396,7 +396,7 @@ function EditOrderModal({ order, onClose, onSaved }) {
                             {img && <img src={img} alt="" className="w-8 h-8 object-contain rounded border border-gray-100 shrink-0" />}
                             <div className="flex-1 min-w-0">
                               <p className="text-sm font-semibold text-gray-900 truncate">{p.name}</p>
-                              <p className="text-xs text-gray-500">${resolvePrice(p).toFixed(2)}</p>
+                              <p className="text-xs text-gray-500">₹{resolvePrice(p).toFixed(2)}</p>
                             </div>
                           </button>
                         );
@@ -444,8 +444,8 @@ function EditOrderModal({ order, onClose, onSaved }) {
               diff > 0 ? 'bg-amber-50 border-amber-200' : diff < 0 ? 'bg-green-50 border-green-200' : 'bg-gray-50 border-gray-200'
             }`}>
               <div>
-                <p className="text-xs font-bold text-gray-900">New Total: ${newTotal.toFixed(2)}</p>
-                <p className="text-[10px] text-gray-500 mt-0.5">Was: ${oldTotal.toFixed(2)}</p>
+                <p className="text-xs font-bold text-gray-900">New Total: ₹{newTotal.toFixed(2)}</p>
+                <p className="text-[10px] text-gray-500 mt-0.5">Was: ₹{oldTotal.toFixed(2)}</p>
               </div>
               {diff !== 0 && (
                 <span className={`text-sm font-bold ${ diff > 0 ? 'text-amber-700' : 'text-green-700' }`}>
@@ -566,7 +566,7 @@ function RefundModal({ order, refunding, refundResult, onConfirm, onClose }) {
                 </h3>
                 {cancelType === 'refund' ? (
                   <p className="text-sm text-gray-500 mb-2">
-                    Refund of <strong>${refundResult.amount?.toFixed(2)}</strong> has been processed.
+                    Refund of <strong>₹{refundResult.amount?.toFixed(2)}</strong> has been processed.
                   </p>
                 ) : (
                   <p className="text-sm text-amber-600 font-semibold mb-2">Cancelled without refund.</p>
@@ -623,7 +623,7 @@ function RefundModal({ order, refunding, refundResult, onConfirm, onClose }) {
                       <p className="text-xs text-gray-500">{item.variant?.size || 'Standard'} {itemCode ? ` • #${itemCode}` : ''}</p>
                     </div>
                     <div className="flex flex-col items-end gap-1">
-                      <span className="font-bold text-gray-900 text-sm">${price.toFixed(2)}</span>
+                      <span className="font-bold text-gray-900 text-sm">₹{price.toFixed(2)}</span>
                       <div className="flex items-center gap-1 bg-white border border-gray-200 rounded px-1">
                         <span className="text-[10px] text-gray-400">Cancel Qty:</span>
                         <input type="number" min="0" max={item.qty} value={selectedQty[idx]} 
@@ -647,7 +647,7 @@ function RefundModal({ order, refunding, refundResult, onConfirm, onClose }) {
                         <input type="checkbox" checked={refundShipping} onChange={e => setRefundShipping(e.target.checked)} className="w-4 h-4 accent-[#08183A]" />
                         <span className="text-sm font-bold text-gray-900">Refund Shipping Fee</span>
                       </div>
-                      <span className="font-bold text-gray-900">${shippingDisplay.toFixed(2)}</span>
+                      <span className="font-bold text-gray-900">₹{shippingDisplay.toFixed(2)}</span>
                     </label>
                   )}
                   {taxDisplay > 0 && (
@@ -656,7 +656,7 @@ function RefundModal({ order, refunding, refundResult, onConfirm, onClose }) {
                         <input type="checkbox" checked={refundTax} onChange={e => setRefundTax(e.target.checked)} className="w-4 h-4 accent-[#08183A]" />
                         <span className="text-sm font-bold text-gray-900">Refund Tax {isFullCancel ? '' : '(Prorated)'}</span>
                       </div>
-                      <span className="font-bold text-gray-900">${(isFullCancel ? taxDisplay : proratedTax).toFixed(2)}</span>
+                      <span className="font-bold text-gray-900">₹{(isFullCancel ? taxDisplay : proratedTax).toFixed(2)}</span>
                     </label>
                   )}
                 </div>
@@ -675,7 +675,7 @@ function RefundModal({ order, refunding, refundResult, onConfirm, onClose }) {
                       className="flex-1 border border-gray-200 rounded-lg px-3 py-1.5 text-sm text-gray-900 bg-white focus:outline-none" />
                   </div>
                   {transactionCharge > 0 && (
-                    <p className="text-xs text-amber-600 font-semibold text-right">Deducting: ${transactionCharge.toFixed(2)}</p>
+                    <p className="text-xs text-amber-600 font-semibold text-right">Deducting: ₹{transactionCharge.toFixed(2)}</p>
                   )}
                 </div>
               </div>
@@ -692,7 +692,7 @@ function RefundModal({ order, refunding, refundResult, onConfirm, onClose }) {
                 )}
               </div>
               <span className={`font-bold text-lg ${cancelType === 'refund' ? 'text-red-700' : 'text-gray-700'}`}>
-                ${(cancelType === 'refund' ? refundTotal : selectedItemsTotal).toFixed(2)}
+                ₹{(cancelType === 'refund' ? refundTotal : selectedItemsTotal).toFixed(2)}
               </span>
             </div>
 
@@ -717,6 +717,7 @@ function RefundModal({ order, refunding, refundResult, onConfirm, onClose }) {
 
 export function AdminOrdersPage() {
   const [orders, setOrders] = useState([]);
+  const [deliveryPartners, setDeliveryPartners] = useState([]);
   const [loading, setLoading] = useState(true);
   const [expanded, setExpanded] = useState(null);
   const [statusFilter, setStatusFilter] = useState("all");
@@ -734,6 +735,11 @@ export function AdminOrdersPage() {
       setLoading(false);
       return;
     }
+    fetch(`${BACKEND_URL}/admin/delivery-partners`, { headers: { Authorization: `Bearer ${token}` } })
+      .then(r => r.json())
+      .then(d => { if (d.partners) setDeliveryPartners(d.partners); })
+      .catch(console.error);
+
     fetch(`${BACKEND_URL}/admin/orders`, { headers: { Authorization: `Bearer ${token}` } })
       .then((r) => r.json())
       .then((d) => {
@@ -748,7 +754,29 @@ export function AdminOrdersPage() {
       .finally(() => setLoading(false));
   }, []);
 
-  const updateStatus = async (orderId, status) => {
+    const assignDeliveryPartner = async (orderId, partnerId) => {
+    try {
+      setShipping(prev => ({ ...prev, [`assign_${orderId}`]: true }));
+      const res = await fetch(`${BACKEND_URL}/admin/orders/${orderId}/assign-delivery`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${localStorage.getItem('token')}`
+        },
+        body: JSON.stringify({ partnerId })
+      });
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.error || "Failed to assign partner");
+      alert('Order assigned successfully!');
+      setOrders(prev => prev.map(o => o.id === orderId ? { ...o, delivery_partner_id: parseInt(partnerId) } : o));
+    } catch (err) {
+      alert(`Assign Error: ${err.message}`);
+    } finally {
+      setShipping(prev => ({ ...prev, [`assign_${orderId}`]: false }));
+    }
+  };
+
+const updateStatus = async (orderId, status) => {
     // Intercept cancellation — show refund modal first
     if (status === 'cancelled') {
       const order = orders.find(o => o.id === orderId);
@@ -800,55 +828,7 @@ export function AdminOrdersPage() {
     setOrders(prev => prev.map(o => o.id === updatedOrder.id ? { ...o, ...updatedOrder } : o));
   };
 
-  const fetchShippoRates = async (orderId) => {
-    const token = localStorage.getItem("token");
-    setShipping((p) => ({ ...p, [`shippo_${orderId}`]: true }));
-    try {
-      const res = await fetch(`${BACKEND_URL}/admin/orders/${orderId}/shippo-rates`, {
-        method: "POST",
-        headers: { Authorization: `Bearer ${token}` },
-      });
-      const data = await res.json();
-      if (!res.ok) throw new Error(data.error || "Failed to fetch Shippo rates");
-      
-      setRatesModal({ orderId, rates: data.rates });
-    } catch (err) {
-      alert(`Shippo Error: ${err.message}`);
-    } finally {
-      setShipping((p) => ({ ...p, [`shippo_${orderId}`]: false }));
-    }
-  };
-
-  const purchaseShippoLabel = async (orderId, rateObjectId) => {
-    const token = localStorage.getItem("token");
-    setShipping((p) => ({ ...p, [`shippo_buy_${orderId}`]: true }));
-    try {
-      const res = await fetch(`${BACKEND_URL}/admin/orders/${orderId}/shippo-label`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json", Authorization: `Bearer ${token}` },
-        body: JSON.stringify({ rateObjectId }),
-      });
-      const data = await res.json();
-      if (!res.ok) throw new Error(data.error || "Failed to create Shippo label");
-      
-      setOrders((prev) => prev.map((o) => o.id === orderId ? { 
-        ...o, 
-        tracking_number: data.tracking_number, 
-        tracking_url: data.tracking_url, 
-        shipping_label_url: data.label_url,
-        tracking_id: data.tracking_number,
-        tracking_link: data.tracking_url,
-        status: "shipped" 
-      } : o));
-      setTracking((p) => ({ ...p, [orderId]: { id: data.tracking_number, link: data.tracking_url } }));
-      setRatesModal(null);
-      alert(`Shippo label created! Tracking: ${data.tracking_number}`);
-    } catch (err) {
-      alert(`Shippo Error: ${err.message}`);
-    } finally {
-      setShipping((p) => ({ ...p, [`shippo_buy_${orderId}`]: false }));
-    }
-  };
+  
 
   const notifyWhatsApp = (order) => {
     let address = {};
@@ -920,8 +900,8 @@ export function AdminOrdersPage() {
         </td>
         <td style="padding:10px 12px;border-bottom:1px solid #F6EFEF;vertical-align:middle;text-align:center;font-size:9pt;">${escapeHtml(item.variant?.size || item.size || '—')}</td>
         <td style="padding:10px 12px;border-bottom:1px solid #F6EFEF;vertical-align:middle;text-align:center;font-size:9pt;">${item.qty}</td>
-        <td style="padding:10px 12px;border-bottom:1px solid #F6EFEF;vertical-align:middle;text-align:right;font-size:9pt;font-weight:600; ${isCancelled ? 'text-decoration: line-through;' : ''}">₹${(item.variant?.price || item.product?.price || item.price || 0).toFixed(2)}</td>
-        <td style="padding:10px 12px;border-bottom:1px solid #F6EFEF;vertical-align:middle;text-align:right;font-size:9pt;font-weight:700;color:#08183A; ${isCancelled ? 'text-decoration: line-through;' : ''}">₹${((item.variant?.price || item.product?.price || item.price || 0) * item.qty).toFixed(2)}</td>
+        <td style="padding:10px 12px;border-bottom:1px solid #F6EFEF;vertical-align:middle;text-align:right;font-size:9pt;font-weight:600; ${isCancelled ? 'text-decoration: line-through;' : ''}">₹{(item.variant?.price || item.product?.price || item.price || 0).toFixed(2)}</td>
+        <td style="padding:10px 12px;border-bottom:1px solid #F6EFEF;vertical-align:middle;text-align:right;font-size:9pt;font-weight:700;color:#08183A; ${isCancelled ? 'text-decoration: line-through;' : ''}">₹{((item.variant?.price || item.product?.price || item.price || 0) * item.qty).toFixed(2)}</td>
       </tr>`;
     };
 
@@ -1009,12 +989,12 @@ export function AdminOrdersPage() {
     <td style="width:55%;"></td>
     <td style="width:45%;">
       <table style="width:100%;border-collapse:collapse;">
-        <tr><td style="padding:7px 12px;text-align:right;color:#555;font-size:9.5pt;border-bottom:1px solid #F6EFEF;">Subtotal</td><td style="padding:7px 12px;text-align:right;font-weight:600;font-size:9.5pt;border-bottom:1px solid #F6EFEF;width:110px;">₹${subtotal.toFixed(2)}</td></tr>
-        ${discountAmt > 0 ? `<tr><td style="padding:7px 12px;text-align:right;color:#059669;font-size:9.5pt;border-bottom:1px solid #F6EFEF;">Discount${order.coupon_code ? ' (' + order.coupon_code + ')' : ''}</td><td style="padding:7px 12px;text-align:right;font-weight:600;font-size:9.5pt;border-bottom:1px solid #F6EFEF;color:#059669;">-₹${discountAmt.toFixed(2)}</td></tr>` : ''}
-        ${shippingCost > 0 ? `<tr><td style="padding:7px 12px;text-align:right;color:#555;font-size:9.5pt;border-bottom:1px solid #F6EFEF;">Shipping</td><td style="padding:7px 12px;text-align:right;font-weight:600;font-size:9.5pt;border-bottom:1px solid #F6EFEF;">₹${shippingCost.toFixed(2)}</td></tr>` : ''}
-        ${taxAmt > 0 ? `<tr><td style="padding:7px 12px;text-align:right;color:#555;font-size:9.5pt;border-bottom:1px solid #F6EFEF;">Tax</td><td style="padding:7px 12px;text-align:right;font-weight:600;font-size:9.5pt;border-bottom:1px solid #F6EFEF;">₹${taxAmt.toFixed(2)}</td></tr>` : ''}
-        <tr style="background:#FDF8F0;"><td style="padding:10px 12px;text-align:right;font-weight:700;font-size:11pt;color:#08183A;border-top:2px solid #08183A;">TOTAL</td><td style="padding:10px 12px;text-align:right;font-weight:700;font-size:11pt;color:#D4AF37;border-top:2px solid #08183A;">₹${Number(order.total).toFixed(2)}</td></tr>
-        ${refundAmt > 0 ? `<tr style="background:#fef2f2;"><td style="padding:10px 12px;text-align:right;font-weight:700;font-size:10pt;color:#dc2626;border-top:1px solid #fecaca;">REFUNDED</td><td style="padding:10px 12px;text-align:right;font-weight:700;font-size:10pt;color:#dc2626;border-top:1px solid #fecaca;">-₹${refundAmt.toFixed(2)}</td></tr>` : ''}
+        <tr><td style="padding:7px 12px;text-align:right;color:#555;font-size:9.5pt;border-bottom:1px solid #F6EFEF;">Subtotal</td><td style="padding:7px 12px;text-align:right;font-weight:600;font-size:9.5pt;border-bottom:1px solid #F6EFEF;width:110px;">₹{subtotal.toFixed(2)}</td></tr>
+        ${discountAmt > 0 ? `<tr><td style="padding:7px 12px;text-align:right;color:#059669;font-size:9.5pt;border-bottom:1px solid #F6EFEF;">Discount${order.coupon_code ? ' (' + order.coupon_code + ')' : ''}</td><td style="padding:7px 12px;text-align:right;font-weight:600;font-size:9.5pt;border-bottom:1px solid #F6EFEF;color:#059669;">-₹{discountAmt.toFixed(2)}</td></tr>` : ''}
+        ${shippingCost > 0 ? `<tr><td style="padding:7px 12px;text-align:right;color:#555;font-size:9.5pt;border-bottom:1px solid #F6EFEF;">Shipping</td><td style="padding:7px 12px;text-align:right;font-weight:600;font-size:9.5pt;border-bottom:1px solid #F6EFEF;">₹{shippingCost.toFixed(2)}</td></tr>` : ''}
+        ${taxAmt > 0 ? `<tr><td style="padding:7px 12px;text-align:right;color:#555;font-size:9.5pt;border-bottom:1px solid #F6EFEF;">Tax</td><td style="padding:7px 12px;text-align:right;font-weight:600;font-size:9.5pt;border-bottom:1px solid #F6EFEF;">₹{taxAmt.toFixed(2)}</td></tr>` : ''}
+        <tr style="background:#FDF8F0;"><td style="padding:10px 12px;text-align:right;font-weight:700;font-size:11pt;color:#08183A;border-top:2px solid #08183A;">TOTAL</td><td style="padding:10px 12px;text-align:right;font-weight:700;font-size:11pt;color:#D4AF37;border-top:2px solid #08183A;">₹{Number(order.total).toFixed(2)}</td></tr>
+        ${refundAmt > 0 ? `<tr style="background:#fef2f2;"><td style="padding:10px 12px;text-align:right;font-weight:700;font-size:10pt;color:#dc2626;border-top:1px solid #fecaca;">REFUNDED</td><td style="padding:10px 12px;text-align:right;font-weight:700;font-size:10pt;color:#dc2626;border-top:1px solid #fecaca;">-₹{refundAmt.toFixed(2)}</td></tr>` : ''}
       </table>
     </td>
   </tr>
@@ -1206,7 +1186,7 @@ export function AdminOrdersPage() {
                     {order.user_name || "Guest"}
                   </p>
                 </div>
-                <span className="font-serif font-bold text-brand-orange text-sm sm:text-base lg:text-lg flex-shrink-0">${order.total}</span>
+                <span className="font-serif font-bold text-brand-orange text-sm sm:text-base lg:text-lg flex-shrink-0">₹{order.total}</span>
                 <ChevronDown className={`w-4 h-4 text-gray-900/40 transition-transform flex-shrink-0 ${expanded === order.id ? "rotate-180" : ""}`} />
               </div>
 
@@ -1222,35 +1202,39 @@ export function AdminOrdersPage() {
                     </div>
                     <div>
                       <p className="text-[10px] font-sans text-gray-900/40 uppercase tracking-wider mb-2">Shipment</p>
-                      {order.tracking_id && order.tracking_id.trim() !== "" ? (
-                        <div className="space-y-2">
-                          <div className="flex items-center gap-2 bg-green-50 border border-green-200 rounded-xl px-3 py-2">
-                            <span className="text-green-700 font-bold font-sans text-xs truncate">AWB: {order.tracking_id}</span>
-                            {order.tracking_link && (
-                              <a href={order.tracking_link} target="_blank" rel="noopener noreferrer"
-                                className="ml-auto flex-shrink-0 text-gray-900 hover:opacity-80 transition-colors">
-                                <ExternalLink className="w-3.5 h-3.5" />
-                              </a>
-                            )}
-                          </div>
-                          {order.shipping_label_url && (
-                             <a href={order.shipping_label_url} target="_blank" rel="noopener noreferrer" className="mt-2 w-full flex items-center justify-center gap-2 bg-brand-red text-white px-4 py-2 rounded-xl text-xs font-semibold hover:opacity-90">
-                               📄 Download Label
-                             </a>
-                          )}
-                          <div className="flex justify-between mt-2">
-                            <button onClick={() => fetchShippoRates(order.id)} disabled={shipping[`shippo_${order.id}`]}
-                              className="text-[10px] font-sans text-gray-900/50 hover:text-gray-900 transition-colors underline w-full text-center">
-                              {shipping[`shippo_${order.id}`] ? "Loading Rates..." : "Re-create Label (Shippo)"}
-                            </button>
-                          </div>
+                      {!order.delivery_partner_id && (order.status === 'processing' || order.status === 'shipped') ? (
+                        <div className="space-y-2 mt-2">
+                          <select 
+                            id={`partner-select-${order.id}`}
+                            className="w-full text-xs bg-white border border-gray-200 rounded-xl px-3 py-2 focus:outline-none focus:border-brand-orange"
+                            defaultValue=""
+                          >
+                            <option value="" disabled>Select Delivery Partner</option>
+                            {deliveryPartners?.map(p => (
+                              <option key={p.id} value={p.id}>{p.name} ({p.pending_count} pending)</option>
+                            ))}
+                          </select>
+                          <button 
+                            onClick={() => {
+                              const select = document.getElementById(`partner-select-${order.id}`);
+                              if(select.value) assignDeliveryPartner(order.id, select.value);
+                            }}
+                            disabled={shipping[`assign_${order.id}`]}
+                            className="w-full flex justify-center bg-brand-orange text-white text-xs px-3 py-2 rounded-xl font-bold hover:bg-orange-600 disabled:opacity-50"
+                          >
+                            {shipping[`assign_${order.id}`] ? 'Assigning...' : 'Assign Partner'}
+                          </button>
+                        </div>
+                      ) : order.delivery_partner_id ? (
+                        <div className="mt-2 p-3 bg-emerald-50 border border-emerald-100 rounded-xl flex flex-col gap-1">
+                          <span className="text-[10px] uppercase font-bold text-emerald-800">Assigned Partner</span>
+                          <span className="text-sm text-emerald-900 font-bold">
+                            {deliveryPartners?.find(p => p.id === order.delivery_partner_id)?.name || 'Loading...'}
+                          </span>
                         </div>
                       ) : (
-                        <div className="space-y-2">
-                          <button onClick={() => fetchShippoRates(order.id)} disabled={shipping[`shippo_${order.id}`]}
-                            className="w-full flex items-center justify-center gap-2 bg-brand-orange text-white/20 hover:bg-brand-orange text-white/30 text-gray-900 px-4 py-2 rounded-xl text-xs font-semibold font-sans transition-colors disabled:opacity-50">
-                            {shipping[`shippo_${order.id}`] ? "Loading Rates..." : "📦 Select Shipping Rate (Shippo)"}
-                          </button>
+                        <div className="text-xs text-gray-400 bg-gray-50 p-3 rounded-xl border border-gray-100 text-center">
+                          Change status to 'processing' to assign delivery.
                         </div>
                       )}
                     </div>
@@ -1379,7 +1363,7 @@ export function AdminOrdersPage() {
                                       </div>
                                     </div>
                                     <div className="text-sm font-bold text-gray-400 line-through">
-                                      ${((item.variant?.price || item.product?.price || item.price || 0) * item.qty).toFixed(2)}
+                                      ₹{((item.variant?.price || item.product?.price || item.price || 0) * item.qty).toFixed(2)}
                                     </div>
                                   </div>
                                 );
@@ -1426,7 +1410,7 @@ export function AdminOrdersPage() {
                                         {item.variant?.size ? `Size: ${item.variant.size}` : 'Standard'} • Qty: {item.qty}
                                       </p>
                                       {itemCode && (
-                                        <span className="text-[10px] font-mono font-bold text-brand-orange bg-brand-orange text-white/10 px-1.5 py-0.5 rounded">#{itemCode}</span>
+                                        <span className="text-[10px] font-mono font-bold text-brand-orange bg-orange-100 px-1.5 py-0.5 rounded">#{itemCode}</span>
                                       )}
                                     </div>
                                   </div>
@@ -1526,7 +1510,7 @@ export function AdminOrdersPage() {
                         </div>
                       </div>
                       <div className="text-right">
-                        <p className="font-bold text-brand-orange">${rate.amount}</p>
+                        <p className="font-bold text-brand-orange">₹{rate.amount}</p>
                         <button onClick={() => purchaseShippoLabel(ratesModal.orderId, rate.objectId)}
                           disabled={shipping[`shippo_buy_${ratesModal.orderId}`]}
                           className="mt-1 text-xs bg-brand-red text-white px-3 py-1.5 rounded-lg hover:bg-blue-900 disabled:opacity-50">

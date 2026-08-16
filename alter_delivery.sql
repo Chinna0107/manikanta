@@ -1,0 +1,2 @@
+ALTER TABLE orders ADD COLUMN IF NOT EXISTS delivery_partner_id INTEGER REFERENCES users(id);
+ALTER TABLE orders ADD COLUMN IF NOT EXISTS delivered_at TIMESTAMP;

@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import {
-  Users, ShoppingBag, USAnRupee, TrendingUp, Trash2,
+  Users, ShoppingBag, IndianRupee, TrendingUp, Trash2,
   ArrowLeft, Shield, RefreshCw, ChevronDown, Search, X
 } from 'lucide-react';
 import { useAuthStore } from '../store/useAuthStore';
@@ -156,8 +156,8 @@ export function AdminPage() {
                   color="bg-gradient-to-br from-blue-500 to-blue-600 text-white" sub="Registered customers" />
                 <StatCard icon={ShoppingBag} label="Total Orders" value={stats.totalOrders}
                   color="bg-gradient-to-br from-gray-500 to-gray-600 text-white" sub="All time orders" />
-                <StatCard icon={USAnRupee} label="Total Revenue"
-                  value={`$${Number(stats.totalRevenue).toLocaleString('en-IN')}`}
+                <StatCard icon={IndianRupee} label="Total Revenue"
+                  value={`₹${Number(stats.totalRevenue).toLocaleString('en-IN')}`}
                   color="bg-gradient-to-br from-green-500 to-green-600 text-white" sub="Excluding cancelled" />
               </div>
             ) : (
@@ -241,7 +241,14 @@ export function AdminPage() {
               {search && <button onClick={() => setSearch('')} className="absolute right-3 top-1/2 -translate-y-1/2"><X className="w-4 h-4 text-gray-400" /></button>}
             </div>
 
-            <p className="text-xs text-gray-500">{filteredOrders.length} orders found</p>
+            <div className="flex justify-between items-center bg-amber-50 border border-amber-100 rounded-xl p-3 mb-3 mt-3">
+              <div>
+                <p className="text-xs text-amber-800 font-bold">M-Coins Summary</p>
+                <p className="text-[10px] text-amber-600">Total coins used in these orders</p>
+              </div>
+              <p className="text-lg font-bold text-amber-600">{filteredOrders.reduce((acc, order) => acc + (parseFloat(order.m_coins_used) || 0), 0)}</p>
+            </div>
+            <p className="text-xs text-gray-500 mb-3">{filteredOrders.length} orders found</p>
 
             {loading ? (
               <div className="space-y-2">{[1,2,3].map(i => <div key={i} className="h-24 bg-gray-200 rounded-xl animate-pulse" />)}</div>
@@ -259,7 +266,14 @@ export function AdminPage() {
                       <p className="text-[11px] text-gray-500">{order.user_name} · {order.user_email}</p>
                       <p className="text-[10px] text-gray-400">{new Date(order.created_at).toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' })}</p>
                     </div>
-                    <p className="text-sm font-bold text-gray-900">${Number(order.total).toLocaleString('en-IN')}</p>
+                    <div className="text-right">
+                      <p className="text-sm font-bold text-gray-900">₹{Number(order.total).toLocaleString('en-IN')}</p>
+                      {parseFloat(order.m_coins_used) > 0 && (
+                        <p className="text-[10px] font-bold text-amber-600 bg-amber-100 px-1.5 py-0.5 rounded inline-block mt-1">
+                          {parseFloat(order.m_coins_used)} Coins Used
+                        </p>
+                      )}
+                    </div>
                   </div>
 
                   <div className="flex items-center justify-between mt-3 pt-3 border-t border-gray-100">
