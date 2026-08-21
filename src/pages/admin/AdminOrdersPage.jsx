@@ -900,8 +900,8 @@ const updateStatus = async (orderId, status) => {
         </td>
         <td style="padding:10px 12px;border-bottom:1px solid #F6EFEF;vertical-align:middle;text-align:center;font-size:9pt;">${escapeHtml(item.variant?.size || item.size || '—')}</td>
         <td style="padding:10px 12px;border-bottom:1px solid #F6EFEF;vertical-align:middle;text-align:center;font-size:9pt;">${item.qty}</td>
-        <td style="padding:10px 12px;border-bottom:1px solid #F6EFEF;vertical-align:middle;text-align:right;font-size:9pt;font-weight:600; ${isCancelled ? 'text-decoration: line-through;' : ''}">₹{(item.variant?.price || item.product?.price || item.price || 0).toFixed(2)}</td>
-        <td style="padding:10px 12px;border-bottom:1px solid #F6EFEF;vertical-align:middle;text-align:right;font-size:9pt;font-weight:700;color:#08183A; ${isCancelled ? 'text-decoration: line-through;' : ''}">₹{((item.variant?.price || item.product?.price || item.price || 0) * item.qty).toFixed(2)}</td>
+        <td style="padding:10px 12px;border-bottom:1px solid #F6EFEF;vertical-align:middle;text-align:right;font-size:9pt;font-weight:600; ${isCancelled ? 'text-decoration: line-through;' : ''}">₹${(item.variant?.price || item.product?.price || item.price || 0).toFixed(2)}</td>
+        <td style="padding:10px 12px;border-bottom:1px solid #F6EFEF;vertical-align:middle;text-align:right;font-size:9pt;font-weight:700;color:#08183A; ${isCancelled ? 'text-decoration: line-through;' : ''}">₹${((item.variant?.price || item.product?.price || item.price || 0) * item.qty).toFixed(2)}</td>
       </tr>`;
     };
 
@@ -951,7 +951,7 @@ const updateStatus = async (orderId, status) => {
       <div style="font-size:9pt;font-weight:700;color:#08183A;text-transform:uppercase;letter-spacing:0.5px;border-bottom:1px solid #e8d5b0;padding-bottom:5px;margin-bottom:8px;">From</div>
       <div style="font-size:9.5pt;color:#555;line-height:1.6;">
         <strong style="color:#08183A;">Manikanta Super Market</strong><br>
-        Texas, 76227<br>
+        Hyderabad, Telangana 500001<br>
         Phone: +91 98660 48155<br>
         Email: mani.worriers@gmail.com
       </div>
@@ -989,12 +989,13 @@ const updateStatus = async (orderId, status) => {
     <td style="width:55%;"></td>
     <td style="width:45%;">
       <table style="width:100%;border-collapse:collapse;">
-        <tr><td style="padding:7px 12px;text-align:right;color:#555;font-size:9.5pt;border-bottom:1px solid #F6EFEF;">Subtotal</td><td style="padding:7px 12px;text-align:right;font-weight:600;font-size:9.5pt;border-bottom:1px solid #F6EFEF;width:110px;">₹{subtotal.toFixed(2)}</td></tr>
-        ${discountAmt > 0 ? `<tr><td style="padding:7px 12px;text-align:right;color:#059669;font-size:9.5pt;border-bottom:1px solid #F6EFEF;">Discount${order.coupon_code ? ' (' + order.coupon_code + ')' : ''}</td><td style="padding:7px 12px;text-align:right;font-weight:600;font-size:9.5pt;border-bottom:1px solid #F6EFEF;color:#059669;">-₹{discountAmt.toFixed(2)}</td></tr>` : ''}
-        ${shippingCost > 0 ? `<tr><td style="padding:7px 12px;text-align:right;color:#555;font-size:9.5pt;border-bottom:1px solid #F6EFEF;">Shipping</td><td style="padding:7px 12px;text-align:right;font-weight:600;font-size:9.5pt;border-bottom:1px solid #F6EFEF;">₹{shippingCost.toFixed(2)}</td></tr>` : ''}
-        ${taxAmt > 0 ? `<tr><td style="padding:7px 12px;text-align:right;color:#555;font-size:9.5pt;border-bottom:1px solid #F6EFEF;">Tax</td><td style="padding:7px 12px;text-align:right;font-weight:600;font-size:9.5pt;border-bottom:1px solid #F6EFEF;">₹{taxAmt.toFixed(2)}</td></tr>` : ''}
-        <tr style="background:#FDF8F0;"><td style="padding:10px 12px;text-align:right;font-weight:700;font-size:11pt;color:#08183A;border-top:2px solid #08183A;">TOTAL</td><td style="padding:10px 12px;text-align:right;font-weight:700;font-size:11pt;color:#D4AF37;border-top:2px solid #08183A;">₹{Number(order.total).toFixed(2)}</td></tr>
-        ${refundAmt > 0 ? `<tr style="background:#fef2f2;"><td style="padding:10px 12px;text-align:right;font-weight:700;font-size:10pt;color:#dc2626;border-top:1px solid #fecaca;">REFUNDED</td><td style="padding:10px 12px;text-align:right;font-weight:700;font-size:10pt;color:#dc2626;border-top:1px solid #fecaca;">-₹{refundAmt.toFixed(2)}</td></tr>` : ''}
+        <tr><td style="padding:7px 12px;text-align:right;color:#555;font-size:9.5pt;border-bottom:1px solid #F6EFEF;">Subtotal</td><td style="padding:7px 12px;text-align:right;font-weight:600;font-size:9.5pt;border-bottom:1px solid #F6EFEF;width:110px;">₹${subtotal.toFixed(2)}</td></tr>
+        ${discountAmt > 0 ? `<tr><td style="padding:7px 12px;text-align:right;color:#059669;font-size:9.5pt;border-bottom:1px solid #F6EFEF;">Discount${order.coupon_code ? ' (' + order.coupon_code + ')' : ''}</td><td style="padding:7px 12px;text-align:right;font-weight:600;font-size:9.5pt;border-bottom:1px solid #F6EFEF;color:#059669;">-₹${discountAmt.toFixed(2)}</td></tr>` : ''}
+        ${parseFloat(order.m_coins_used || 0) > 0 ? `<tr><td style="padding:7px 12px;text-align:right;color:#059669;font-size:9.5pt;border-bottom:1px solid #F6EFEF;">Mani Coins Used</td><td style="padding:7px 12px;text-align:right;font-weight:600;font-size:9.5pt;border-bottom:1px solid #F6EFEF;color:#059669;">-₹${parseFloat(order.m_coins_used).toFixed(2)}</td></tr>` : ''}
+        ${shippingCost > 0 ? `<tr><td style="padding:7px 12px;text-align:right;color:#555;font-size:9.5pt;border-bottom:1px solid #F6EFEF;">Shipping</td><td style="padding:7px 12px;text-align:right;font-weight:600;font-size:9.5pt;border-bottom:1px solid #F6EFEF;">₹${shippingCost.toFixed(2)}</td></tr>` : ''}
+        ${taxAmt > 0 ? `<tr><td style="padding:7px 12px;text-align:right;color:#555;font-size:9.5pt;border-bottom:1px solid #F6EFEF;">Tax</td><td style="padding:7px 12px;text-align:right;font-weight:600;font-size:9.5pt;border-bottom:1px solid #F6EFEF;">₹${taxAmt.toFixed(2)}</td></tr>` : ''}
+        <tr style="background:#FDF8F0;"><td style="padding:10px 12px;text-align:right;font-weight:700;font-size:11pt;color:#08183A;border-top:2px solid #08183A;">TOTAL</td><td style="padding:10px 12px;text-align:right;font-weight:700;font-size:11pt;color:#D4AF37;border-top:2px solid #08183A;">₹${Number(order.total).toFixed(2)}</td></tr>
+        ${refundAmt > 0 ? `<tr style="background:#fef2f2;"><td style="padding:10px 12px;text-align:right;font-weight:700;font-size:10pt;color:#dc2626;border-top:1px solid #fecaca;">REFUNDED</td><td style="padding:10px 12px;text-align:right;font-weight:700;font-size:10pt;color:#dc2626;border-top:1px solid #fecaca;">-₹${refundAmt.toFixed(2)}</td></tr>` : ''}
       </table>
     </td>
   </tr>
