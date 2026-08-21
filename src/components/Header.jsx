@@ -4,7 +4,7 @@ import { useNavigate, Link, useLocation } from 'react-router-dom';
 import {
   Menu, Search, Heart, ShoppingCart, ArrowLeft, Share2,
   User, LogIn, Package, MapPin, LayoutDashboard, LogOut,
-  Settings, Shield, ChevronDown, X, Ticket, Bell, Mic
+  Settings, Shield, ChevronDown, X, Ticket, Bell, Mic, Wallet
 } from 'lucide-react';
 import { useCartStore } from '../store/useCartStore';
 import { useAuthStore } from '../store/useAuthStore';
@@ -31,6 +31,7 @@ function AvatarDropdown({ user, onLogout }) {
   const items = [
     { icon: LayoutDashboard, label: 'Dashboard', path: '/dashboard' },
     { icon: Package, label: 'My Orders', path: '/my-orders' },
+    { icon: Wallet, label: 'My Wallet', path: '/my-wallet' },
     { icon: Ticket, label: 'My Coupons', path: '/my-coupons' },
     { icon: MapPin, label: 'My Addresses', path: '/my-addresses' },
     { icon: Heart, label: 'Wishlist', path: '/wishlist' },
@@ -396,7 +397,7 @@ export function Header({ variant = 'default', title, showShare = false }) {
             <nav className="flex flex-col p-4 gap-1 flex-grow overflow-y-auto">
               {navLinks.map(({ label, to }, i) => (
                 <motion.div
-                  key={to}
+                  key={label}
                   initial={{ opacity: 0, x: -20 }}
                   animate={{ opacity: 1, x: 0 }}
                   transition={{ delay: 0.12 + i * 0.06, type: 'spring', stiffness: 260, damping: 22 }}
