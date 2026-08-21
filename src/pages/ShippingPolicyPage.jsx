@@ -24,7 +24,7 @@ const sections = [
     badge: '3–7 Business Days',
     badgeColor: 'bg-blue-100 text-blue-700',
     content: [
-      'Standard delivery takes 3–7 business days after dispatch, depending on your location within USA.',
+      'Standard delivery takes 3–7 business days after dispatch, depending on your location within India.',
       'Remote or rural areas may require an additional 1–3 business days beyond the standard timeline.',
       'We do not currently offer express shipping, but we are actively working to bring faster options.',
       'Delivery timelines may vary during peak seasons or festival periods.',
@@ -34,10 +34,10 @@ const sections = [
     id: 'coverage',
     icon: <MapPin className="w-6 h-6 text-brand-red" />,
     title: 'Shipping Coverage',
-    badge: 'Pan USA + Select International',
+    badge: 'Pan India + Select International',
     badgeColor: 'bg-purple-100 text-purple-700',
     content: [
-      'We ship to all pin codes across USA through our trusted logistics partners.',
+      'We ship to all pin codes across India through our trusted logistics partners.',
       'International shipping is available to select countries — please contact us before placing your international order.',
       'For international orders, additional customs duties or import taxes may apply depending on your country.',
       'Contact us at mani.worriers@gmail.com or WhatsApp +91 98660 48155 for international shipping rates.',
@@ -145,7 +145,7 @@ export function ShippingPolicyPage() {
           {[
             { label: 'Processing', value: '1–3 Days' },
             { label: 'Delivery', value: '3–7 Days' },
-            { label: 'Coverage', value: 'Pan USA' },
+            { label: 'Coverage', value: 'Pan India' },
             { label: 'Packaging', value: 'Gift-Ready' },
           ].map((s, i) => (
             <motion.div
